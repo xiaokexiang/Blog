@@ -4,6 +4,8 @@ date: 2019-05-16 15:23:56
 tags: Web
 categories:
   - CSS
+thumbnail: https://blog.zhangruipeng.me/hexo-theme-icarus/gallery/thumbnails/plant.jpg
+banner: 
 ---
 
 ## css-插入样式表

@@ -92,7 +92,8 @@ scheme: Gemini
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
 #social:
   #LinkLabel: Link
-
+social:
+  Github: https://www.github.com/xiaokexiang
 # Social Links Icons
 # Icon Mapping:
 #   Map a menu item to a specific FontAwesome icon name.
@@ -245,6 +246,7 @@ custom_logo:
   enabled: false
   image:
 
+# 高亮主题
 # Code Highlight theme
 # Available value:
 #    normal | night | night eighties | night blue | night bright
