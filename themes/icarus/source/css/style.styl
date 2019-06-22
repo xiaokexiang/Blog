@@ -48,7 +48,6 @@ body, button, input, select, textarea
     .column-right-shadow
         &.is-sticky
             top: 1.5rem
-
 .tag
     &.is-grey
         background: #e7e7e7
@@ -71,12 +70,13 @@ img.thumbnail
     object-fit: cover
     width: 100%
     height: 100%
-    box-shadow: 3px 3px 3px #ddd;
 
-.navbar-logo,
-.footer-logo
+.navbar-logo
     img
         max-height: 2.25rem
+.footer-logo
+    img
+        max-height: 1.75rem
 
 .navbar-main
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05)
@@ -445,3 +445,15 @@ figure.highlight
             border: none
     .file
         all: initial
+/* ---------------------------------
+ *         标题下划线动画
+ * --------------------------------- */
+.title
+    a
+        background-image: linear-gradient(transparent 0%, transparent 100%,#a4c7ff 100%,#a4c7ff 90%, transparent 90%, transparent);
+        background-repeat: no-repeat;
+        background-size: 0 100%;
+        transition: background-size .3s cubic-bezier(0.4, 0, 1, 1);
+        
+        &:hover
+            background-size: 100% 100%;

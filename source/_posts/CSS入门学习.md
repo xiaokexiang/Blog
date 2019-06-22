@@ -2,13 +2,13 @@
 title: CSS入门学习
 date: 2019-05-16 15:23:56
 tags: Web
+toc: true
 categories:
   - CSS
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g49ogmcup0j30hs09dgma.jpg
-banner: 
 ---
 
-## css-插入样式表
+## CSS插入样式表
 ### 外部样式
 ```html
 <head>
