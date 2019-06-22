@@ -45,6 +45,13 @@
             <% } %>
         </h1>
         <div class="content">
+            <!-- 给博客增加自定义目录 -->
+            <% if(!index && post.ttoc == true){ %>
+                <div id="toc" class="toc-article">
+                    <strong class="toc-title">文章目录</strong>
+                    <%- toc(post.content) %>
+                </div>
+            <% } %> 
             <%- index && post.excerpt ? post.excerpt : post.content %>
         </div>
         <% if (!index && post.tags && post.tags.length) { %>

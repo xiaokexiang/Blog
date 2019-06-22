@@ -5,6 +5,8 @@ tags: Linux
 top: true
 categories:
 - Linux
+thumbnail: http://ww1.sinaimg.cn/large/70ef936dly1g49qggkixoj20hs0bvwhi.jpg
+banner: 
 ---
 # 环境准备
 * 安装git
