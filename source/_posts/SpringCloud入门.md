@@ -2,8 +2,10 @@
 title: SpringCloud入门
 date: 2019-03-20 22:38:08
 tags: Java
+toc: true
 categories:
 - SprintCloud
+thumbnail: http://ww1.sinaimg.cn/thumbnail/70ef936dly1g4a06egs13j20i008jwep.jpg
 ---
 ## Eureka
 

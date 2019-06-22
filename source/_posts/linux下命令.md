@@ -2,8 +2,10 @@
 title: linux命令合集
 date: 2018-11-22 13:25:10
 tags: Linux
+toc: true
 categories:
 - Linux
+thumbnail: https://www.logicsupply.com/company/io-hub/wp-content/uploads/2009/01/Read-only-Linux.jpg
 ---
 
 ## 查找文件名

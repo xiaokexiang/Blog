@@ -2,8 +2,10 @@
 title: Java异常处理
 date: 2018-09-17 19:40:39
 tags: Java
+toc: true
 categories:
 - Java
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
 ---
 ## 异常
 ### 异常结构图

@@ -1,7 +1,11 @@
 ---
 title: 基于Java图片上传下载
 date: 2019-05-22 14:19:01
-tags:
+tags: Java
+toc: true
+categories:
+- Java
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
 ---
 ### 图片上传-FTP方式
 

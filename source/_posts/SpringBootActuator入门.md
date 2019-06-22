@@ -2,8 +2,10 @@
 title: SpringBootActuator入门
 date: 2019-02-29 15:36:44
 tags: Java
+toc: true
 categories:
 - Java
+thumbnail: http://ww1.sinaimg.cn/thumbnail/70ef936dly1g4a06egs13j20i008jwep.jpg
 ---
 ## 依赖
 

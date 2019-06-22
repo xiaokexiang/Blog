@@ -2,8 +2,10 @@
 title: JavaScript入门学习
 date: 2019-05-22 12:12:16
 tags: Web
+toc: true
 categories:
   - JavaScript
+thumbnail: https://uploads-ssl.webflow.com/5b559436ff2e007783c2c551/5b9110e86e11f7d979b0dc36_javascript.png
 ---
 
 ## javascript

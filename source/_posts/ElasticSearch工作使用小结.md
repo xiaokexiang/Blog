@@ -2,8 +2,10 @@
 title: ElasticSearch工作使用小结
 date: 2018-05-19 11:01:20
 tags: ElasticSearch
+toc: true
 categories:
 - ElasticSearch
+thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
 ---
 
 ## Es的三种客户端

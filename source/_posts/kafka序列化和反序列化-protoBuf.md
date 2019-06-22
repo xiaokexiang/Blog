@@ -2,8 +2,10 @@
 title: kafka序列化和反序列化-protoBuf
 date: 2018-06-17 16:36:59
 tags: Kafka
+toc: true
 categories:
 - Kafka
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
 ---
 ## 含义
 

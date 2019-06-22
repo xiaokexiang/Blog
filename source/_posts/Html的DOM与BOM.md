@@ -2,8 +2,10 @@
 title: Html的DOM与BOM
 date: 2019-05-28 18:31:43
 tags: Web
+toc: true
 categories:
   - HTML
+thumbnail: https://media.geeksforgeeks.org/wp-content/cdn-uploads/html-1024x341.png
 ---
 ## HTML DOM(文档对象模型: Document Object Model)
   <img src="https://www.runoob.com/images/pic_htmltree.gif">

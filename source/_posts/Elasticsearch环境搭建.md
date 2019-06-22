@@ -2,8 +2,10 @@
 title: Elasticsearch环境搭建
 date: 2018-05-01 17:06:20
 tags: ElasticSearch
+toc: true
 categories:
   - ElasticSearch
+thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
 ---
 
 ## elasticsearch 环境搭建问题

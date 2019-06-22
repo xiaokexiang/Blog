@@ -2,8 +2,10 @@
 title: Linux下FastDFS安装教程
 date: 2019-04-22 17:06:35
 tags: Fastdfs
+toc: true
 categories:
 - Fastdfs
+thumbnail: https://www.logicsupply.com/company/io-hub/wp-content/uploads/2009/01/Read-only-Linux.jpg
 ---
 ## 软件准备和环境安装
 1. libfastcommon-master.zip

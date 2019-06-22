@@ -2,8 +2,10 @@
 title: Samba的安装和配置
 date: 2019-04-01 15:54:00
 tags: Linux
+toc: true
 categories:
 - Samba
+thumbnail: https://sophosnews.files.wordpress.com/2017/05/samba-1200.png?w=780&h=408&crop=1
 ---
 
 ## 安装

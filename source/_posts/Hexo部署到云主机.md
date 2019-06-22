@@ -6,8 +6,8 @@ toc: true
 top: true
 categories:
 - Linux
-thumbnail: http://ww1.sinaimg.cn/large/70ef936dly1g49qggkixoj20hs0bvwhi.jpg
-banner: 
+thumbnail:  http://coderunthings.com/images/howhexoworks/hexo_logo.png
+# http://ww1.sinaimg.cn/large/70ef936dly1g49qggkixoj20hs0bvwhi.jpg
 ---
 # 环境准备
 * 安装git

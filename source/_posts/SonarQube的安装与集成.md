@@ -2,8 +2,10 @@
 title: SonarQube的安装与集成
 date: 2018-07-02 10:08:22
 tags: SonarQube
+toc: true
 categories:
 - SonarQube
+thumbnail: https://gitee.com/alex_d/Graph-bed/raw/master/2018/0908/SonarQube.jpg
 ---
 
 ## 需要安装的软件:

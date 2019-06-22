@@ -2,8 +2,10 @@
 title: kafka消费者及配置详解
 date: 2018-06-05 13:15:34
 tags: Kafka
+toc: true
 categories:
 - Kafka
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
 ---
 ## 消费者和消费群组
 kafka消费者从属于消费群组，一个群组里面订阅的是**<font color="red" >同一个主题</font>**,每个消费者接受主题一部分分区的消息。

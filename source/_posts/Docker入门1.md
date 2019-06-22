@@ -2,8 +2,10 @@
 title: Docker入门1
 date: 2019-02-29 11:20:37
 tags: Docker
+toc: true
 categories:
 - Docker
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zzckepqj20gl08t0t2.jpg 
 ---
 ## Docker
 

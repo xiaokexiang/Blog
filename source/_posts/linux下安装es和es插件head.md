@@ -2,8 +2,10 @@
 title: linux下安装es和es插件head
 date: 2018-05-04 10:19:15
 tags: Linux
+toc: true
 categories:
 - Linux
+thumbnail: https://www.logicsupply.com/company/io-hub/wp-content/uploads/2009/01/Read-only-Linux.jpg
 ---
 
 📌 原文链接:https://www.cnblogs.com/Onlywjy/p/Elasticsearch.html

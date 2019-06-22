@@ -2,8 +2,10 @@
 title: 基于CAS协议的SSO入门
 date: 2019-01-25 15:15:37
 tags: Java
+toc: true
 categories:
 - Sso
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
 ---
 ## CAS简介
 

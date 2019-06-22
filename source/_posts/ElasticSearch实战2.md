@@ -2,8 +2,10 @@
 title: ElasticSearch实战2
 date: 2018-07-02 17:30:05
 tags: ElasticSearch
+toc: true
 categories:
 - ElasticSearch
+thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
 ---
 ## 搜索数据
 

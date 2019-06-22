@@ -2,8 +2,10 @@
 title: '@Valid和@Validated的区别'
 date: 2019-04-12 16:01:49
 tags: Java
+toc: true
 categories:
 - Hibernate
+thumbnail: http://ww1.sinaimg.cn/thumbnail/70ef936dly1g4a06egs13j20i008jwep.jpg
 ---
 ## @Valid
 

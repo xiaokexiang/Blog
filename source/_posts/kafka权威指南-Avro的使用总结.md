@@ -2,8 +2,10 @@
 title: kafka权威指南-Avro的使用总结
 date: 2018-06-02 22:20:19
 tags: Kafka
+toc: true
 categories:
 - Kafka
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
 ---
 ## pom.xml中引入Avro相关配置
 

@@ -2,8 +2,10 @@
 title: Hibernate-Validate校验注解
 date: 2018-11-29 14:45:18
 tags: Java
+toc: true
 categories:
-- Hibernate
+- Java
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
 ---
 ## 自定义注解
 
