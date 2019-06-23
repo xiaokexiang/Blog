@@ -6,9 +6,9 @@ toc: true
 top: true
 categories:
 - Linux
-thumbnail:  http://coderunthings.com/images/howhexoworks/hexo_logo.png
-# http://ww1.sinaimg.cn/large/70ef936dly1g49qggkixoj20hs0bvwhi.jpg
+thumbnail: http://ww1.sinaimg.cn/large/70ef936dly1g4aaclcwa2j20u80caaaf.jpg
 ---
+
 # 环境准备
 * 安装git
 ``` bash

@@ -1,4 +1,4 @@
-family-sans = "Ubuntu", "Roboto", "Open Sans", "Microsoft YaHei", sans-serif
+family-sans = "Microsoft JhengHei","Roboto", "Open Sans", "Microsoft YaHei", sans-serif
 family-mono = "Source Code Pro", monospace, "Microsoft YaHei"
 gap = 64px
 screen-tablet = 769px
@@ -10,7 +10,7 @@ screen-fullhd = 1472px
  *       Override CSS Framework
  * --------------------------------- */
 html
-    font-size: 14px
+    font-size: 15px
 
 body
     background-color: #f7f7f7
@@ -174,7 +174,7 @@ img.thumbnail
     .article-meta
         margin-bottom: 0.5rem !important
     .content
-        font-size: 1.1rem
+        font-size: 1rem
         blockquote.pullquote
             float: right
             max-width: 50%
@@ -370,6 +370,11 @@ figure.highlight
 
         .line
             line-height: 1.5rem
+            font-size: 14px
+            // comment样式
+            .hljs-comment
+                color: #95cc5e
+            
 
     figcaption,
     .gutter

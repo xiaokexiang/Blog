@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <script src="/js/clicklove.js"></script>
 <html <%- has_config('language') ? ' lang="' + get_config('language').substring(0, 2) + '"' : '' %>>
+
 <head>
     <%- partial('common/head') %>
 </head>
+
 <body class="is-<%= column_count() %>-column">
     <%- partial('common/navbar', { page }) %>
     <% function main_column_class() {
@@ -33,4 +35,5 @@
     <%- partial('search/' + get_config('search.type')) %>
     <% } %>
 </body>
+
 </html>
