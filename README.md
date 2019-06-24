@@ -1,3 +1,2 @@
 # HexoBlog
-Blog Design By Hexo
-Theme power by Icarus
+*Blog Design By Hexo, Theme power by Icarus*
