@@ -5,7 +5,8 @@ tags: Java
 toc: true
 categories:
 - Java
-thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccm5pmvsj30j60a4glz.jpg
+
 ---
 ## 自定义注解
 

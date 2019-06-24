@@ -5,7 +5,8 @@ tags: Kafka
 toc: true
 categories:
 - Kafka
-thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
+
 ---
 ## kafka生产者配置图解
 <iframe id="embed_dom" name="embed_dom" frameborder="1" style="display:block;width:700px; height:551px;" src="https://www.processon.com/embed/5bdbfc15e4b0fc2dc1a75278">

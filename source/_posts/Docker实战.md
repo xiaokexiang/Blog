@@ -5,7 +5,9 @@ tags: Docker
 toc: true
 categories:
 - Docker
-thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zzckepqj20gl08t0t2.jpg 
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccjm6pp3j30gl08tjrz.jpg
+
+ 
 ---
 ## 操作系统
 

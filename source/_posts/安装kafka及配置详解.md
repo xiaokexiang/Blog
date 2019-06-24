@@ -5,7 +5,8 @@ tags: Kafka
 toc: true
 categories:
 - Kafka
-thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
+
 ---
 ## linux上安装kafka
 * 启动一个完整的kafka需要jdk8,kafka(发行版自带zookeeper),zookeeper(保存集群的元数据和消费者信息)

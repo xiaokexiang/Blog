@@ -6,7 +6,8 @@ toc: true
 top: true
 categories:
 - Linux
-thumbnail: http://ww1.sinaimg.cn/large/70ef936dly1g4aaclcwa2j20u80caaaf.jpg
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccki7zvuj30u80caaaf.jpg
+
 ---
 
 # 环境准备

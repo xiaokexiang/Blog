@@ -5,7 +5,8 @@ tags: Kafka
 toc: true
 categories:
 - Kafka
-thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
+
 ---
 ## 含义
 
