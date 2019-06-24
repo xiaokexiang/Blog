@@ -15,7 +15,7 @@
                                 <span class="level-item" style="color:#3273dc">&nbsp;置顶</span>
                                 <% } %>
                                     <time class="level-item has-text-grey" datetime="<%= date_xml(post.date) %>">
-                                    <%= date(post.date) %></time>
+                                            <%= date(post.date) %></time>
                                     <% if (post.categories && post.categories.length) { %>
                                         <div class="level-item">
                                             <%- list_categories(post.categories, {
@@ -28,15 +28,15 @@
                                         <% } %>
                                             <% if (!has_config('article.readtime') || get_config('article.readtime') === true) { %>
                                                 <span class="level-item has-text-grey">
-                    <% const words = word_count(post._content); %>
-                    <% const time = duration((words / 150.0) * 60, 'seconds') %>
-                    <%= `${ time.locale(get_config('language', 'en')).humanize() } ${ __('article.read')} (${ __('article.about') } ${ words } ${ __('article.words') })` %>
-                </span>
+                                                    <% const words = word_count(post._content); %>
+                                                    <% const time = duration((words / 150.0) * 60, 'seconds') %>
+                                                    <%= `${ time.locale(get_config('language', 'en')).humanize() } ${ __('article.read')} (${ __('article.about') } ${ words } ${ __('article.words') })` %>
+                                                </span>
                                                 <% } %>
                                                     <% if (!index && (has_config('plugins.busuanzi') ? get_config('plugins.busuanzi') : false)) { %>
                                                         <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
-                    <i class="far fa-eye"></i>
-                    <%- _p('plugin.visit', '<span id="busuanzi_value_page_pv">0</span>') %>
+                                                            <i class="far fa-eye"></i>
+                                                            <%- _p('plugin.visit', '<span id="busuanzi_value_page_pv">0</span>') %>
                                                         </span>
                                                         <% } %>
                         </div>
