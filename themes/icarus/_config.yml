@@ -27,12 +27,12 @@ navbar:
         归档: /archives
         分类: /categories
         标签: /tags
-        # 关于: /about
+        RSS: /atom.xml
     # Navigation bar links to be shown on the right
-    links:
-        Download on GitHub:
-            icon: fab fa-github
-            url: 'https://github.com/xiaokexiang'
+    # links:
+    #     Download on GitHub:
+    #         icon: fab fa-github
+    #         url: 'https://github.com/xiaokexiang'
 # Footer section link settings
 footer:
     # Links to be shown on the right of the footer section
@@ -126,13 +126,13 @@ widgets:
         # Where should the widget be placed, left or right
         position: left
         # Author name to be shown in the profile widget
-        author: Lucky
+        author: 北城柳絮雨南城丶
         # Title of the author to be shown in the profile widget
-        author_title: Just a normal Blog
+        author_title: Just A Normal Blog
         # Author's current location to be shown in the profile widget
-        location: Su Zhou
+        location: 苏州, 中国
         # Path or URL to the avatar to be shown in the profile widget
-        avatar: 
+        avatar:
         # Email address for the Gravatar to be shown in the profile widget
         gravatar: 
         # Whether to show avatar image rounded or square
@@ -155,7 +155,7 @@ widgets:
         #         url: 'https://dribbble.com'
             # RSS:
             #     icon: fas fa-rss
-            #     url: /
+            #     url: /atom.xml
     -
         # Widget name
         type: toc
@@ -212,14 +212,16 @@ plugins:
     back-to-top: true
     # Google Analytics plugin settings
     # https://ppoffice.github.io/hexo-theme-icarus/Plugins/General/site-analytics-plugin/#Google-Analytics
+    # google统计tracking_id地址: https://search.google.com/search-console
     google-analytics:
         # Google Analytics tracking id
-        tracking_id: 
+        tracking_id: UA-142631470-1
     # Baidu Analytics plugin settings
     # https://ppoffice.github.io/hexo-theme-icarus/Plugins/General/site-analytics-plugin/#Baidu-Analytics
+    # 百度统计tracking_id地址:  https://tongji.baidu.com/sc-web/28214875/home/site/getjs?siteId=13592297
     baidu-analytics:
         # Baidu Analytics tracking id
-        tracking_id: 
+        tracking_id: 714a432a915e057a67639996410b2f67
     # Hotjar user feedback plugin
     # https://ppoffice.github.io/hexo-theme-icarus/Plugins/General/site-analytics-plugin/#Hotjar
     hotjar:
