@@ -51,6 +51,9 @@ thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
         </plugins>
     </build>
 ```
+
+<!-- more -->
+
 ##  自定义xxxx.avsc后缀结尾的文件
 
 文件格式如下:其中namespace表示解析后的avro文件的包地址,name为解析后的文件名

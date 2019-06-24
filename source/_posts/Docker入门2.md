@@ -22,6 +22,7 @@ thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zzckepqj20gl08t0t2.jpg
 ```
 新建的容器处于created状态，使用docker start启动容器
 
+<!-- more -->
 * 创建并启动(推荐)
 ``` java
 docker run ubuntu:14.04 /bin/echo 'my name is lucky' 打印msg

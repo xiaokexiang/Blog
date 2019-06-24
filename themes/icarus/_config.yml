@@ -69,11 +69,10 @@ comment:
     # conf: prod_de332f1127c400df907f6eb40abcc4a3
     type: gitalk
     owner: xiaokexiang
-    repo: HexoBlog
-    client_id: 7404606e79265c446271
-    client_secret: da1dc31bfc87c1087b2a1b6aee3ccf5d75ed3cca
-    admin: 村头李二柱丶
-    id: 'window.location.pathname'
+    repo: gittalk
+    client_id: e4dd44f9626adc5bd98c
+    client_secret: d91cedf93f1b09e69d94592ae1f1d958f444b794
+    admin: xiaokexiang
 
 # Donation entries
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Donation/

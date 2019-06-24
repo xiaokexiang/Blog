@@ -45,6 +45,7 @@ thumbnail: http://ww1.sinaimg.cn/thumbnail/70ef936dly1g4a06egs13j20i008jwep.jpg
 	<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
 ```
+<!-- more -->
 * Eureka Server 配置及注解
 
 	@EnableEurekaServer

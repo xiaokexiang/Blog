@@ -37,7 +37,7 @@ thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
   ./bin/kafka-console-consumer.sh —zookeeper localhost:2181 —topic lucky —from-beginning
   ```
 
-
+<!-- more -->
 ## broker配置详解
 * broker.id：
 每一个broker在集群中的唯一表示，要求是正数。当该服务器的IP地址发生改变时，broker.id没有变化，则不会影响consumers的消息情况

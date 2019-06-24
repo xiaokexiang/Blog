@@ -4,13 +4,15 @@ date: 2019-05-05 15:08:57
 tags: Docker
 toc: true
 categories:
-- Docker
-thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zzckepqj20gl08t0t2.jpg 
+  - Docker
+thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zzckepqj20gl08t0t2.jpg
 ---
-# docker环境下安装nginx
-``` bash
+
+# docker 环境下安装 nginx
+
+```bash
 # 拉取最新版的nginx
-$ docker pull nginx 
+$ docker pull nginx
 # 创建文件夹用于nginx目录挂载
 $ mkdir -p /opt/nginx/{log,html,conf,conf.d}
 # 先运行nginx
@@ -35,6 +37,7 @@ $ -v /opt/nginx/conf:/etc/nginx/conf \
 $ -v /opt/nginx/conf.d:/etc/nginx/conf.d \
 $ -d nginx
 
+<!-- more -->
 # nginx实现https
 $ docker run -it -p 443:443 --name nginx \
 $ -v /opt/nginx/html:/usr/share/nginx/html \

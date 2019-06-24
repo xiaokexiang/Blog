@@ -51,7 +51,9 @@ highlight:
 index_generator:
   path: ''
   per_page: 10
-  order_by: -date
+  order_by:
+    top: -1
+    date: -1
   
 # Category & Tag
 default_category: uncategorized

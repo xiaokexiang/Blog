@@ -20,6 +20,8 @@ GET _all/_search           搜索整个集群
 GET _all/user/_search      搜索类型为user的数据
 GET my*/_search            搜索my开头的索引数据
 ```
+
+<!-- more -->
 * 搜索请求基本模块
   * query:包含过滤，查询条件
   * from&size: 搭配实现分页查询

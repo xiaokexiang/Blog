@@ -18,6 +18,7 @@ thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
 
 * 负责处理对客户端受保护资源的访问请求，需要对请求方进行身份认证时，重定向到 CAS Server 进行认证。（原则上，客户端应用不再接受任何的用户名密码等 Credentials ）。
 
+<!-- more -->
 ## 证书的创建（基于jdk keytool实现）
 
 * 需要注意的是CAS默认是https进行访问的，所以需要配置证书

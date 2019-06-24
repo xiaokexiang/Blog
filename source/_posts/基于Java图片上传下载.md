@@ -7,6 +7,39 @@ categories:
 - Java
 thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zwmgutoj20q90dvdjd.jpg
 ---
+### 图片上传-存储在项目下
+* 获取项目resource下的static文件夹内文件
+
+``` java
+File srcFile = ResourceUtils.getFile("classpath:static");
+```
+
+* 基于InputStream&OutputStream的文件下载
+
+``` java
+// 获取源文件
+File srcFile = ResourceUtils.getFile("classpath:static");
+// 指定目标文件地址
+String property = System.getProperty("user.dir") + File.separator + "fastdfs_images";
+File descFile = new File(property);
+// 创建文件夹
+if (!descFile.exists()) {
+    // 递归生成文件夹
+    descFile.mkdirs();
+}
+// 如果是源文件夹内是多个文件
+for (String fileName : Objects.requireNonNull(srcFile.list())) {
+    File fromFile = new File(srcFile.getAbsoluteFile(), fileName);
+    File toFile = new File(property, fileName);
+    inputStream = new FileInputStream(fromFile);
+    outputStream = new FileOutputStream(toFile);
+    IOUtils.copy(inputStream, outputStream);
+    inputStream.close();
+    outputStream.close();
+}
+
+```
+<!-- more -->
 ### 图片上传-FTP方式
 
 ``` java
@@ -169,39 +202,6 @@ public class CropPictureUtil {
             throw new CropPictureException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
     }
-}
-
-```
-
-### 图片上传-存储在项目下
-* 获取项目resource下的static文件夹内文件
-
-``` java
-File srcFile = ResourceUtils.getFile("classpath:static");
-```
-
-* 基于InputStream&OutputStream的文件下载
-
-``` java
-// 获取源文件
-File srcFile = ResourceUtils.getFile("classpath:static");
-// 指定目标文件地址
-String property = System.getProperty("user.dir") + File.separator + "fastdfs_images";
-File descFile = new File(property);
-// 创建文件夹
-if (!descFile.exists()) {
-    // 递归生成文件夹
-    descFile.mkdirs();
-}
-// 如果是源文件夹内是多个文件
-for (String fileName : Objects.requireNonNull(srcFile.list())) {
-    File fromFile = new File(srcFile.getAbsoluteFile(), fileName);
-    File toFile = new File(property, fileName);
-    inputStream = new FileInputStream(fromFile);
-    outputStream = new FileOutputStream(toFile);
-    IOUtils.copy(inputStream, outputStream);
-    inputStream.close();
-    outputStream.close();
 }
 
 ```

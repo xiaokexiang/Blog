@@ -19,6 +19,8 @@ kafka消费者从属于消费群组，一个群组里面订阅的是**<font colo
 **协调器**： 
 在 kafka-0.10 版本，Kafka 在服务端引入了组协调器(GroupCoordinator)，每个 Kafka Server 启动时都会创建一个 GroupCoordinator实例，**用于管理部分消费者组和该消费者组下的每个消费者的消费偏移量**。同时在客户端引入了消费者协调器(ConsumerCoordinator)，<font color="red">实例化一个消费者就会实例化一个 ConsumerCoordinator 对象</font>，ConsumerCoordinator 负责同一个消费者组下各消费者与服务端的 GroupCoordinator 进行通信。
 
+<!-- more -->
+
 ## 协调器详解
 
 ### 群组协调器的作用（只有群组才有）：

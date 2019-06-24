@@ -23,6 +23,7 @@ thumbnail: http://ww1.sinaimg.cn/thumbnail/70ef936dly1g4a06egs13j20i008jwep.jpg
 
 * 2.0版本之后 http://{ip}:{port}/actuator/{endpoint}
 
+<!-- more -->
 ## 配置
 
 * endpoint参数

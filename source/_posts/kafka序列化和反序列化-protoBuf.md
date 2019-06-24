@@ -36,6 +36,7 @@ Protocol Buffers 是一种轻便高效的结构化数据存储格式，可以用
     required int32 sex = 4;
 }
 ```
+<!-- more -->
 * 打开CMD输入：
 `protoc -I=C:\Desktop\protoc-3.6.1-win32 --java_out=C:\ C:\Desktop\protoc-3.6.1-win32\bin\Example.proto`
 -I对应的是protoc.exe所在的文件路径，--java_out对应的是protoBuf编译后文件的输出路径，最后对应的是自定义protoBuf文件的路径

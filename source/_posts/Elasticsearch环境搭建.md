@@ -52,7 +52,7 @@ $ su elastic
 $ ./bin/elasticsearch
 
 ```
-
+<!-- more -->
 - es5.0 之前允许使用 root 启动，加配置即可，5.0 以后必须使用非 root 用户启动
   详见：https://blog.csdn.net/lahand/article/details/78954112
 - es 后台启动命令： nohup ./bin/elasticsearch&

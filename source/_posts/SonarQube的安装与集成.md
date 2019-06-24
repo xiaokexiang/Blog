@@ -32,7 +32,7 @@ thumbnail: https://gitee.com/alex_d/Graph-bed/raw/master/2018/0908/SonarQube.jpg
 * 重启服务再次访问9000端口(如果出现被占用的情况,右键任务栏-文件管理器-清除所有JavaSE的进程,一般是三个)
 * 安装中文插件:配置--&gt;应用市场--&gt;搜索chinese pack --&gt;install 重启生效
     TIP:建议安装 SonarJS SonarJava SonarTS
-
+<!-- more -->
 ## idea集成SonarQube:
 * setting --&gt; plugins:安装插件SonarLint 重启生效
 * setting --&gt; SonarLint General Settings

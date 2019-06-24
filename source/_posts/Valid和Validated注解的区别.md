@@ -35,7 +35,7 @@ public class ValidBody {
 }
 
 ```
-
+<!-- more -->
 ## @Validated
  *  一般用于@RequestParam注解,校验抛出的异常需要自己捕获封装
 

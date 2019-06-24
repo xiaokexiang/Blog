@@ -35,6 +35,7 @@ public class DemoException extends CommonException {
     }
 }
 ```
+<!-- more -->
 * 自定义响应体
 ``` Java
 @Data

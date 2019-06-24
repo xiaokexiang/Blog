@@ -26,7 +26,7 @@ $ netstat -tunlp | grep 端口号
 $ 使用lsof，如果没有yum install lsof，然后lsof -i：端口号
 $ 使用kill -9 PID清理进程
 ```
-
+<!-- more -->
 ## docker 安装ftp
 ``` bash
 $ docker run -it --name vsftpd \

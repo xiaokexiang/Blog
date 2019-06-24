@@ -31,7 +31,7 @@ ln -s /usr/lib64/libfastcommon.so /usr/lib/libfastcommon.so
 ln -s /usr/lib64/libfdfsclient.so /usr/local/lib/libfdfsclient.so
 ln -s /usr/lib64/libfdfsclient.so /usr/lib/libfdfsclient.so
 ```
-
+<!-- more -->
 ## 安装fastdfs5.05
 
 ``` shell

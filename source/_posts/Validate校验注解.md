@@ -28,6 +28,7 @@ public @interface ValidString {
     Class<? extends Payload>[] payload() default {};
 }
 ```
+<!-- more -->
 * 校验(字符串长度校验，中文为3，英文为1)
 ``` Java
 public class ValidStringLength implements ConstraintValidator<ValidString, String> {

@@ -29,6 +29,7 @@ thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g4a094xacdj20gs08g0ta.jpg
 ### compression.type
 压缩算法，由snappy、gzip、lz4
 
+<!-- more -->
 ### retries
 此参数决定了生产者可以重发消息的次数，如果达到这个次数，生产者会放弃重试并返回错误，默认生产者会在每次重试之间等待100ms（由retry.backoff.off决定），如果是临时性错误，可以通过重试实现。
 

@@ -20,6 +20,8 @@ thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
 * <font color="red">过滤器filter先于查询执行，post_filter叫做后过滤器，在查询后执行，对聚合的结果无影响。
 同时拥有过滤器的查询性能是优于拥有后过滤器的查询的。</font>
 
+<!-- more -->
+
 ## 度量聚集
 ###单值聚合
 * avg（平均数）

@@ -29,6 +29,7 @@ docker run -it centos bash
 > cat /etc/redhat-release
 ```
 
+<!-- more -->
 ## 为镜像添加SSH服务
 
 为了安全考虑，几乎所有的官方镜像都没有安装SSH服务

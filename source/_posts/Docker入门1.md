@@ -31,7 +31,7 @@ thumbnail: http://ww1.sinaimg.cn/mw690/70ef936dly1g49zzckepqj20gl08t0t2.jpg
 	* 目标是为了在同一个主机上运行多个系统或应用，提高系统资源利用率。
 	* 传统虚拟化（在硬件方面实现虚拟化）和Docker（操作系统层面实现虚拟化）的结构区别：
 
-
+<!-- more -->
 ## Docker的核心概念
 
 * Docker镜像（Image）

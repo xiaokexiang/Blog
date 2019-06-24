@@ -36,6 +36,7 @@ curl 'localhost:9200/_cat/indices?v' 查看所有索引
 }
 ```
 
+<!-- more -->
 * 返回index，type，id，version以及查询的分片数
 * 如果某个节点宕机导致一个分片不可用，此时es会返回可用分片的查询结果，也会告知错误不可搜索的分片
 

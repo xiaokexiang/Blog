@@ -23,7 +23,7 @@ $ service smb restart
 $ chkconfig --level 35 smb on
 $ chkconfig --list smb
 ```
-
+<!-- more -->
 ## 配置
 
 ```shell

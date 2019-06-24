@@ -29,6 +29,7 @@ public class SpringConfig {
     }
 }
 ```
+<!-- more -->
 * SpringBoot需要实现ApplicationContextAware接口获容器中的bean，Spring则通过AnnotationConfigApplicationContext获取注解的bean
 
 ``` Java

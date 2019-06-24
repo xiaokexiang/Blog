@@ -38,6 +38,7 @@ _search/scroll?scroll=5m "{\"scroll_id\": " + "\"" + scroll_id + "\"" + "}"
 ```
 📌: 不需要指定index,type
 
+<!-- more -->
 ## 基于时间聚合的代码:
 
 ``` java

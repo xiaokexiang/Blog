@@ -38,6 +38,8 @@ public class LangFilter implements Filter {
     }
 }
 ```
+
+<!-- more -->
 * 拦截器实现
 
 ```java
