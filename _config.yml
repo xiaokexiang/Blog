@@ -87,3 +87,7 @@ deploy:
   # repo: https://github.com/xiaokexiang/xiaokexiang.github.io.git
   repo: git@www.leejay.top:/opt/nginx/html/blog.git
   branch: master
+# 版权信息
+addlink:
+  before_text: __本文作者__：村头李二柱丶<br />__本文地址__：
+  after_text: <br />__版权声明__：转载请注明出处！

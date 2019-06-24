@@ -64,9 +64,16 @@ search:
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Comment
 comment:
     # Name of the comment plugin
-    type: changyan
-    appid: cyuit21BJ
-    conf: prod_de332f1127c400df907f6eb40abcc4a3
+    # type: changyan
+    # appid: cyuit21BJ
+    # conf: prod_de332f1127c400df907f6eb40abcc4a3
+    type: gitalk
+    owner: xiaokexiang
+    repo: HexoBlog
+    client_id: 7404606e79265c446271
+    client_secret: da1dc31bfc87c1087b2a1b6aee3ccf5d75ed3cca
+    admin: 村头李二柱丶
+    id: 'window.location.pathname'
 
 # Donation entries
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Donation/
@@ -105,7 +112,7 @@ sidebar:
     left:
         # Whether the left sidebar is sticky when page scrolls
         # https://ppoffice.github.io/hexo-theme-icarus/Configuration/Theme/make-a-sidebar-sticky-when-page-scrolls/
-        sticky: false
+        sticky: true
     # right sidebar settings
     right:
         # Whether the right sidebar is sticky when page scrolls
@@ -173,7 +180,7 @@ widgets:
         # Widget name
         type: recent_posts
         # Where should the widget be placed, left or right
-        position: left
+        position: right
     -
         # Widget name
         type: tagcloud

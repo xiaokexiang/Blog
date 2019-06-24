@@ -29,6 +29,7 @@ $ ./bin/node -v
 $ ln -s /opt/nodejs/bin/npm   /usr/bin/npm
 $ ln -s /opt/nodejs/bin/node   /usr/bin/node
 ```
+<!-- more -->
 # 创建用户git
 
 ``` bash

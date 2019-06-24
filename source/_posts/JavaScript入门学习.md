@@ -29,6 +29,7 @@ thumbnail: https://uploads-ssl.webflow.com/5b559436ff2e007783c2c551/5b9110e86e11
   + innerHTML
   + console.log()
 
+<!-- more -->
 ### js 数据类型:
   + number 123
   + string "zhangsan"

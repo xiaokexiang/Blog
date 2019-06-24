@@ -20,6 +20,7 @@ thumbnail: https://media.geeksforgeeks.org/wp-content/cdn-uploads/html-1024x341.
   // 查询id为a的元素内的`<p>`元素
   var y = x.getElementsByTagName("p");
   ```
+<!-- more -->
 #### 通过类名找到 HTML 元素
   ```js
   var x = document.getElementsByClassName("intro");

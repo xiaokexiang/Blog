@@ -29,6 +29,7 @@ thumbnail:  http://file.w3cbest.com/file/images/watercss.png
 ```
 TIPS: **(内联样式)Inline style > (内部样式)Internal style sheet >(外部样式)External style sheet > 浏览器默认样式**
 
+<!-- more -->
 ## CSS 参数详解
 
 ### 背景
