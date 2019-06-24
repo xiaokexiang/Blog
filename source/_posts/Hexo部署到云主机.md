@@ -6,6 +6,7 @@ toc: true
 top: true
 categories:
 - Linux
+- Hexo
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccki7zvuj30u80caaaf.jpg
 
 ---

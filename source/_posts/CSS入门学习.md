@@ -5,7 +5,7 @@ tags: Web
 toc: true
 categories:
   - CSS
-thumbnail:  http://file.w3cbest.com/file/images/watercss.png
+thumbnail:  https://tvax1.sinaimg.cn/large/005BYqpggy1g4cct0th1jj30qc08jt8y.jpg
 ---
 
 ## CSS插入样式表
