@@ -3,6 +3,7 @@ title: Node.js入门(1)
 top: true
 date: 2019-06-24 17:52:21
 tags: Node.js
+toc: true
 categories:
   - Node.js
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cecbzxmxj30go069jrp.jpg
@@ -41,6 +42,7 @@ fs.createReadStream(process.argv[2])
 fs.writeFile('target.txt', 'hello world', (err) => {});
 ```
 
+<!-- more -->
 #### 同步输出文件
 ``` js
 fs.writeFileSync('target.txt', 'hello world');
