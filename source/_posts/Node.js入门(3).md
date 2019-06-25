@@ -6,7 +6,6 @@ tags: Node.js
 toc: true
 categories:
   - Node.js
-  - restful
   - express
   - webpack
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cecbzxmxj30go069jrp.jpg
