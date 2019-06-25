@@ -39,9 +39,13 @@
                             </span>
                                                 <% } %>
                                                     <% if (!index && (has_config('plugins.busuanzi') ? get_config('plugins.busuanzi') : false)) { %>
-                                                        <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                                                        <!-- <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
                                                                 <i class="far fa-eye"></i>
                                                             <%- _p('plugin.visit', '<span id="busuanzi_value_page_pv">0</span>') %>
+                                                        </span> -->
+
+                                                        <span id="busuanzi_container_page_pv" class="busuanzi">
+                                                                <i class="far fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv">0</span>次
                                                         </span>
                                                         <% } %>
                         </div>
