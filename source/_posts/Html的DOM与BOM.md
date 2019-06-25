@@ -5,7 +5,7 @@ tags: Web
 toc: true
 categories:
   - HTML
-thumbnail: https://media.geeksforgeeks.org/wp-content/cdn-uploads/html-1024x341.png
+thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4d952df98j30sg09hq9g.jpg
 ---
 ## HTML DOM(文档对象模型: Document Object Model)
   <img src="https://www.runoob.com/images/pic_htmltree.gif">

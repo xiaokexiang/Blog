@@ -33,14 +33,14 @@
                                             <% if (!has_config('article.readtime') || get_config('article.readtime') === true) { %>
                                                 <i class="fa fa-book"></i>&nbsp;
                                                 <span class="level-item has-text-grey">
-                                                    <% const words = word_count(post._content); %>
-                                                    <% const time = duration((words / 150.0) * 60, 'seconds') %>
-                                                    <%= `${ time.locale(get_config('language', 'en')).humanize() } ${ __('article.read')} (${ __('article.about') } ${ words } ${ __('article.words') })` %>
-                                                </span>
+                                <% const words = word_count(post._content); %>
+                                <% const time = duration((words / 150.0) * 60, 'seconds') %>
+                                <%= `${ time.locale(get_config('language', 'en')).humanize() } ${ __('article.read')} (${ __('article.about') } ${ words } ${ __('article.words') })` %>
+                            </span>
                                                 <% } %>
                                                     <% if (!index && (has_config('plugins.busuanzi') ? get_config('plugins.busuanzi') : false)) { %>
                                                         <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
-                                                            <i class="far fa-eye"></i>
+                                                                <i class="far fa-eye"></i>
                                                             <%- _p('plugin.visit', '<span id="busuanzi_value_page_pv">0</span>') %>
                                                         </span>
                                                         <% } %>
@@ -57,14 +57,7 @@
                                         <% } %>
                         </h1>
                         <div class="content">
-                            <!-- 给博客增加自定义目录 -->
-                            <% if(!index && post.ttoc == true){ %>
-                                <div id="toc" class="toc-article">
-                                    <strong class="toc-title">文章目录</strong>
-                                    <%- toc(post.content) %>
-                                </div>
-                                <% } %>
-                                    <%- index && post.excerpt ? post.excerpt : post.content %>
+                            <%- index && post.excerpt ? post.excerpt : post.content %>
                         </div>
                         <% if (!index && post.tags && post.tags.length) { %>
                             <div class="level is-size-7 is-uppercase">

@@ -5,7 +5,7 @@ function buildToc(toc) {
         result += `<li>
         <a class="is-flex" href="#${toc.id}">
         <span class="has-mr-6">${toc.index}</span>
-        <span>${toc.text}</span>
+        <span class="menu-color">${toc.text}</span>
         </a>`;
     }
     let keys = Object.keys(toc);
@@ -26,14 +26,14 @@ function buildToc(toc) {
     return result;
 }
 %>
-<div class="card widget" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                <%= _p('widget.catalogue', Infinity) %>
-            </h3>
-            <%- buildToc(_toc(post.content)) %>
+    <div class="card widget" id="toc">
+        <div class="card-content">
+            <div class="menu">
+                <h3 class="menu-label">
+                    <%= _p('widget.catalogue', Infinity) %>
+                </h3>
+                <%- buildToc(_toc(post.content)) %>
+            </div>
         </div>
     </div>
-</div>
-<% } %>
+    <% } %>

@@ -1,5 +1,5 @@
 ---
-title: Node.js入门(2)
+title: Node.js入门2
 date: 2019-06-25 09:28:33
 top: true
 tags: Node.js
@@ -140,4 +140,4 @@ $ node --inspect rdf-to-json-bulk.js(debug的js) ../../cache/epub(此js对应的
 
 地址栏输入`chrome://inspect`进入 DevTools 设备页面
 
-<img src="./DevTools.png"/>
+<img src="https://github.com/xiaokexiang/Node.js/raw/master/data/DevTools.png"/>
