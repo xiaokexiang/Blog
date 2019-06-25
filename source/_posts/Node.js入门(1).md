@@ -6,6 +6,8 @@ tags: Node.js
 toc: true
 categories:
   - Node.js
+  - fs
+  - socket
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cecbzxmxj30go069jrp.jpg
 ---
 
