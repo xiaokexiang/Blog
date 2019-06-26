@@ -161,9 +161,9 @@ widgets:
         type: toc
         # Where should the widget be placed, left or right
         position: left
-    -
-        type: music
-        position: left
+    # -
+    #     type: music
+    #     position: left
     # -
     #     # Widget name
     #     type: links
