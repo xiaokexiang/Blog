@@ -78,7 +78,8 @@ tips： <font color="red">ignore_above：超过此值的数据不会被索引</f
 
 ### 日期类型 （date）
 * 搜索输入date，es将date转为数值进行处理，效果更快。
-* 支持使用默认的format格式或者使用自定义格式,<a herf="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-date-format.html">文档地址</a>
+* 支持使用默认的format格式或者使用自定义格式<br/>
+*文档地址: https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-date-format.html*
 ```java
 curl -XPOST 'localhost:9200/index/_mapping/type' -d
  '{
@@ -217,9 +218,10 @@ es默认会部署预定义字段，他们代表着字段相关的含义，预定
 * 删除后的更新操作会导致重新创建文档，所以es会在60s内保存该删除后的文档版本号，这样就能拒绝更新操作（<font color="red">版本号低于删除操作的版本号</font>）
 * 配置elasticsearch.yml中的 <font color="red">action.destructive_requires_name:true</font>来拒绝删除的_all操作及通配符操作。
 * 关闭索引/打开索引 _close/_open
+
 ### 常用命令（基于kibana）
 ---
-<a herf="www.leejay.top:5601">kibana测试地址</a>
+<!-- <a herf="www.leejay.top:5601">kibana测试地址</a> -->
 
 ```java
 #新建索引

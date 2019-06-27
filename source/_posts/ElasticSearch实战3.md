@@ -23,7 +23,7 @@ thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
 <!-- more -->
 
 ## 度量聚集
-###单值聚合
+### 单值聚合
 * avg（平均数）
 
 ``` json
@@ -309,7 +309,7 @@ GET /my_index/user/_search
 }
 ```
 ### 嵌套聚集 （nested agg）
-####嵌套聚集： 就是基于一个聚集上的再一次聚集。
+#### 嵌套聚集： 就是基于一个聚集上的再一次聚集。
 
 ``` java
 GET /my_index/user/_search

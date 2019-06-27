@@ -6,8 +6,6 @@ tags: Node.js
 toc: true
 categories:
   - Node.js
-  - express
-  - webpack
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cecbzxmxj30go069jrp.jpg
 ---
 ### Restful web 服务
@@ -111,7 +109,7 @@ $ npm install --save --save-exact nodemon@1.11.0
 ```
 
 - 结果<br/>
-  <img src="https://github.com/xiaokexiang/Node.js/blob/master/web/nodemon.png"/>
+  <img src="https://tvax1.sinaimg.cn/large/005BYqpggy1g4fvoe0sdej30bf05ddfs.jpg"/>
 
 #### 使用 request&promise 实现 Api
 
