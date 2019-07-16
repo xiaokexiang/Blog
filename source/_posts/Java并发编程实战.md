@@ -9,7 +9,7 @@ categories:
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 ---
 
-## 相关基本概念
+## 线程相关概念
 
 ### 进程
 
@@ -18,6 +18,10 @@ _进程是操作系统中最重要的抽象概念之一,是系统进行资源分
 ### 线程
 
 _线程是操作系统能够进行运算的最小单位,被包含在进程之中,是进程实际运作单位,又称为轻量级进程_
+
+Q: 多线程会更快吗?
+
+A: 并发执行有时会因为上下文切换和资源调度的问题,导致执行速度没有串行快
 
 ### 并发和并行
 
@@ -46,4 +50,124 @@ _线程是操作系统能够进行运算的最小单位,被包含在进程之中
 - 对于 Windows 来说, 加一张桌子开销很大, 所以 Windows 鼓励大家在一个桌子上吃菜, 所以需要面对线程资源争抢与同步的问题.
 - 对 Linux 而言, 开一张新桌子开销很小, 所以可以尽可能多开新桌子, 但是在不同桌子上说话不方便, 所以需要研究进程间的通信.
 
-//TODO
+### 线程的安全性
+
+- 当多个线程访问某个类的时候,这个类始终都能表现出正确的行为,说明这个类是线程安全的
+
+- 无状态对象(不包含域&也不包含其他类中域的引用)是线程安全的
+
+### 竞态条件&数据竞争
+
+- 竞态条件: 由于不恰当的执行时序而出现不正确的结果,最常见的一种竞态类型是: 先检查后执行. 通过一个可能失效的观测结果来决定下一步动作
+
+- 数据竞争: 如果在访问共享的非 final 类型的域时没有采用同步来进行协同就会出现数据竞争
+
+### Volatile
+
+- Volatile 确保将变量的更新通知到其他线程,Volatile 变量不会被缓存在寄存器或者对其他处理器不可见的地方,因此在读取 Volatile 类型的变量时总会返回最新写入的值
+
+- 加锁机制既可以确保可见性又可以确保原子性,而 Volatile 变量只能确保可见性,所以又称为轻量锁
+
+- 将 Volatile 修饰的变量转成汇编语言,发现添加了 lock 前缀,lock 会导致处理器独占总线,进而处理器独占系统共享内存:
+
+  - <font color="red">Lock 指令将当前处理器缓存行的数据写回到系统内存</font>
+  - <font color="red">这个写回内存的操作会使其他 cpu 里面缓存了该内存地址的数据无效</font>
+
+  > <font color="green">缓存一致性: 每个处理器通过嗅探在总线上传播的数据来检查自己的缓存是不是过期了,如果发现自己缓存行对应的内存地址被修改了,会将缓存行设置成无效,在重新请求该数据的时候,会重新从系统内存中读取数据到处理器缓存中</font>
+
+### synchronized
+
+- 具体表现三种形式:
+
+  - 对于普通同步方法: 锁是当前的实例对象
+  - 对于静态同步方法: 锁是当前类 class 对象
+  - 对于同步代码块: 锁是括号中配置的对象
+
+- 基于同步代码块的锁实现
+
+  - 通过 `monitorenter` 和 `monitorexit` 来实现
+  - 在代码块开始处添加 monitorenter,代码块结束和异常处添加 monitorexit
+  - 任何对象都有一个 monitor 与之关联,当一个 monitor 被持有之后,对象就会变成锁定状态
+  - 线程执行到 monitorenter 处,会尝试去获取该对象对应 monitor 的所有权(即对象的锁)
+
+- java 对象头
+
+  - synchronized 所用的锁时存储在 java 对象头中
+  - java 对象头包括 Mark Word(存储对象的 hashCode 或锁信息), Class MetaData Address(存储到对象类型数据的指针)和 Array Length(数组长度如若当前对象是数组)
+  - Mark Word(分 32bit 和 64bit) 中又包含存储对象的 hashCode, 分代年龄和锁位标记等
+
+- 锁的升级与对比
+  - 级别由低到高: 无锁状态 -> 偏向锁状态 -> 轻量锁状态 -> 重量级锁状态
+
+// TODO
+
+### ThreadLocal
+
+_ThreadLocal 类能使线程中的某个值与保存值的对象关联起来,通过 get&set 方法为每个使用该变量的线程都保有一份独立的副本_
+
+### Final
+
+_Final 用于构造不可变对象,Final 类型的域时不可变的,但是如果 Final 域引用的对象是可变的,那么就可以修改_
+
+### 死锁
+
+- 代码展示
+
+```java
+public class DeadLock {
+
+    private static final String A = "A";
+    private static final String B = "B";
+
+    private void deadLock() {
+        Thread t1 = new Thread(() -> {
+            synchronized (A) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (B) {
+                    System.out.println("Get Lock B");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (B) {
+                synchronized (A) {
+                    System.out.println("Get Lock A");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+    }
+
+    public static void main(String[] args) {
+        new DeadLock().deadLock();
+    }
+}
+```
+
+- 使用 jconsole 查看线程
+
+  _Thread-0 和 Thread-1 分别都 Blocked 了,都在等待对方释放锁_
+
+    <img src="https://i.loli.net/2019/07/16/5d2d750c5845998231.png">
+    <img src="https://i.loli.net/2019/07/16/5d2d74b809e3e35520.png">
+
+- 如何避免死锁
+  - 避免一个线程获取多个锁
+  - 避免一个线程在锁内同时占用多个资源,尽量保证只占用一个资源
+  - 尝试使用定时锁时,采用 Lock.tryLock(timeout)来替代 synchronized
+  - 数据库锁需要保证枷锁和解锁都在同一个数据库连接中
+
+### 资源限制
+
+- 资源限制是指: 在进行并发编程的时候, 程序的执行速度受限于计算机硬件资源或者软件资源, 会导致程序执行速度变慢
+
+- 针对硬件资源的限制: 可以通过使用集群来避免.
+
+- 针对软件资源的限制: 可以使用资源池将资源复用
