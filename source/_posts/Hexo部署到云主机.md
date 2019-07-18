@@ -3,7 +3,6 @@ title: Hexo部署到云主机
 date: 2019-05-05 15:12:09
 tags: Linux
 toc: true
-top: true
 categories:
 - Linux
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccki7zvuj30u80caaaf.jpg
