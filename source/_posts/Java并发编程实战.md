@@ -138,7 +138,9 @@ _不可被中断的一个或一系列操作_
   使用处理器提供的一个`LOCK#信号`,当一个处理器在总线上输出此信号时,其他处理器的请求被阻塞住, 那么该处理器可以独占共享内存.
 
 - 使用缓存锁保证原子性
-  缓存锁定是指内存区域如果被缓存在处理器的缓存行中,并且在 Lock 操作期间被锁定, 那么当它执行锁操作回写到内存时, 处理器不在总线上声言 LOCK#信号, 而是修改内存的内存地址, 并允许它的`缓存一致性`来保证操作的原子性
+
+  缓存锁定是指<font color="green">内存区域如果被缓存在处理器的缓存行中,并且在 Lock 操作期间被锁定, 那么当它执行锁操作回写到内存时, 处理器不在总线上声言 LOCK#信号, 而是修改内存的内存地址, 并允许它的缓存一致性来保证操作的原子性</font>
+
   - 当操作的数据不能被缓存在处理器内部，或操作的数据跨多个缓存行(cache line)时，则处理器会调用总线锁定。
   - 有些处理器不支持缓存锁定
 
@@ -146,7 +148,233 @@ _不可被中断的一个或一系列操作_
 
 - 使用循环 CAS 实现原子操作
 
+  - ABA 问题: AtomicStampedReference 引用加标志进行 CAS
+  - 循环时间长开销大: 自旋 CAS 会导致非常大的 CPU 执行开销
+  - 只能保证一个共享变量的原子操作
+
 - 使用锁机制实现原子操作
+
+  _除了偏向锁,其余的锁都使用循环 CAS 实现_
+
+---
+
+### Java 内存模型
+
+#### 并发编程的两个问题:
+
+_Java 的并发采用的是共享内存模型_
+
+- 线程之间如何通信
+
+  - 共享内存: 线程之间共享程序的公共状态, 通过`写-读内存中的公共状态`进行`隐式`通讯
+  - 消息传递: 线程之间必须通过`发送消息`来`显式`的进行通讯
+
+- 线程之间如何同步
+
+  _同步是指程序中用于控制不同线程间操作发生相对顺序的机制_
+
+  - 在共享内存中, 同步是`显式`进行的
+  - 在消息传递中, 同步是`隐式`进行的(消息发送必须在消息接收之前)
+
+#### Java 内存模型抽象结构
+
+- Java 内存模型(JMM)
+
+  抽象角度来说, JMM 定义了线程和主内存之间的抽象关系: `线程之间的共享变量存储在主内存, 每个线程都有一个私有的本地内存(抽象概念), 本地内存存储了该线程以读/写共享变量的副本`
+
+  <img title="Java抽象内存模型" style="width: 400px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png"><
+
+  如果线程 A 和线程 B 之间要通信的话:
+
+  1. 线程 A 把本地内存中更新过的内存变量刷新到主内存中去
+  2. 线程 B 到主内存中去读取线程 A 之前已更新过的共享变量
+
+* 从源代码到指令序列的重排序
+
+  - 编译器优化的重排序
+    `编译器在不改变单线程程序的语义`前提下, 可以重新安排语句对应的执行顺序.
+  - 指令集并行的重排序
+    现代处理器采用了`指令级并行技术`来将多条指令重叠执行. 如果不存在数据依赖性, 处理器可以改变语句对应机器指令的执行顺序.
+  - 内存系统的重排序
+    由于`处理器使用缓存和读/写缓冲区`, 这使得加载和存储操作看上去可能是在乱序执行.(如下案例)
+
+* 并发编程模型的类型
+  现代的处理器使用`写缓冲区`临时保存向内存写入的数据, 但是每个`处理器上的写缓冲区只对所在的处理器可见`, 会导致`处理器对内存的读/写操作不一定与内存实际发生的读/写操作一致`.
+
+  <img src="https://i.loli.net/2019/07/23/5d36db5712f7a91689.png">
+
+  <img src="https://i.loli.net/2019/07/23/5d36db6bc175182042.png">
+
+  > 因为处理器对内存和内存对处理器操作的不一致, 加之现代的处理器都会使用写缓冲区, 因此`现代的处理器都会允许对写-读操作进行重排序, 不允许对数据依赖操作做重排序.`
+
+  为了保证内存可见性，Java 编译器在生成指令序列的适当位置会插入`内存屏障指令`来禁止特定类型的处理器重排序
+
+#### 重排序
+
+_编译器和处理器为了优化程序性能而对指令序列进行重新排序的一种手段_
+
+#### 数据依赖性
+
+_如果两个操作访问同一个变量, 且这两个操作中有一个为写操作, 此时这两个操作之间就存在数据依赖性_
+
+`(单个处理器或单个线程下)`编译器和处理器在重排序时, 会遵守数据依赖性, 编译器和处理器`不会改变`存在数据依赖关系的两个操作的执行顺序。
+
+#### as-if-serial 语义
+
+_不管怎么重排序(编译器和处理器为了提高并行度), `(单线程)程序`的执行结果不能被改变. 编译器、runtime 和处理器都必须遵守 as-if-serial 语义_
+
+#### 重排序对多线程的影响
+
+_在多线程的情况下, 1,2,3,4 步的重排序会导致结果的改变_
+
+```java
+public class ReorderByConcurrent {
+
+    private int i = 0;
+    private boolean flag = false;
+
+    private void write() {
+        i = 1; // 1
+        flag = true; // 2
+    }
+
+    private void reader() {
+        if (flag) { // 3
+            int j = i * i; // 4
+            System.out.println("j: " + j);
+        }
+    }
+
+    public static void main(String[] args) {
+        ReorderByConcurrent reorderByConcurrent = new ReorderByConcurrent();
+        new Thread(reorderByConcurrent::write).start();
+        new Thread(reorderByConcurrent::reader).start();
+    }
+}
+
+```
+
+#### volatile
+
+- volatile 变量具有可见性: `对于一个volatile变量的读, 总是能看到(任意线程)对这个volatile变量最后的写入`和原子性: `对任意单个volatile变量的读/写具有原子性`.
+
+- 当写一个 volatile 变量时, JMM 会把`该线程对应的本地内存中的共享变量值刷新到主内存`.
+
+- 当读取一个 volatile 变量时, JMM 会把该`线程对应的本地内存设置为无效. 线程接下来将从内存中读取变量`.
+
+- volatile 内存语义
+  线程 A 写一个 volatile 变量, 实质上是线程 A 向接下来将要读这个 volatile 变量的某个线程发出了(其对共享变量所做修改的)消息.
+
+  线程 B 读一个 volatile 变量, 实质上是线程 B 接收了之前某个线程发出的(其对共享变量所做修改的)消息.
+
+  线程 A 写一个 volatile 变量, 随后线程 B 读这个 volatile 变量, 这个过程实质上是线程 A 通过主内存对线程 B 发送消息
+
+  <img src="https://i.loli.net/2019/07/23/5d36b1265d37759780.png">
+
+- volatile 重排序规则表
+
+  <img src="https://i.loli.net/2019/07/23/5d36b396e0b0598024.png">
+
+  > 例如: 当第一个操作是`普通读/写`时, 如果第二个操作是`volatile写`, 则编译器不能重排序这两个操作.
+
+- 内存屏障
+
+  _为了实现 volatile 的内存语义, 编译器在生成字节码时, `会在指令序列中插入内存屏障来禁止特定类型的处理器重排序`, JMM 采用的是基于保守策略的内存屏障插入策略_
+
+  在每个`volatile写操作`的`前面`插入一个`StoreStore屏障`
+  在每个`volatile写操作`的`后面`插入一个`StoreLoad屏障`
+  在每个`volatile读操作`的`后面`插入一个`LoadLoad屏障`
+  在每个`volatile读操作`的`后面`插入一个`LoadStore屏障`
+
+   <img src="https://i.loli.net/2019/07/23/5d36bd0dc4ab122337.png">
+
+  > 最后的 StoreLoad 屏障不能省略. 因为第二个 volatile 写之后, 方法立即 return. 此时编译器可能无法准确断定后面是否会有 volatile 读或写, 为了安全起见, 编译器通常会在这里插入一个 StoreLoad 屏障.
+
+#### 锁的内存语义
+
+_锁除了`让临界区互斥执行外`, 还可以让`释放锁的线程向获取同一个锁的线程发送消息`_
+
+- 当线程释放锁时, `JMM 会把当前线程对应的本地内存中的共享变量刷新到主内存中`.
+
+- 当程序获取锁时, `JMM 会把该线程对应的本地内存设置为无效`, 从而使被监视器保护的临界代码必须从主内存中读取共享变量.
+
+- 锁释放和获取的内存语义
+
+  线程 A 释放一个锁, 实质上是线程 A 向接下来将要获取这个锁的某个线程发出了(`线程 A 对共享变量所做修改的`)消息
+
+  线程 B 获取一个锁, 实质上是线程 B 接收了之前某个线程发出的(`在释放这个锁之前对共享变量所做修改的`)消息
+
+  线程 A 释放锁, 随后线程 B 获取这个锁, 这个过程实质上是线程 A 通过主内存向线程 B 发送消息.
+
+- concurrent 包构成
+
+  <img src="https://i.loli.net/2019/07/23/5d36c650590a773428.png">
+
+---
+
+### final
+
+- final 域的重排序规则
+
+  - 在构造函数内对一个 final 域的写入, 与随后把这个被构造对象的引用赋值给一个引用变量, 这两个操作之间不能重排序
+
+  - 初次读一个包含 final 域的对象的引用, 与随后初次读这个 final 域, 这两个操作之间不能重排序
+
+  ```java
+  public class FinalExample {
+      int i;  // 普通变量
+      final int j; // final变量
+      static FinalExample obj;
+      public FinalExample () { // 构造函数
+          i = 1; // 写普通域
+          j = 2; // 写final域
+      }
+      // 线程A调用
+      public static void writer() {
+          obj = new FinalExample();
+      }
+      // 线程B调用
+      public static void reader() {
+          FinalExample object = obj; // 读对象引用
+          int a = object.i; // 读普通域
+          int b = object.j; // 读final域
+      }
+  }
+  ```
+
+- 为什么增强 final 语义
+
+  通过为 final 域增加写和读重排序规则, 可以提供初始化安全保证: 只要对象是正确构造的`被构造对象的引用在构造函数中没有逸出`, 那么不需要使用用同步`指lock和volatile的使用`就可以保证任意线程都能看到这个 final 域在构造函数中被初始化之后的值.
+
+---
+
+### happens-before
+
+_在 JMM 中, 如果一个操作性的结果需要对另外一个操作可见, 那么这两个操作(可以是一个线程之内,也可以是不同线程之间)执行必须要存在 happens-before 关系_
+
+#### happens-before 语义
+
+JSR-133 使用 happens-before 的概念来指定两个操作之间的执行顺序. 由于这两个操作可以在一个线程或在不同线程之间, 因此 JMM 可以通过 happens-before 关系提供跨线程的内存可见性保证(`如果线程A写操作a与线程B的读操作b之间存在happens-before, 尽管a操作和b操作在不同线程中执行, 但JMM保证a操作对b操作的可见性`)
+
+as-if-serial 语义保证`单线程内程序的执行结果不被改变`, happens-before 关系保证`正确的多线程程序的执行结果不被改变`
+
+#### happens-before 规则:
+
+- 程序顺序规则: 一个线程中的每个操作, happens-before 于该线程中的任意后续操作
+
+- 锁定规则: 对一个锁的解锁, happens-before 于随后对这个锁的加锁
+
+- volatile 变量规则: 对一个 volatile 域的写, happens-before 于任意后续对这个 volatile 域的读
+
+- 传递规则: 如果操作 A 先行发生于操作 B, 而操作 B 又先行发生于操作 C, 则可以得出操作 A 先行发生于操作 C
+
+- start()规则: 如果线程 A 执行操作 ThreadB.start()（启动线程 B）, 那么 A 线程的 ThreadB.start()操作 happens-before 于线程 B 中的任意操作
+
+- join()规则: 如果线程 A 执行操作 ThreadB.join()并成功返回, 那么线程 B 中的任意操作 happens-before 于线程 A 从 ThreadB.join()操作成功返回, `即线程B中的任意操作都对线程A可见`
+
+> 两个操作之间具有`happens-before`关系, 并不意味着前一个操作必须要在后一个操作前执行(`JMM保证结果的前提下并不排斥重排序`). `happens-before仅仅要求前一个操作(执行结果)对后一个操作可见, 且前一个操作按顺序排在第二个操作之前`
+
+---
 
 ## 知识拓展
 
@@ -165,3 +393,57 @@ _不可被中断的一个或一系列操作_
 - 多进程单线程：多个人每个人在自己的桌子上吃菜.
 - 对于 Windows 来说, 加一张桌子开销很大, 所以 Windows 鼓励大家在一个桌子上吃菜, 所以需要面对线程资源争抢与同步的问题.
 - 对 Linux 而言, 开一张新桌子开销很小, 所以可以尽可能多开新桌子, 但是在不同桌子上说话不方便, 所以需要研究进程间的通信.
+
+### 拓展 3: 交替打印奇偶数
+
+```java
+@Slf4j
+public class PrintNumber {
+    private AtomicBoolean flag = new AtomicBoolean(Boolean.TRUE);
+    private AtomicInteger atomicInteger = new AtomicInteger(0);
+    private static final int COUNT = 100;
+
+    public static void main(String[] args) {
+        PrintNumber printNumber = new PrintNumber();
+
+        /*
+         * 利用的是全局变量和wait&notify的使用
+         */
+        new Thread(() -> {
+            while (printNumber.atomicInteger.get() < COUNT) {
+                synchronized (printNumber) {
+                    if (printNumber.flag.get()) {
+                        log.info("偶数: {}", printNumber.atomicInteger.getAndIncrement());
+                        printNumber.flag.getAndSet(Boolean.FALSE);
+                        printNumber.notify();
+                    } else {
+                        try {
+                            printNumber.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }).start();
+
+        new Thread(() -> {
+            while (printNumber.atomicInteger.get() < COUNT) {
+                synchronized (printNumber) {
+                    if (!printNumber.flag.get()) {
+                        log.info("奇数: {}", printNumber.atomicInteger.getAndIncrement());
+                        printNumber.flag.getAndSet(Boolean.TRUE);
+                        printNumber.notify();
+                    } else {
+                        try {
+                            printNumber.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
+}
+```
