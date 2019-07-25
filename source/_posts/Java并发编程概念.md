@@ -1,5 +1,5 @@
 ---
-title: Java并发编程实战
+title: Java并发编程概念
 top: true
 date: 2019-07-08 17:28:08
 tags: Java Concurrent
@@ -182,14 +182,14 @@ _Java 的并发采用的是共享内存模型_
 
   抽象角度来说, JMM 定义了线程和主内存之间的抽象关系: `线程之间的共享变量存储在主内存, 每个线程都有一个私有的本地内存(抽象概念), 本地内存存储了该线程以读/写共享变量的副本`
 
-  <img title="Java抽象内存模型" style="width: 400px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png"><
+  <img title="Java抽象内存模型" style="width: 500px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png"><
 
   如果线程 A 和线程 B 之间要通信的话:
 
   1. 线程 A 把本地内存中更新过的内存变量刷新到主内存中去
   2. 线程 B 到主内存中去读取线程 A 之前已更新过的共享变量
 
-* 从源代码到指令序列的重排序
+- 从源代码到指令序列的重排序
 
   - 编译器优化的重排序
     `编译器在不改变单线程程序的语义`前提下, 可以重新安排语句对应的执行顺序.
@@ -373,6 +373,97 @@ as-if-serial 语义保证`单线程内程序的执行结果不被改变`, happen
 - join()规则: 如果线程 A 执行操作 ThreadB.join()并成功返回, 那么线程 B 中的任意操作 happens-before 于线程 A 从 ThreadB.join()操作成功返回, `即线程B中的任意操作都对线程A可见`
 
 > 两个操作之间具有`happens-before`关系, 并不意味着前一个操作必须要在后一个操作前执行(`JMM保证结果的前提下并不排斥重排序`). `happens-before仅仅要求前一个操作(执行结果)对后一个操作可见, 且前一个操作按顺序排在第二个操作之前`
+
+---
+
+### 双重锁定检查
+
+#### 代码展示
+
+```java
+public class SafeLazyInitialization {
+
+    private static Instance instance;
+
+    /**
+     * 线程不安全版单例
+     */
+    public static Instance getInstanceUnSafe() {
+        if (null == instance) {
+            instance = new Instance();
+        }
+        return instance;
+    }
+
+    /**
+     * 线程安全单例-低性能版
+     */
+    public synchronized static Instance getInstanceSafe() {
+        if (null == instance) {
+            instance = new Instance();
+        }
+        return instance;
+    }
+
+    /**
+     * 双重锁定检查版单例
+     */
+    public static Instance getInstanceDoubleCheckedLocking() {
+        // 第一次检查
+        if (null == instance) {
+            // 加锁
+            synchronized (SafeLazyInitialization.class) {
+                // 第二次检查
+                if (null == instance) {
+                    /*
+                     * 问题根源: instance引用的对象可能还没有完成初始化
+                     * 正常情况: 1.分配对象的内存空间 2.初始化对象 3.设置instance指向刚分配的内存地址 4.初次访问
+                     * 问题分析: 重排序问题导致 2和3步顺序调换 并不影响4步
+                     * 解决办法: 1.不允许2,3重排序 2.允许2,3步重排序,但是不允许其他线程看到这个重排序
+                     */
+                    instance = new Instance();
+                }
+            }
+        }
+        return instance;
+    }
+}
+
+class Instance {
+    Instance() {
+        System.out.println("对象初始化");
+    }
+}
+
+```
+
+#### 解决方案
+
+- 基于 volatile
+
+```java
+// 修改对象引用为volatile禁止重排序
+private volatile static Instance correctInstance;
+```
+
+- 基于类初始化
+
+```java
+public class InstanceFactory {
+    private static class InstanceHolder {
+        // 线程A获取到锁执行初始化, 线程B没有锁只能等待,同时也看不到线程A的初始化操作
+        public static Instance instance = new Instance();
+    }
+
+    public static Instance getInstance() {
+        return InstanceHolder.instance;
+    }
+}
+```
+
+<img src="https://i.loli.net/2019/07/25/5d397a34584c987718.png">
+
+> JVM 在类的初始化阶段(`即在Class被加载后, 且被线程使用之前`),会执行类的初始化. 在此期间, JVM 会去获取一个锁, `这个锁可以同步多个线程对同一个类的初始化`.
 
 ---
 
