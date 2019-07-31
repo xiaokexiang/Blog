@@ -108,7 +108,7 @@ $ npm install --save --save-exact nodemon@1.11.0
 ```
 
 - 结果<br/>
-  <img src="https://tvax1.sinaimg.cn/large/005BYqpggy1g4fvoe0sdej30bf05ddfs.jpg"/>
+  <img border="1" src="https://tvax1.sinaimg.cn/large/005BYqpggy1g4fvoe0sdej30bf05ddfs.jpg"/>
 
 #### 使用 request&promise 实现 Api
 

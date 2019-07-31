@@ -86,7 +86,7 @@ TIPS: **(内联样式)Inline style > (内部样式)Internal style sheet >(外部
 
 ### 盒子模型
 
-  <img src="https://www.runoob.com/images/box-model.gif"/>
+  <img border="1" src="https://www.runoob.com/images/box-model.gif"/>
 
   + Margin(外边距) - 清除边框外的区域，外边距是透明的。
   + Border(边框) - 围绕在内边距和内容外的边框。
@@ -102,12 +102,12 @@ TIPS: **(内联样式)Inline style > (内部样式)Internal style sheet >(外部
 
 ### 轮廓
 
-  <img src="https://www.runoob.com/images/box_outline.gif">
+  <img border="1" src="https://www.runoob.com/images/box_outline.gif">
   + outline: 边框外的样式
 
 ### 外边距&填充
 
-  <img src="https://www.runoob.com/wp-content/uploads/2013/08/VlwVi.png">
+  <img border="1" src="https://www.runoob.com/wp-content/uploads/2013/08/VlwVi.png">
   + margin: 25px 50px 75px 100px; 上右下左
   + margin: 25px 50px 75px; 上 左右 下
   + margin: 25px 50px; 上下 左右

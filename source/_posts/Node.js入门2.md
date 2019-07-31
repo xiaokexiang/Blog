@@ -137,4 +137,4 @@ $ node --inspect rdf-to-json-bulk.js(debug的js) ../../cache/epub(此js对应的
 
 地址栏输入`chrome://inspect`进入 DevTools 设备页面
 
-<img src="https://github.com/xiaokexiang/Node.js/raw/master/data/DevTools.png"/>
+<img border="1" src="https://github.com/xiaokexiang/Node.js/raw/master/data/DevTools.png"/>

@@ -8,7 +8,7 @@ categories:
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4d952df98j30sg09hq9g.jpg
 ---
 ## HTML DOM(文档对象模型: Document Object Model)
-  <img src="https://www.runoob.com/images/pic_htmltree.gif">
+  <img border="1" src="https://www.runoob.com/images/pic_htmltree.gif">
   
 #### 通过 id 查找 HTML 元素:
   ```js

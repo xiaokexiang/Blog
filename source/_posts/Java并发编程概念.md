@@ -106,9 +106,9 @@ public class DeadLock {
 
   _Thread-0 和 Thread-1 分别都 Blocked 了,都在等待对方释放锁_
 
-    <img src="https://i.loli.net/2019/07/16/5d2d750c5845998231.png">
+    <img border="1" src="https://i.loli.net/2019/07/16/5d2d750c5845998231.png">
 
-    <img src="https://i.loli.net/2019/07/16/5d2d74b809e3e35520.png">
+    <img border="1" src="https://i.loli.net/2019/07/16/5d2d74b809e3e35520.png">
 
 - 如何避免死锁
   - 避免一个线程获取多个锁
@@ -182,7 +182,7 @@ _Java 的并发采用的是共享内存模型_
 
   抽象角度来说, JMM 定义了线程和主内存之间的抽象关系: `线程之间的共享变量存储在主内存, 每个线程都有一个私有的本地内存(抽象概念), 本地内存存储了该线程以读/写共享变量的副本`
 
-  <img title="Java抽象内存模型" style="width: 500px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png"><
+  <img border="1" title="Java抽象内存模型" style="width: 500px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png"><
 
   如果线程 A 和线程 B 之间要通信的话:
 
@@ -201,9 +201,9 @@ _Java 的并发采用的是共享内存模型_
 * 并发编程模型的类型
   现代的处理器使用`写缓冲区`临时保存向内存写入的数据, 但是每个`处理器上的写缓冲区只对所在的处理器可见`, 会导致`处理器对内存的读/写操作不一定与内存实际发生的读/写操作一致`.
 
-  <img src="https://i.loli.net/2019/07/23/5d36db5712f7a91689.png">
+  <img border="1" src="https://i.loli.net/2019/07/23/5d36db5712f7a91689.png">
 
-  <img src="https://i.loli.net/2019/07/23/5d36db6bc175182042.png">
+  <img border="1" src="https://i.loli.net/2019/07/23/5d36db6bc175182042.png">
 
   > 因为处理器对内存和内存对处理器操作的不一致, 加之现代的处理器都会使用写缓冲区, 因此`现代的处理器都会允许对写-读操作进行重排序, 不允许对数据依赖操作做重排序.`
 
@@ -269,11 +269,11 @@ public class ReorderByConcurrent {
 
   线程 A 写一个 volatile 变量, 随后线程 B 读这个 volatile 变量, 这个过程实质上是线程 A 通过主内存对线程 B 发送消息
 
-  <img src="https://i.loli.net/2019/07/23/5d36b1265d37759780.png">
+  <img border="1" src="https://i.loli.net/2019/07/23/5d36b1265d37759780.png">
 
 - volatile 重排序规则表
 
-  <img src="https://i.loli.net/2019/07/23/5d36b396e0b0598024.png">
+  <img border="1" src="https://i.loli.net/2019/07/23/5d36b396e0b0598024.png">
 
   > 例如: 当第一个操作是`普通读/写`时, 如果第二个操作是`volatile写`, 则编译器不能重排序这两个操作.
 
@@ -286,7 +286,7 @@ public class ReorderByConcurrent {
   在每个`volatile读操作`的`后面`插入一个`LoadLoad屏障`
   在每个`volatile读操作`的`后面`插入一个`LoadStore屏障`
 
-   <img src="https://i.loli.net/2019/07/23/5d36bd0dc4ab122337.png">
+   <img border="1" src="https://i.loli.net/2019/07/23/5d36bd0dc4ab122337.png">
 
   > 最后的 StoreLoad 屏障不能省略. 因为第二个 volatile 写之后, 方法立即 return. 此时编译器可能无法准确断定后面是否会有 volatile 读或写, 为了安全起见, 编译器通常会在这里插入一个 StoreLoad 屏障.
 
@@ -308,7 +308,7 @@ _锁除了`让临界区互斥执行外`, 还可以让`释放锁的线程向获�
 
 - concurrent 包构成
 
-  <img src="https://i.loli.net/2019/07/23/5d36c650590a773428.png">
+  <img border="1" src="https://i.loli.net/2019/07/23/5d36c650590a773428.png">
 
 ---
 
@@ -461,7 +461,7 @@ public class InstanceFactory {
 }
 ```
 
-<img src="https://i.loli.net/2019/07/25/5d397a34584c987718.png">
+<img border="1" src="https://i.loli.net/2019/07/25/5d397a34584c987718.png">
 
 > JVM 在类的初始化阶段(`即在Class被加载后, 且被线程使用之前`),会执行类的初始化. 在此期间, JVM 会去获取一个锁, `这个锁可以同步多个线程对同一个类的初始化`.
 
@@ -488,50 +488,27 @@ public class InstanceFactory {
 ### 拓展 3: 交替打印奇偶数
 
 ```java
-@Slf4j
 public class PrintNumber {
-    private AtomicBoolean flag = new AtomicBoolean(Boolean.TRUE);
-    private AtomicInteger atomicInteger = new AtomicInteger(0);
-    private static final int COUNT = 100;
+
+    private volatile static Boolean FLAG = Boolean.TRUE;
+    private static AtomicInteger i = new AtomicInteger(0);
 
     public static void main(String[] args) {
-        PrintNumber printNumber = new PrintNumber();
-
-        /*
-         * 利用的是全局变量和wait&notify的使用
-         */
+        // 打印偶数
         new Thread(() -> {
-            while (printNumber.atomicInteger.get() < COUNT) {
-                synchronized (printNumber) {
-                    if (printNumber.flag.get()) {
-                        log.info("偶数: {}", printNumber.atomicInteger.getAndIncrement());
-                        printNumber.flag.getAndSet(Boolean.FALSE);
-                        printNumber.notify();
-                    } else {
-                        try {
-                            printNumber.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+            while (i.get() <= 100) {
+                if (FLAG) {
+                    System.out.println("偶数: " + i.getAndIncrement());
+                    FLAG = Boolean.FALSE;
                 }
             }
         }).start();
-
+        // 打印奇数
         new Thread(() -> {
-            while (printNumber.atomicInteger.get() < COUNT) {
-                synchronized (printNumber) {
-                    if (!printNumber.flag.get()) {
-                        log.info("奇数: {}", printNumber.atomicInteger.getAndIncrement());
-                        printNumber.flag.getAndSet(Boolean.TRUE);
-                        printNumber.notify();
-                    } else {
-                        try {
-                            printNumber.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+            while (i.get() <= 100) {
+                if (!FLAG) {
+                    System.out.println("奇数: " + i.getAndIncrement());
+                    FLAG = Boolean.TRUE;
                 }
             }
         }).start();

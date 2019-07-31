@@ -11,7 +11,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
 ## 消费者和消费群组
 kafka消费者从属于消费群组，一个群组里面订阅的是**<font color="red" >同一个主题</font>**,每个消费者接受主题一部分分区的消息.
 
-<img src="http://assets.processon.com/chart_image/5be25a1ee4b0ad314e803ffc.png" />
+<img border="1" src="http://assets.processon.com/chart_image/5be25a1ee4b0ad314e803ffc.png" />
 * 允许多个消费者群组消费同一个topic，每个群组都会收到全部的消息，不管有没有其他群组存在。
 * 注意：在同一个消费者组中，不要让消费者的数量大于分区的数量，否则会出现有消费者无分区数据可消费。
 
@@ -71,7 +71,7 @@ kafka消费者从属于消费群组，一个群组里面订阅的是**<font colo
     * <font color="green">每个消费者的消费者协调器在向组协调器请求加入组时，都会把自己支持的分区分配策略报告给组协调器(轮询或者是按跨度分配或者其他)，组协调器选出该消费组下所有消费者都支持的的分区分配策略发送给leader消费者，leader消费者根据这个分区分配策略进行分配。</font>
 
     完毕之后，leader消费者把分配情况列表发送给组协调器，消费者协调器再把这些信息发送给所有消费者。每个消费者只能看到自己的分配信息，只有leader消费者知道群组里所有消费者的分配信息。这个过程会在每次再均衡时重复发生。
-<img  src="http://assets.processon.com/chart_image/5be285fee4b0ee7475725a7b.png"/>
+<img border="1"  src="http://assets.processon.com/chart_image/5be285fee4b0ee7475725a7b.png"/>
 > 参考资料： https://cloud.tencent.com/developer/article/1336570 & kafka权威指南
 
 ## 轮询

@@ -56,7 +56,7 @@ fs.createWriteStream(filename).write('Hello World');
 
 ### TCP三次握手
 
-<img src="https://github.com/xiaokexiang/Node.js/raw/master/socket-io/tcp.jpg" />
+<img border="1" src="https://github.com/xiaokexiang/Node.js/raw/master/socket-io/tcp.jpg" />
 
 * 第一次: client发送一个SYN(J)包给server，然后等待server的ACK回复，进入SYN-SENT状态。
   p.s: SYN为synchronize的缩写，ACK为acknowledgment的缩写。

@@ -29,7 +29,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 - java 对象头包括 Mark Word(存储对象的 hashCode 或锁信息), Class MetaData Address(存储到对象类型数据的指针)和 Array Length(数组长度如若当前对象是数组)
 - Mark Word(分 32bit 和 64bit)在不同状态锁下的变化
 
-  <img src="https://i.loli.net/2019/07/17/5d2edc4133a1d93211.png">
+  <img border="1" src="https://i.loli.net/2019/07/17/5d2edc4133a1d93211.png">
 
 <!-- more -->
 
@@ -45,7 +45,7 @@ _无锁状态 -> 偏向锁状态 -> 轻量锁状态 -> 重量锁状态_
 
 - <font color="green">偏向锁使用了一种等到竞争才会释放的锁的机制</font>,只有当其他线程尝试竞争偏向锁时,持有偏向锁的线程才会释放锁. 偏向锁的撤销,需要等待<font color="green">全局安全点(在这个时间点上没有正在执行的字节码)</font>, 会暂停拥有偏向锁的线程,其次检查持有偏向锁的线程是否还存活. 如果线程仍活着,拥有偏向锁的栈会被执行，遍历偏向对象的锁记录,栈中的锁记录和对象头的 Mark Word 要么`重新偏向于其他线程`,`要么恢复到无锁或者标记对象不适合作为偏向锁,然后唤醒暂停的线程.如果不处于活动状态,就会将对象头设置为无锁状态`.
 
-    <div style="text-align: center;"><img style="width: 600px;" title="偏向锁的获取和撤销流程,來源: Java并发编程艺术" src="https://i.loli.net/2019/07/17/5d2ed459683b482153.png"></div>
+    <div style="text-align: center;"><img border="1" style="width: 600px;" title="偏向锁的获取和撤销流程,來源: Java并发编程艺术" src="https://i.loli.net/2019/07/17/5d2ed459683b482153.png"></div>
 
   > 偏向锁`JDK1.6`之后默认延迟打开, 可以通过`-XX: BiasedLockingStartupDelay=0`来关闭延迟启动, 或使用 `-XX: -UseBiasedLocking=false`来关闭偏向锁,程序默认会进入轻量锁状态.
 
@@ -55,7 +55,7 @@ _无锁状态 -> 偏向锁状态 -> 轻量锁状态 -> 重量锁状态_
 
 - Mark Word 复制到锁记录中成功后, JVM 使用`CAS`尝试将对象头中的 Mark Word 更新为指向`Lock Record`的指针, 并将 Lock Record 中 owner 指针指向 Mark Word
 
-    <div style="text-align: center;"><img style="width: 500px;" title="图片来源: https://www.cnblogs.com/paddix/p/5405678.html" src="https://i.loli.net/2019/07/17/5d2ee7449fe3281316.png"></div>
+    <div style="text-align: center;"><img border="1" style="width: 500px;" title="图片来源: https://www.cnblogs.com/paddix/p/5405678.html" src="https://i.loli.net/2019/07/17/5d2ee7449fe3281316.png"></div>
 
 - 如果更新成功, 那么线程就拥有对象的锁, 并将对象头中的 Mark Word 锁标识位设置成 00, 如果更新操作失败, 当前线程尝试使用<font color="red">自旋</font>来获取锁
 
@@ -73,11 +73,11 @@ _无锁状态 -> 偏向锁状态 -> 轻量锁状态 -> 重量锁状态_
 
 > 来源：<a href="https://blog.csdn.net/choukekai/article/details/63688332">偏向锁，轻量级锁与重量级锁的区别与膨胀 - choukekai 的博客 - CSDN 博客</a>
 
-  <img title="图片来源于网络" src="https://i.loli.net/2019/07/19/5d313105193a935506.jpg">
+  <img border="1" title="图片来源于网络" src="https://i.loli.net/2019/07/19/5d313105193a935506.jpg">
 
 ### 锁三种状态对比
 
-  <img src="https://i.loli.net/2019/07/18/5d2fcf0a8cf5c57466.png">
+  <img border="1" src="https://i.loli.net/2019/07/18/5d2fcf0a8cf5c57466.png">
 
 > 来源: <a href="https://www.zhihu.com/question/53826114">java 偏向锁，轻量级锁与重量级锁为什么会相互膨胀?</a>
 > 来源: <a href="https://www.processon.com/special/template/5c25db87e4b016324f447c95">偏向锁&轻量级锁获取流程</a>
