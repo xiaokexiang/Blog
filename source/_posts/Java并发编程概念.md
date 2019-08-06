@@ -1,6 +1,5 @@
 ---
 title: Java并发编程概念
-top: true
 date: 2019-07-08 17:28:08
 tags: Java Concurrent
 toc: true
@@ -182,7 +181,7 @@ _Java 的并发采用的是共享内存模型_
 
   抽象角度来说, JMM 定义了线程和主内存之间的抽象关系: `线程之间的共享变量存储在主内存, 每个线程都有一个私有的本地内存(抽象概念), 本地内存存储了该线程以读/写共享变量的副本`
 
-  <img border="1" title="Java抽象内存模型" style="width: 500px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png"><
+  <img border="1" title="Java抽象内存模型" style="width: 500px;" src="https://i.loli.net/2019/07/22/5d3522689a1b940442.png">
 
   如果线程 A 和线程 B 之间要通信的话:
 
@@ -484,34 +483,3 @@ public class InstanceFactory {
 - 多进程单线程：多个人每个人在自己的桌子上吃菜.
 - 对于 Windows 来说, 加一张桌子开销很大, 所以 Windows 鼓励大家在一个桌子上吃菜, 所以需要面对线程资源争抢与同步的问题.
 - 对 Linux 而言, 开一张新桌子开销很小, 所以可以尽可能多开新桌子, 但是在不同桌子上说话不方便, 所以需要研究进程间的通信.
-
-### 拓展 3: 交替打印奇偶数
-
-```java
-public class PrintNumber {
-
-    private volatile static Boolean FLAG = Boolean.TRUE;
-    private static AtomicInteger i = new AtomicInteger(0);
-
-    public static void main(String[] args) {
-        // 打印偶数
-        new Thread(() -> {
-            while (i.get() <= 100) {
-                if (FLAG) {
-                    System.out.println("偶数: " + i.getAndIncrement());
-                    FLAG = Boolean.FALSE;
-                }
-            }
-        }).start();
-        // 打印奇数
-        new Thread(() -> {
-            while (i.get() <= 100) {
-                if (!FLAG) {
-                    System.out.println("奇数: " + i.getAndIncrement());
-                    FLAG = Boolean.TRUE;
-                }
-            }
-        }).start();
-    }
-}
-```

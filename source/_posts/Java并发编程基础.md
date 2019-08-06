@@ -166,7 +166,7 @@ Synchronized 可以修饰方法或者以同步块的形式来进行使用, 它�
 
 ### 等待/通知机制
 
-- 两个线程交替打印救赎
+- 两个线程交替打印奇偶数
 
 ```java
 public class WaitAndNotify2 {
@@ -311,4 +311,120 @@ class Test {
 
 ---
 
-## 线程应用实例
+### 线程池简单实现
+
+```java
+public class DefaultThreadPool<Job extends Runnable> {
+
+    // 线程池的最大连接数
+    private static final int MAX_WORKER_NUMBER = 10;
+    // 线程池默认连接数
+    private static final int DEFAULT_WORKER_NUMBER = 10;
+    // 线程池最小连接数
+    private static final int MIN_WORKER_NUMBER = 1;
+    // 任务列表
+    private final LinkedList<Job> jobs = new LinkedList<>();
+    //工作者列表
+    private final List<Worker> workers = Collections.synchronizedList(new ArrayList<>());
+    // 线程编号
+    private AtomicLong threadNum = new AtomicLong();
+    // 工作者线程的数量
+    private int workerNum = DEFAULT_WORKER_NUMBER;
+
+    // DefaultThreadPool constructor
+
+    public DefaultThreadPool() {
+        initWokers(DEFAULT_WORKER_NUMBER);
+    }
+
+    public DefaultThreadPool(int num) {
+        // 保证10 > workers > 1
+        workerNum = num > MAX_WORKER_NUMBER ? MAX_WORKER_NUMBER : num < MIN_WORKER_NUMBER ? MIN_WORKER_NUMBER : num
+        initWokers(workerNum);
+    }
+
+    // 初始化 workers
+    public void initWokers(int workerNum) {
+        for (int i = 0; i < workerNum; i++) {
+            Worker worker = new Worker();
+            workers.add(worker);
+            new Thread(worker, "ThreadPool-Worker-" + threadNum.incrementAndGet()).start();
+        }
+    }
+
+    // 添加worker
+    public void addWorkers(int addWorkersNum) {
+        synchronized (jobs) {
+            // 新增+现有的数量不能超过max
+            if (addWorkersNum + this.workerNum > MAX_WORKER_NUMBER) {
+                addWorkersNum = MAX_WORKER_NUMBER - this.workerNum;
+            }
+            // 创建workers
+            initWokers(addWorkersNum);
+            // 修改worker数量
+            this.workerNum += addWorkersNum;
+        }
+    }
+
+    // 移除worker
+    public void removeWorker(int removeWorkersNum) {
+        synchronized (jobs) {
+            // 不能超过当前workers数量
+            if (removeWorkersNum >= workerNum) {
+                throw new IllegalArgumentException("illegal removeWorkersNum");
+            }
+            // 用于while循环
+            int count = 0;
+            while (count < removeWorkersNum) {
+                // 从index: 0开始删除
+                Worker worker = workers.get(0);
+                if (workers.remove(worker)) {
+                    // 执行停止操作
+                    worker.shutdown();
+                    count++;
+                }
+            }
+            // 修改workers数量,需要注意的是如果没有synchronize则不能用++之类的操作
+            this.workerNum -= count;
+        }
+    }
+
+    // 工作者: 消费任务
+    class Worker implements Runnable {
+        // 变量标识是否运行
+        private volatile boolean running = true;
+
+        @Override
+        public void run() {
+            while (running) {
+                Job job = null;
+                synchronized (jobs) {
+                    while (jobs.isEmpty()) {
+                        try {
+                            jobs.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                    // 移除第一个
+                    job = jobs.removeFirst();
+                }
+                if (job != null) {
+                    job.run();
+                }
+            }
+        }
+
+        // 停止就是改变变量状态
+        public void shutdown() {
+            running = false;
+        }
+    }
+}
+
+```
+
+---
+
+## Java 中的锁
