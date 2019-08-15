@@ -468,4 +468,4 @@ public class Lock {
 
 ### 同步器及同步队列
 
-<a href="../浅析AQS">同步器与同步队列详解</a>
+<a href="../浅析AbstractQueuedSynchronizer">同步器与同步队列详解</a>
