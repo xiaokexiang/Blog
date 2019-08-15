@@ -1,5 +1,5 @@
 ---
-title: 浅析AQS
+title: 浅析AbstractQueuedSynchronizer
 top: true
 date: 2019-08-15 15:04:47
 tags: Java Concurrent
@@ -11,7 +11,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 
 ## 同步器
 
-_AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组件的基础框架，它使用了一个 int 成员变量表示同步状态，通过内置的 `FIFO双向` 队列来完成同步状态的管理. 同步器的主要使用方式是`继承`，子类通过`继承同步器并实现它的抽象方法`来管理同步状态_
+_AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组件的基础框架, 它使用了一个 int 成员变量表示同步状态, 通过内置的 `FIFO双向` 队列来完成同步状态的管理. 同步器的主要使用方式是`继承`, 子类通过`继承同步器并实现它的抽象方法`来管理同步状态_
 
 ### 同步器概念
 
