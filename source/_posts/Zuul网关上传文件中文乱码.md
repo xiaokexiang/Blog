@@ -18,8 +18,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cchi3jp9j30lo096mxc.jpg
 <a href="https://github.com/spring-cloud/spring-cloud-netflix/issues/1385">Google Issue</a><br/>
 <a href="https://cloud.spring.io/spring-cloud-netflix/reference/html/#_router_and_filter_zuul">文档地址</a>
 
-<img src="https://ws1.sinaimg.cn/large/006Xmmmgly1g5ppktg8xfj30xj05i3z7.jpg
-">
+<img src="https://ws1.sinaimg.cn/large/006Xmmmgly1g5ppktg8xfj30xj05i3z7.jpg">
 
 <!--more-->
 

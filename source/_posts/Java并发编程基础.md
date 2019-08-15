@@ -266,9 +266,9 @@ public class ThreadJoin {
         Thread2
         Thread3
          */
-        thread1.start();
-        thread2.start();
         thread3.start();
+        thread2.start();
+        thread1.start();
     }
 }
 ```
@@ -428,3 +428,44 @@ public class DefaultThreadPool<Job extends Runnable> {
 ---
 
 ## Java 中的锁
+
+_相对来说, synchronized 是借助于 JVM 在代码中加入 monitor 来实现同步, Lock 则是通过类来实现同步, lock 可以显式的获取和释放锁_
+
+```java
+public class Lock {
+    private static final ReentrantLock LOCK = new ReentrantLock();
+    private static int i = 0;
+
+    // 多线程循环打印变量i
+    public static void main(String[] args) {
+        for (int j = 0; j <= 2000; j++) {
+            LOCK.lock();
+            try {
+                new Thread(() -> System.out.println("i: " + i++)).start();
+            } finally {
+                LOCK.unlock();
+            }
+        }
+    }
+}
+```
+
+> 需要注意的是:
+>
+> 不能将`lock()`获取锁的方法写在`try-finally`中, 会导致获取锁时发生异常, 导致无故释放锁
+
+### Lock 特性
+
+<img title="Lock 相对 synchronized 独有的特性" src="https://ws2.sinaimg.cn/large/006Xmmmggy1g5pwtz64kij30xk05r0w7.jpg
+  ">
+
+### Lock 的 Api
+
+<img title="Lock的Api" src="https://ws4.sinaimg.cn/large/006Xmmmggy1g5xzsox7ytj30xh0e345v.jpg
+  ">
+
+> Lock 接口的实现基本都是通过聚合一个`队列同步器(AbstractQueuedSynchronizer)的子类`来完成线程访问控制的
+
+### 同步器及同步队列
+
+<a href="../浅析AQS">同步器与同步队列详解</a>
