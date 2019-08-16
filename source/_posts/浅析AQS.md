@@ -1,5 +1,5 @@
 ---
-title: 浅析AbstractQueuedSynchronizer
+title: 浅析AQS
 top: true
 date: 2019-08-15 15:04:47
 tags: Java Concurrent
@@ -20,7 +20,7 @@ _AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组�
 - 同步器拥有`独占(排他)模式: 其他线程对状态的获取会被阻止`和`共享模式: 多个线程获取状态都可以成功`
 - 同步器可重写的方法
 
-  <img src="https://ws2.sinaimg.cn/large/006Xmmmgly1g5y5141qolj30xh050tb6.jpg">
+  <img src="https://ae01.alicdn.com/kf/H8ff733ff598947acbe4cfe6699d3bc81d.jpg">
 
   <img src="https://ws3.sinaimg.cn/large/006Xmmmgly1g5y51pl3fhj30xd08ijul.jpg">
 
@@ -103,51 +103,51 @@ static final class Node {
 - 自定义 Lock
 
 ```java
-public class SyncQueue extends AbstractQueuedSynchronizer {
+public class MyLock implements Lock {
+    /**
+     * 自定义Lock通过自定义同步器SyncQueue实现
+     * 有些方法是调用同步器原有的方法,有些是调用自定义同步器中的方法
+     */
+    public static class SyncQueue extends AbstractQueuedSynchronizer {
 
-    // 判断是否被当前线程占用
-    @Override
-    protected boolean isHeldExclusively() {
-        return getState() == 1;
-    }
+        // 判断是否被当前线程占用
+        @Override
+        protected boolean isHeldExclusively() {
+            return getState() == 1;
+        }
 
-    // 获取lock
-    @Override
-    protected boolean tryAcquire(int arg) {
-        // 如果状态为0,就设成1
-        if (compareAndSetState(0, 1)) {
-            // 设置拥有独占访问权的线程
-            setExclusiveOwnerThread(Thread.currentThread());
+        // 获取lock
+        @Override
+        protected boolean tryAcquire(int arg) {
+            // 如果状态为0,就设成1
+            if (compareAndSetState(0, 1)) {
+                // 设置拥有独占访问权的线程
+                setExclusiveOwnerThread(Thread.currentThread());
+                return true;
+            }
+            return false;
+        }
+
+        // 释放lock,状态设为0
+        @Override
+        protected boolean tryRelease(int arg) {
+            // 如果为0说明已经释放过锁,抛出异常
+            if (getState() == 0) {
+                throw new IllegalMonitorStateException();
+            }
+            // 设置当前独占线程为null
+            setExclusiveOwnerThread(null);
+            // 将锁重置为0
+            setState(0);
             return true;
         }
-        return false;
-    }
 
-    // 释放lock,状态设为0
-    @Override
-    protected boolean tryRelease(int arg) {
-        // 如果为0说明已经释放过锁,抛出异常
-        if (getState() == 0) {
-            throw new IllegalMonitorStateException();
+        // 将锁与当前condition条件队列关联, 为了实现wait,notify等功能
+        Condition newCondition() {
+            return new ConditionObject();
         }
-        // 设置当前独占线程为null
-        setExclusiveOwnerThread(null);
-        // 将锁重置为0
-        setState(0);
-        return true;
     }
 
-    // 将锁与当前condition条件队列关联, 为了实现wait,notify等功能
-    Condition newCondition() {
-        return new ConditionObject();
-    }
-}
-
-/**
- * 自定义Lock通过自定义同步器SyncQueue实现
- * 有些方法是调用同步器原有的方法,有些是调用自定义同步器中的方法
- */
-class MyLock implements Lock {
     private final SyncQueue syncQueue = new SyncQueue();
 
     @Override
@@ -162,7 +162,7 @@ class MyLock implements Lock {
 
     @Override
     public boolean tryLock() {
-        return  syncQueue.tryAcquire(1);
+        return syncQueue.tryAcquire(1);
     }
 
     @Override
@@ -186,22 +186,168 @@ class MyLock implements Lock {
 
 ### 同步器源码浅析
 
-#### 独占式获取锁
+#### 独占式修改状态
 
-- 方法入口
+_acquires(阻塞)在`独占模式`下, 会忽略 interrupts 中断, 通过调用至少一次 tryAcquire(非阻塞)来实现成功返回,否则线程会进入等待队列, 直到调用 tryAcquire 成功_
 
 ```java
 /**
- * Acquires在`独占模式`下, 会忽略interrupts中断, 通过调用至少一次tryAcquire来实现成功返回,
- * 否则线程会进入等待队列, 可能反复阻塞和非阻塞,调用tryAcquire直到成功, 该方法可用于实现lock锁
+ * 1. 独占模式的方法入口
  */
 public final void acquire(int arg) {
-
-    // 这里调用的是子类重写的tryAcquire方法
+    // 这里调用的是子类重写的tryAcquire方法, 尝试更改状态,更改成功返回
 	if (!tryAcquire(arg) &&
 		acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
 		selfInterrupt();
 }
+
+/**
+ * 2. 子类重写的tryAcquire(非源码)
+ */
+@Override
+protected boolean tryAcquire(int arg) {
+    // CAS修改状态: 如果状态为0,就设成1
+    if (compareAndSetState(0, 1)) {
+        // 设置拥有独占访问权的线程
+        setExclusiveOwnerThread(Thread.currentThread());
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 3. 如果成功修改状态,会调用selfInterrupt方法中断当前线程
+ */
+static void selfInterrupt() {
+    Thread.currentThread().interrupt();
+}
+
+/**
+ * 4. 将没有成功修改状态的线程构建成Node添加到sync队列尾部
+ */
+private Node addWaiter(Node mode) {
+    /**
+      * mode值: Node.SHARED Node.EXCLUSIVE
+      *
+      *  currentThread, Node.EXCLUSIVE 构造Node对象
+      */
+    Node node = new Node(Thread.currentThread(), mode);
+    // 创建名为pred的Node对象指向尾节点tail
+    Node pred = tail;
+    // 如果pred不为null,说明当前队列存在tail尾节点
+    if (pred != null) {
+        // 设置tail尾节点为当前node节点的prev节点
+        node.prev = pred;
+        // 通过CAS设置node节点为新的尾节点
+        if (compareAndSetTail(pred, node)) {
+            // 设置成功的话会将原尾节点的next指向新的node节点
+            pred.next = node;
+            return node;
+        }
+    }
+    // 如果没有tail尾节点,执行enq方法
+    enq(node);
+    return node;
+}
+
+/**
+ * 5. 插入节点到队列中,按需初始化
+ */
+private Node enq(final Node node) {
+    // 死循环执行
+    for (;;) {
+        // 第一次: 新建Node对象t指向tail尾节点 第二次: tail不为null, t也不为null
+        Node t = tail;
+        // 如果t为null, 进行初始化
+        if (t == null) { // Must initialize
+            // 创建新的Node并使用CAS将其设置成head头节点
+            if (compareAndSetHead(new Node()))
+                // 如果head头节点设置成功, 将tail尾节点指向头节点
+                tail = head;
+        } else {
+            // 第二次走else, 设置node的prev节点为尾节点
+            node.prev = t;
+            // 尝试通过CAS将node节点设置为尾节点
+            if (compareAndSetTail(t, node)) {
+                // 设置成功后设置原尾节点的next指向node节点
+                t.next = node;
+                // 打断死循环
+                return t;
+            }
+        }
+    }
+}
+
+/**
+ * 6. 传入已加入队里尾部的Node节点
+ */
+final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        // 死循环执行
+        for (;;) {
+            // node.predecessor(): 返回Node的prev节点
+            final Node p = node.predecessor();
+            // 查看p节点是否是head头节点, 如果相等说明node是第二个节点, 然后尝试CAS修改状态
+            if (p == head && tryAcquire(arg)) {
+                // 如果CAS修改成功, 设置node节点为head头节点
+                setHead(node);
+                // 将node节点的pre节点的next置为null(方便GC清理)
+                p.next = null; // help GC
+                // 修改failed状态
+                failed = false;
+                // 返回中断状态
+                return interrupted;
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+
+/**
+ * 7. 如果node节点不符合条件, 挂起线程
+ */
+ private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    int ws = pred.waitStatus;
+    if (ws == Node.SIGNAL)
+        /*
+            * This node has already set status asking a release
+            * to signal it, so it can safely park.
+            */
+        return true;
+    if (ws > 0) {
+        /*
+            * Predecessor was cancelled. Skip over predecessors and
+            * indicate retry.
+            */
+        do {
+            node.prev = pred = pred.prev;
+        } while (pred.waitStatus > 0);
+        pred.next = node;
+    } else {
+        /*
+            * waitStatus must be 0 or PROPAGATE.  Indicate that we
+            * need a signal, but don't park yet.  Caller will need to
+            * retry to make sure it cannot acquire before parking.
+            */
+        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+    }
+    return false;
+}
+
+/**
+ * 8. 挂起当前线程等待唤醒
+ */
+private final boolean parkAndCheckInterrupt() {
+    LockSupport.park(this);
+    return Thread.interrupted();
+}
 ```
 
-#### 共享式获取锁
+#### 共享式修改状态
