@@ -279,7 +279,7 @@ private Node enq(final Node node) {
 }
 
 /**
- * 6. 传入已加入队里尾部的Node节点
+ * 6. 传入已加入队列尾部的Node节点
  */
 final boolean acquireQueued(final Node node, int arg) {
     boolean failed = true;
