@@ -88,125 +88,43 @@ static final class Node {
     }
 ```
 
-- Node 设置尾节点
-
-<img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60h1gfmf4j30nu07ewgr.jpg">
-
-> 同步器拥有`首节点(head)`和`尾节点(tail)`, 没有成功获取同步状态的线程将使用`Node(Thread thread, Node mode)`构造成为 Node 节点, 通过`compareAndSetTail方法(CAS的线程安全方法)`设置成功后, 加入该队列的尾部, 与之前的尾节点建立连接
-
-- Node 设置首节点
-
-<img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60hiitmy6j30mq069q4t.jpg">
-
-> 设置首节点是通过获取同步状态成功的线程来完成的, 由于只有一个线程能够成功获取到同步状态, 因此设置头节点的方法`并不需要使用 CAS 来保证`, 它只需要将`首节点设置成为原首节点的后继节点`并`断开原首节点的 next 引用`即可
-
-- 自定义 Lock
-
-```java
-public class MyLock implements Lock {
-    /**
-     * 自定义Lock通过自定义同步器SyncQueue实现
-     * 有些方法是调用同步器原有的方法,有些是调用自定义同步器中的方法
-     */
-    public static class SyncQueue extends AbstractQueuedSynchronizer {
-
-        // 判断是否被当前线程占用
-        @Override
-        protected boolean isHeldExclusively() {
-            return getState() == 1;
-        }
-
-        // 获取lock
-        @Override
-        protected boolean tryAcquire(int arg) {
-            // 如果状态为0,就设成1
-            if (compareAndSetState(0, 1)) {
-                // 设置拥有独占访问权的线程
-                setExclusiveOwnerThread(Thread.currentThread());
-                return true;
-            }
-            return false;
-        }
-
-        // 释放lock,状态设为0
-        @Override
-        protected boolean tryRelease(int arg) {
-            // 如果为0说明已经释放过锁,抛出异常
-            if (getState() == 0) {
-                throw new IllegalMonitorStateException();
-            }
-            // 设置当前独占线程为null
-            setExclusiveOwnerThread(null);
-            // 将锁重置为0
-            setState(0);
-            return true;
-        }
-
-        // 将锁与当前condition条件队列关联, 为了实现wait,notify等功能
-        Condition newCondition() {
-            return new ConditionObject();
-        }
-    }
-
-    private final SyncQueue syncQueue = new SyncQueue();
-
-    @Override
-    public void lock() {
-        syncQueue.acquire(1);
-    }
-
-    @Override
-    public void lockInterruptibly() throws InterruptedException {
-        syncQueue.acquireInterruptibly(1);
-    }
-
-    @Override
-    public boolean tryLock() {
-        return syncQueue.tryAcquire(1);
-    }
-
-    @Override
-    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-        return syncQueue.tryAcquireNanos(1, unit.toNanos(time));
-    }
-
-    @Override
-    public void unlock() {
-        syncQueue.release(1);
-    }
-
-    @Override
-    public Condition newCondition() {
-        return syncQueue.newCondition();
-    }
-}
-```
+> Node 类中的四种 waitStatus
+> `CANCELED(1)`: 因为等待超时(timeout)或者中断(interrupt), 节点会被置为取消状态. 处于取消状态的节点不会再去竞争锁, 也就是说不会再被阻塞. 节点会一直保持取消状态, 而不会转换为其他状态. 处于 CANCELED 的节点会被移出队列, 被 GC 回收.
+> `SIGNAL(-1)`: 表明当前的后继结点正在或者将要被阻塞(通过使用 LockSupport.pack 方法), 因此当前的节点被释放(release)或者被取消时(cancel)时, 要唤醒它的后继结点(通过 LockSupport.unpark 方法).
+> `CONDITION(-2)`: 表明当前节点在条件队列中, 因为等待某个条件而被阻塞.
+> `PROPAGATE(-3)`: 在共享模式下可以认为资源有多个, 因此当前线程被唤醒之后, 可能还有剩余的资源可以唤醒其他线程. 该状态用来表明后续节点会传播唤醒的操作. 需要注意的是只有头节点才可以设置为该状态.
+> 0：新创建的节点会处于这种状态
+> 资料来源: <a href="http://blog.zhangjikai.com/2017/04/15/%E3%80%90Java-%E5%B9%B6%E5%8F%91%E3%80%91%E8%AF%A6%E8%A7%A3-AbstractQueuedSynchronizer/">Java 并发详解</a>
 
 ---
 
 ### 同步器源码浅析
 
-#### 独占式修改状态
+#### 独占锁获取
 
 _acquires(阻塞)在`独占模式`下, 会忽略 interrupts 中断, 通过调用至少一次 tryAcquire(非阻塞)来实现成功返回,否则线程会进入等待队列, 直到调用 tryAcquire 成功_
 
+- 独占模式的方法入口
+
 ```java
-/**
- * 1. 独占模式的方法入口
- */
 public final void acquire(int arg) {
     // 这里调用的是子类重写的tryAcquire方法, 尝试更改状态,更改成功返回
 	if (!tryAcquire(arg) &&
 		acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
 		selfInterrupt();
 }
+```
 
-/**
- * 2. 子类重写的tryAcquire(非源码)
- */
+> acquire()方法作为独占模式的方法入口, 会尝试使用`tryAcquire(此类方法一般由子类实现)`方法去获取锁(或叫修改状态).
+> 如果无法成功获取, 会将当前 Thread 构建成 Node 节点加入 Sync 队列, 队列中的每个线程都是一个 Node 的节点,构成了`类似 CHL 的双向队列`.
+> 如果 tryAcquire 无法获取锁且 acquireQueued 返回 true(`当前线程被中断过`), 则会执行 selfInterrupt 方法打断当前线程.
+
+- 子类重写的 tryAcquire(非源码)
+
+```java
 @Override
 protected boolean tryAcquire(int arg) {
-    // CAS修改状态: 如果状态为0,就设成1
+    // CAS 修改状态: 如果状态为 0,就设成 1
     if (compareAndSetState(0, 1)) {
         // 设置拥有独占访问权的线程
         setExclusiveOwnerThread(Thread.currentThread());
@@ -214,62 +132,55 @@ protected boolean tryAcquire(int arg) {
     }
     return false;
 }
+```
 
-/**
- * 3. 如果成功修改状态,会调用selfInterrupt方法中断当前线程
- */
-static void selfInterrupt() {
-    Thread.currentThread().interrupt();
-}
+> 在 tryAcquire()方法中获取锁需要使用 CAS 方法保证原子性
 
-/**
- * 4. 将没有成功修改状态的线程构建成Node添加到sync队列尾部
- */
+- 将没有成功修改状态的线程构建成 Node 添加到 sync 队列尾部
+
+```java
 private Node addWaiter(Node mode) {
     /**
-      * mode值: Node.SHARED Node.EXCLUSIVE
-      *
-      *  currentThread, Node.EXCLUSIVE 构造Node对象
-      */
+     * mode 值: Node.SHARED Node.EXCLUSIVE
+     */
     Node node = new Node(Thread.currentThread(), mode);
-    // 创建名为pred的Node对象指向尾节点tail
+    // 新建名为 pred 的 Node 对象引用指向 tail节点
     Node pred = tail;
-    // 如果pred不为null,说明当前队列存在tail尾节点
+    // 如果 pred 不为 null,说明当前队列存在 tail 尾节点
     if (pred != null) {
-        // 设置tail尾节点为当前node节点的prev节点
+        // 设置 tail 尾节点为当前 node 节点的 prev 节点
         node.prev = pred;
-        // 通过CAS设置node节点为新的尾节点
+        // 通过 CAS 设置 node 节点为新的尾节点
         if (compareAndSetTail(pred, node)) {
-            // 设置成功的话会将原尾节点的next指向新的node节点
+            // 设置成功的话会将原尾节点的 next 指向新的 node 节点
             pred.next = node;
             return node;
         }
     }
-    // 如果没有tail尾节点,执行enq方法
+    // 如果没有 tail 尾节点,执行 enq 方法
     enq(node);
+    // 返回新加入队列的node节点
     return node;
 }
 
-/**
- * 5. 插入节点到队列中,按需初始化
- */
+// 循环执行直到插入节点到队列中,按需初始化
 private Node enq(final Node node) {
-    // 死循环执行
+    // 死循环执行, 目的是为了节点正确添加
     for (;;) {
-        // 第一次: 新建Node对象t指向tail尾节点 第二次: tail不为null, t也不为null
+     // 第一次: 新建的 Node 对象 t 引用指向 tail节点  第二次: tail 不为 null, t 也不为 null
         Node t = tail;
-        // 如果t为null, 进行初始化
+        // 如果 t 为 null, 进行初始化
         if (t == null) { // Must initialize
-            // 创建新的Node并使用CAS将其设置成head头节点
+            // 创建新的 Node 并使用 CAS 将其设置成 head 头节点
             if (compareAndSetHead(new Node()))
-                // 如果head头节点设置成功, 将tail尾节点指向头节点
+                // 如果 head 头节点设置成功, tail 节点指向 head 节点, 此时队列中就一个节点
                 tail = head;
         } else {
-            // 第二次走else, 设置node的prev节点为尾节点
+            // 第二次走 else, 设置 node 的 prev 节点为尾节点
             node.prev = t;
-            // 尝试通过CAS将node节点设置为尾节点
+            // 尝试通过 CAS 将 node 节点设置为尾节点
             if (compareAndSetTail(t, node)) {
-                // 设置成功后设置原尾节点的next指向node节点
+                // 设置成功后设置原尾节点的 next 指向 node 节点, 此时队列中有两个节点
                 t.next = node;
                 // 打断死循环
                 return t;
@@ -277,32 +188,40 @@ private Node enq(final Node node) {
         }
     }
 }
+```
 
-/**
- * 6. 传入已加入队列尾部的Node节点
- */
+<img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60h1gfmf4j30nu07ewgr.jpg">
+
+> addWaiter 方法中如果 tail 节点是不为 null, 则会通过 `CAS 方法将 node 节点添加到队列尾部`, 如果 tail 节点为 null ,则调用 enq 方法(`循环执行直到node插入到队列中`)将 node 节点加入队列尾部.
+
+- acquireQueued 方法中将当前线程挂起等待唤醒并返回是否被中断
+
+```java
 final boolean acquireQueued(final Node node, int arg) {
     boolean failed = true;
     try {
-        boolean interrupted = false;
-        // 死循环执行
-        for (;;) {
-            // node.predecessor(): 返回Node的prev节点
-            final Node p = node.predecessor();
-            // 查看p节点是否是head头节点, 如果相等说明node是第二个节点, 然后尝试CAS修改状态
-            if (p == head && tryAcquire(arg)) {
-                // 如果CAS修改成功, 设置node节点为head头节点
-                setHead(node);
-                // 将node节点的pre节点的next置为null(方便GC清理)
-                p.next = null; // help GC
-                // 修改failed状态
-                failed = false;
-                // 返回中断状态
-                return interrupted;
-            }
-            if (shouldParkAfterFailedAcquire(p, node) &&
-                parkAndCheckInterrupt())
-                interrupted = true;
+    boolean interrupted = false;
+    // 死循环执行
+    for (;;) {
+        // node.predecessor(): 返回 Node 的 prev 节点
+        final Node p = node.predecessor();
+        // 查看 p 节点是否是 head 头节点, 如果相等说明 node 是第二个节点, 然后尝试 CAS 修改状态
+        if (p == head && tryAcquire(arg)) {
+            // 如果 CAS 修改成功, 设置 node 节点为 head 头节点, 并删除原 head节点
+            setHead(node);
+            // 将 head节点的 next 置为 null(方便 GC 清理)
+            p.next = null; // help GC
+            // 修改 failed 状态
+            failed = false;
+            // 返回中断状态
+            return interrupted;
+        }
+        // 如果 node 的 prev 节点不是队列的 head 节点 或 node 的 prev节点时 队列的 head 节点但无法获取锁
+        // shouldParkAfterFailedAcquire 检查是否可以挂起当前线程, parkAndCheckInterrupt则是挂起当前线程
+        if (shouldParkAfterFailedAcquire(p, node) &&
+        parkAndCheckInterrupt())
+            // interrupted表明当前线程被中断过
+            interrupted = true;
         }
     } finally {
         if (failed)
@@ -310,44 +229,63 @@ final boolean acquireQueued(final Node node, int arg) {
     }
 }
 
-/**
- * 7. 如果node节点不符合条件, 挂起线程
- */
- private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+```
+
+<img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60hiitmy6j30mq069q4t.jpg">
+
+> 需要注意的是:
+>
+> 1. 如果 node 节点的 prev 节点是 head 节点, 那么会使用`自旋(循环)`的方式不断请求锁, 直到成功获取锁
+> 2. 成功获取锁之后, 因为已经获取锁(修改状态), 设置头节点的方法`并不需要使用 CAS 来保证`, 它只需要将`首节点设置成为原首节点的后继节点`并`断开原首节点的 next 引用`即可
+> 3. 如果当前 node 节点的 prev 节点不是 head 节点或前继节点无法获取锁, 那么会检查是否可以挂起当前线程(`Node.SIGNAL可以挂起`)
+
+- 检查是否可以挂起当前线程
+
+```java
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    // 获取node的prev节点的waitStatus
     int ws = pred.waitStatus;
+    // 如果node前继节点等待状态是Node.SIGNAL, 则可以安全的挂起node节点对应的线程
     if (ws == Node.SIGNAL)
-        /*
-            * This node has already set status asking a release
-            * to signal it, so it can safely park.
-            */
         return true;
     if (ws > 0) {
-        /*
-            * Predecessor was cancelled. Skip over predecessors and
-            * indicate retry.
-            */
+        // 表明当前线程的前继节点处于 CANCELED 的状态
         do {
+            // 获取前继节点的前一个节点
             node.prev = pred = pred.prev;
+            // 向前查找直到第一个waitStatus<=0的pred节点
         } while (pred.waitStatus > 0);
-        pred.next = node;
+            // 将pred的next设置为node节点
+            pred.next = node;
     } else {
-        /*
-            * waitStatus must be 0 or PROPAGATE.  Indicate that we
-            * need a signal, but don't park yet.  Caller will need to
-            * retry to make sure it cannot acquire before parking.
-            */
+        //使用CAS将node的前继节点的waitStatus修改为Node.SIGNAL
         compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
     }
     return false;
 }
+```
 
-/**
- * 8. 挂起当前线程等待唤醒
- */
+> 如果 `node 的前继节点的 waitStatus 是 Node.SIGNA`L, 说明`node 的前继节点在 release 的时候会通知 node 节点`, 所以可以安全的挂起 node 对应的线程.
+> 如果队列中的节点的 waitStatus 为 `CANCELED`, 表明这个节点会失效, 随时会被 GC 掉
+
+- 挂起当前线程等待唤醒并返回中断状态
+
+```java
 private final boolean parkAndCheckInterrupt() {
+    // 挂起线程
     LockSupport.park(this);
+    // 返回当前线程中断状态并重置中断状态
     return Thread.interrupted();
 }
 ```
 
-#### 共享式修改状态
+> 需要注意的是:
+>
+> Thread.interrupted 方法调用的 currentThread().isInterrupted(true)表明: `在返回当前线程的中断状态之后, 会将线程中断状态重置为false;`
+> 因为 node 的 waitStatus 是 Node.SIGNAL, 所以在 node 的前继节点 release 的时候会唤醒 node 节点
+
+#### 独占锁释放
+
+#### 共享锁获取
+
+#### 共享锁释放
