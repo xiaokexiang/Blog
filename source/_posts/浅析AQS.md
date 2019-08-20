@@ -287,7 +287,7 @@ private final boolean parkAndCheckInterrupt() {
 
 - 独占锁获取流程
 
-<img src="https://ae01.alicdn.com/kf/H258e0712847540a6b26587efd099c9c7u.jpg">
+<img src="https://ae01.alicdn.com/kf/Hc8b2fb8225fb4459bb0128bf4d42d88eT.jpg">
 
 #### 独占锁释放
 
