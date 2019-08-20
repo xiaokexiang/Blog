@@ -26,9 +26,7 @@ _AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组�
 
 <!--more-->
 
-- 同步器的模板方法
-
-  <img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g5y53u9h0nj30xl0k5qfl.jpg">
+- 同步器使用了的模板方法设计模式
 
   > 模板方法模式是类的行为模式. 准备一个抽象类, `将部分逻辑以具体方法以及具体构造函数的形式实现, 然后声明一些抽象方法来迫使子类实现剩余的逻辑`. `不同的子类可以以不同的方式`实现这些抽象方法, 从而对剩余的逻辑有不同的实现.
 
@@ -110,6 +108,7 @@ _acquires(阻塞)在`独占模式`下, 会忽略 interrupts 中断, 通过调用
 public final void acquire(int arg) {
     // 这里调用的是子类重写的tryAcquire方法, 尝试更改状态,更改成功返回
 	if (!tryAcquire(arg) &&
+        // acquireQueued()返回是否被中断过,因为不能及时响应中断,只有在获取锁之后返回true, 调用selfInterrupt()中断
 		acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
 		selfInterrupt();
 }
@@ -224,7 +223,9 @@ final boolean acquireQueued(final Node node, int arg) {
             interrupted = true;
         }
     } finally {
+        //如果有异常
         if (failed)
+            //取消请求，将当前节点从队列中移除,这个方法后面解析
             cancelAcquire(node);
     }
 }
@@ -238,6 +239,7 @@ final boolean acquireQueued(final Node node, int arg) {
 > 1. 如果 node 节点的 prev 节点是 head 节点, 那么会使用`自旋(循环)`的方式不断请求锁, 直到成功获取锁
 > 2. 成功获取锁之后, 因为已经获取锁(修改状态), 设置头节点的方法`并不需要使用 CAS 来保证`, 它只需要将`首节点设置成为原首节点的后继节点`并`断开原首节点的 next 引用`即可
 > 3. 如果当前 node 节点的 prev 节点不是 head 节点或前继节点无法获取锁, 那么会检查是否可以挂起当前线程(`Node.SIGNAL可以挂起`)
+> 4. 如果在整个等待过程中被中断过，则返回 true，否则返回 false. `如果线程在等待过程中被中断过, 它是不响应的. 只是获取锁后才再进行自我中断 selfInterrupt(), 将中断补上`.
 
 - 检查是否可以挂起当前线程
 
@@ -272,19 +274,64 @@ private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
 
 ```java
 private final boolean parkAndCheckInterrupt() {
-    // 挂起线程
+    // 挂起线程等待unpark
     LockSupport.park(this);
-    // 返回当前线程中断状态并重置中断状态
+    // 返回当前线程中断状态并重置中断状态为false
     return Thread.interrupted();
 }
 ```
 
 > 需要注意的是:
->
 > Thread.interrupted 方法调用的 currentThread().isInterrupted(true)表明: `在返回当前线程的中断状态之后, 会将线程中断状态重置为false;`
 > 因为 node 的 waitStatus 是 Node.SIGNAL, 所以在 node 的前继节点 release 的时候会唤醒 node 节点
 
+- 独占锁获取流程
+
+<img title="http://blog.zhangjikai.com" src="http://blog.zhangjikai.com/images/aqs/%E8%8E%B7%E5%8F%96%E7%8B%AC%E5%8D%A0%E9%94%81.png">
+
 #### 独占锁释放
+
+```java
+public final boolean release(int arg) {
+    // 调用子类的tryRelease()方法
+    if (tryRelease(arg)) {
+        // 获取head头节点
+        Node h = head;
+        // 如果head不为null且waitStatus不为0
+        if (h != null && h.waitStatus != 0)
+            //
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+
+private void unparkSuccessor(Node node) {
+    // 获取节点的waitStatus
+    int ws = node.waitStatus;
+    if (ws < 0)
+        // 如果ws小于0, 将其设置成初始状态0
+        compareAndSetWaitStatus(node, ws, 0);
+    // 获取node(也是head头节点)的next节点
+    Node s = node.next;
+    // 如果next节点为null 或 next节点的waitStatus为CANCELLED
+    if (s == null || s.waitStatus > 0) {
+        s = null;
+        // 从tail尾节点向前查找直到不为CANCELLED的节点
+        for (Node t = tail; t != null && t != node; t = t.prev)
+            if (t.waitStatus <= 0)
+                s = t;
+    }
+    // 唤醒离head头节点最近的节点
+    if (s != null)
+        LockSupport.unpark(s.thread);
+}
+```
+
+> 需要注意的是:
+>
+> 1. 独占锁的释放是不存在竞争的, 如果 tryRelease()不成功说明当前线程没有锁
+> 2. 在 unparkSuccessor 方法中, 如果发现`头节点的后继结点为 null 或者处于 CANCELLED 状态, 会从 tail 尾部往前找离头节点最近的需要唤醒的节点`, 然后唤醒该节点.
 
 #### 共享锁获取
 
