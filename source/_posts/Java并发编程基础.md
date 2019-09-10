@@ -456,8 +456,7 @@ public class Lock {
 
 ### Lock 特性
 
-<img title="Lock 相对 synchronized 独有的特性" src="https://ws2.sinaimg.cn/large/006Xmmmggy1g5pwtz64kij30xk05r0w7.jpg
-  ">
+<img title="Lock 相对 synchronized 独有的特性" src="https://ae01.alicdn.com/kf/H288ed872d7fe4684a3a8c300ee8d4c508.jpg">
 
 ### Lock 的 Api
 

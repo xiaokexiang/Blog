@@ -11,7 +11,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 
 ## 同步器
 
-_AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组件的基础框架, 它使用了一个 int 成员变量表示同步状态, 通过内置的 `FIFO双向` 队列来完成同步状态的管理. 同步器的主要使用方式是`继承`, 子类通过`继承同步器并实现它的抽象方法`来管理同步状态_
+_AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组件的基础框架, 它使用了一个 int 成员变量表示同步状态, 采用基于 `CLH队列的变种(CLH节点会自旋,而AQS的node会阻塞)`来完成同步状态的管理. 同步器的主要使用方式是`继承`, 子类通过`继承同步器并实现它的抽象方法`来管理同步状态_
 
 ### 同步器概念
 
@@ -22,7 +22,7 @@ _AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组�
 
   <img src="https://ae01.alicdn.com/kf/H8ff733ff598947acbe4cfe6699d3bc81d.jpg">
 
-  <img src="https://ws3.sinaimg.cn/large/006Xmmmgly1g5y51pl3fhj30xd08ijul.jpg">
+  <img src="https://ae01.alicdn.com/kf/H7f3a1f0a1bec48b7af3feace50846beas.jpg">
 
 <!--more-->
 
