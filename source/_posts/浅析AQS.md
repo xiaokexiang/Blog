@@ -11,18 +11,18 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 
 ## 同步器
 
-_AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组件的基础框架, 它使用了一个 int 成员变量表示同步状态, 采用基于 `CLH队列的变种(CLH节点会自旋,而AQS的node会阻塞)`来完成同步状态的管理. 同步器的主要使用方式是`继承`, 子类通过`继承同步器并实现它的抽象方法`来管理同步状态_
+_AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组件的基础框架, 它使用了一个 int 成员变量表示同步状态, 采用基于 `CLH队列的变种(CLH节点会自旋,而AQS的node会阻塞, 只有前继节点是头结点才会自旋获取状态)`来完成同步状态的管理. 同步器的主要使用方式是`继承`, 子类通过`继承同步器并实现它的抽象方法`来管理同步状态_
 
 ### 同步器概念
 
 - 同步器是实现锁(也可以任意同步组件)的关键, 在锁的实现中聚合同步器, 利用同步器实现锁的语义.
 - 锁是`面向使用者`的, 同步器`面向的是锁的实现者`
+- 同步器的队列包括`sync`队列和`condition`条件队列
 - 同步器拥有`独占(排他)模式: 其他线程对状态的获取会被阻止`和`共享模式: 多个线程获取状态都可以成功`
 - 同步器可重写的方法
 
-  <img src="https://ae01.alicdn.com/kf/H8ff733ff598947acbe4cfe6699d3bc81d.jpg">
-
-  <img src="https://ae01.alicdn.com/kf/H7f3a1f0a1bec48b7af3feace50846beas.jpg">
+  <img src="https://ae01.alicdn.com/kf/H97106cdd6b0b45058ed8bc3c089613ceg.png">
+  <img src="https://ae01.alicdn.com/kf/Hdb2eba8955dd43a08e8d4b89d261d8f22.png">
 
 <!--more-->
 
@@ -114,9 +114,9 @@ public final void acquire(int arg) {
 }
 ```
 
-> acquire()方法作为独占模式的方法入口, 会尝试使用`tryAcquire(此类方法一般由子类实现)`方法去获取锁(或叫修改状态).
-> 如果无法成功获取, 会将当前 Thread 构建成 Node 节点加入 Sync 队列, 队列中的每个线程都是一个 Node 的节点,构成了`类似 CHL 的双向队列`.
-> 如果 tryAcquire 无法获取锁且 acquireQueued 返回 true(`当前线程被中断过`), 则会执行 selfInterrupt 方法打断当前线程.
+> 1. acquire()方法作为独占模式的方法入口, 会尝试使用`tryAcquire(此类方法一般由子类实现)`方法去获取锁(或叫修改状态)
+> 2. 如果无法成功获取, 会将当前 Thread 构建成 Node 节点加入 Sync 队列, 队列中的每个线程都是一个 Node 的节点,构成了`类似 CHL 的双向队列`.
+> 3. 如果 tryAcquire 无法获取锁且 acquireQueued 返回 true(`当前线程被中断过`), 则会执行 selfInterrupt 方法打断当前线程.
 
 - 子类重写的 tryAcquire(非源码)
 
@@ -189,8 +189,7 @@ private Node enq(final Node node) {
 }
 ```
 
-<img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60h1gfmf4j30nu07ewgr.jpg">
-
+<!-- <img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60h1gfmf4j30nu07ewgr.jpg"> -->
 > addWaiter 方法中如果 tail 节点是不为 null, 则会通过 `CAS 方法将 node 节点添加到队列尾部`, 如果 tail 节点为 null ,则调用 enq 方法(`循环执行直到node插入到队列中`)将 node 节点加入队列尾部.
 
 - acquireQueued 方法中将当前线程挂起等待唤醒并返回是否被中断
@@ -204,7 +203,8 @@ final boolean acquireQueued(final Node node, int arg) {
     for (;;) {
         // node.predecessor(): 返回 Node 的 prev 节点
         final Node p = node.predecessor();
-        // 查看 p 节点是否是 head 头节点, 如果相等说明 node 是第二个节点, 然后尝试 CAS 修改状态
+        // 只有当node的前继节点时head头节点的时候才尝试去获取同步状态
+        // 因为只有前继节点是head节点, release的时候才会唤醒后继节点
         if (p == head && tryAcquire(arg)) {
             // 如果 CAS 修改成功, 设置 node 节点为 head 头节点, 并删除原 head节点
             setHead(node);
@@ -267,8 +267,8 @@ private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
 }
 ```
 
-> 如果 `node 的前继节点的 waitStatus 是 Node.SIGNA`L, 说明`node 的前继节点在 release 的时候会通知 node 节点`, 所以可以安全的挂起 node 对应的线程.
-> 如果队列中的节点的 waitStatus 为 `CANCELED`, 表明这个节点会失效, 随时会被 GC 掉
+> 1. 如果 `node 的前继节点的 waitStatus 是 Node.SIGNA`L, 说明`node 的前继节点在 release 的时候会通知 node 节点`, 所以可以安全的挂起 node 对应的线程.
+> 2. 如果队列中的节点的 waitStatus 为 `CANCELED`, 表明这个节点会失效, 随时会被 GC 掉
 
 - 挂起当前线程等待唤醒并返回中断状态
 
@@ -282,12 +282,12 @@ private final boolean parkAndCheckInterrupt() {
 ```
 
 > 需要注意的是:
-> Thread.interrupted 方法调用的 currentThread().isInterrupted(true)表明: `在返回当前线程的中断状态之后, 会将线程中断状态重置为false;`
-> 因为 node 的 waitStatus 是 Node.SIGNAL, 所以在 node 的前继节点 release 的时候会唤醒 node 节点
+> 1. Thread.interrupted 方法调用的 currentThread().isInterrupted(true)表明: `在返回当前线程的中断状态之后, 会将线程中断状态重置为false;`
+> 2. 因为 node 的 waitStatus 是 Node.SIGNAL, 所以在 node 的前继节点 release 的时候会唤醒 node 节点
 
 - 独占锁获取流程
 
-<img src="https://ae01.alicdn.com/kf/Hc8b2fb8225fb4459bb0128bf4d42d88eT.jpg">
+<img border="1" src="https://ae01.alicdn.com/kf/H89b76c457c614027917a7ddebebca103g.jpg">
 
 #### 独占锁释放
 
@@ -334,5 +334,54 @@ private void unparkSuccessor(Node node) {
 > 2. 在 unparkSuccessor 方法中, 如果发现`头节点的后继结点为 null 或者处于 CANCELLED 状态, 会从 tail 尾部往前找离头节点最近的需要唤醒的节点`, 然后唤醒该节点.
 
 #### 共享锁获取
+
+- 共享锁方法入口
+
+``` java
+public final void acquireShared(int arg) {
+    // tryAcquireShared(arg)由具体的lock实现
+    if (tryAcquireShared(arg) < 0)
+        doAcquireShared(arg);
+}
+```
+
+- doAcquireShared(arg)
+
+``` java
+private void doAcquireShared(int arg) {
+    // 和acquire独占锁一致, 构建Node.SHARED添加到sync队列尾部并返回新增节点(以下简称SN)
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        for (;;) {
+            // 获取SN前驱节点
+            final Node p = node.predecessor();
+            // 判断前驱节点是不是head头节点
+            if (p == head) {
+                // 调用子类的实现类尝试去获取锁
+                int r = tryAcquireShared(arg);
+                // 大于等于0表示能获取同步状态
+                if (r >= 0) {
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    if (interrupted)
+                        selfInterrupt();
+                    failed = false;
+                    return;
+                }
+            }
+            // 查看当前线程是否需要挂起, 需要就挂起当前线程
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+
+```
 
 #### 共享锁释放
