@@ -333,23 +333,21 @@ private void unparkSuccessor(Node node) {
 > 1. 独占锁的释放是不存在竞争的, 如果 tryRelease()不成功说明当前线程没有锁
 > 2. 在 unparkSuccessor 方法中, 如果发现`头节点的后继结点为 null 或者处于 CANCELLED 状态, 会从 tail 尾部往前找离头节点最近的需要唤醒的节点`, 然后唤醒该节点.
 
+---
+
 #### 共享锁获取
 
 - 共享锁方法入口
 
 ``` java
 public final void acquireShared(int arg) {
-    // tryAcquireShared(arg)由具体的lock实现
+    // tryAcquireShared(arg)由具体的lock实现, 与独占锁不同的是这里通过返回的int值进行判断而不是boolean
     if (tryAcquireShared(arg) < 0)
         doAcquireShared(arg);
 }
-```
 
-- doAcquireShared(arg)
-
-``` java
 private void doAcquireShared(int arg) {
-    // 和acquire独占锁一致, 构建Node.SHARED添加到sync队列尾部并返回新增节点(以下简称SN)
+    // 除了node mode其余和独占锁一致, 构建(currentThread, Node.SHARED)添加到sync队列尾部并返回新增节点(简称SN)
     final Node node = addWaiter(Node.SHARED);
     boolean failed = true;
     try {
@@ -361,7 +359,7 @@ private void doAcquireShared(int arg) {
             if (p == head) {
                 // 调用子类的实现类尝试去获取锁
                 int r = tryAcquireShared(arg);
-                // 大于等于0表示能获取同步状态
+                // 当获取共享锁成功, 需要唤醒后继节点
                 if (r >= 0) {
                     setHeadAndPropagate(node, r);
                     p.next = null; // help GC
@@ -381,7 +379,108 @@ private void doAcquireShared(int arg) {
             cancelAcquire(node);
     }
 }
+```
+> 需要注意的是:
+> 1. 共享锁在构建Node时, mode为Node.SHARE. 而独占锁为Node.EXCLUSIVE
+> 2. 独占锁的tryAcquire方法返回的是boolean值. 共享锁的tryAcquireShared返回的是int值, 其中:
+   `返回值小于0，则代表当前线程获取共享锁失败`
+   `返回值大于0，则代表当前线程获取共享锁成功，并且接下来其他线程尝试获取共享锁的行为很可能成功`
+   `返回值值等于0，则代表当前线程获取共享锁成功，但是接下来其他线程尝试获取共享锁的行为会失败`
+
+- setHeadAndPropagate(node, r)
+
+`独占锁在释放锁时会唤醒后继节点(setHead)，而共享锁在获取和释放锁的时候都会唤醒后继节点(setHeadAndPropagate)，这是最大的不同`
+
+``` java
+private void setHeadAndPropagate(Node node, int propagate) {
+    // 记录原有的head用于后面对比
+    Node h = head;
+    // 将SN设置为队列的新head头节点(独占锁也拥有此方法)
+    setHead(node);
+    // 原头节点h==null 或 h.waitStatus<0, 现头节点head==null 或 head.waitStatus<0
+    // waitStatus包括CANCELLED,SIGNAL和PROPAGATE三种，因为shouldParkAfterFailedAcquire()会修改为SIGNAL,所以这里用<0
+    if (propagate > 0 || h == null || h.waitStatus < 0 ||
+        (h = head) == null || h.waitStatus < 0) {
+        Node s = node.next;
+        // 判断SN后继节点是否为null 或 SN后继节点若在共享模式下等待就返回true
+        if (s == null || s.isShared())
+            // 唤醒后继节点
+            doReleaseShared();
+    }
+}
+
+static final Node SHARED = new Node();
+Node(Thread thread, Node mode) {
+    this.nextWaiter = mode;// 构建共享node的时候, mode值为Node.SHARED
+    this.thread = thread;
+}
+// 节点在共享模式下等待就返回true
+final boolean isShared() {
+    // nextwaiter只是标记作用, 判断当前节点是否处于共享模式下, 并不存在于sync队列中
+    return nextWaiter == SHARED;
+}
 
 ```
+> 其中需要注意的是：
+> 1. propagate(也就是tryAcquireShared的返回值) > 0, 表示接下来其他线程获取同步状态有可能成功
+> 2. 相对独占锁释放锁唤醒后继节点, 共享锁在`获取锁和释放锁时`都要唤醒后继节点
+
+- doReleaseShared
+
+在setHeadAndPropagate()法中, `持有锁的线程`会调用doReleaseShared()方法. 而在releaseShared()中, `曾经持有锁和现在持有锁的线程`会调用doReleaseShared()方法`(因为持有共享锁的线程可以有多个)`, 但`目的都是用于唤醒head头节点的下一个节点`
+
+``` java
+private void doReleaseShared() {
+    for (;;) {
+        Node h = head;
+        // 如果当前head头节点不为null 且 队列不止一个node节点
+        if (h != null && h != tail) {
+            int ws = h.waitStatus;
+            // 如果head头节点waitStatus为Node.SIGNAL 调用CAS unparkSuccessor符合的后继节点
+            if (ws == Node.SIGNAL) {
+                // CAS将waitStatus保证只有一个节点能唤醒成功, 并将waitStatus改为0
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;
+                // 唤醒符合条件的后继节点
+                unparkSuccessor(h);
+            }
+            // 只有新的共享NodeSync加入队列的时候, waitStatus才会为0, 其次tail尾节点入队的时候会通过
+            //shouldParkAfterFailedAcquire()方法将tail尾节点的前继节点ws修改为SIGNAL
+            else if (ws == 0 &&
+                        // 只有当tail尾节点ws不是0的时候(新的tail尾节点入队并修改原tail节点ws为Node.SIGNAL)
+                        //compareAndSetWaitStatus的值才为false, 在下个循环时唤醒这个准备挂起的新tail尾节点
+                        !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;
+        }
+        // h == head 表明当前的head头节点没有易主
+        if (h == head)
+            break;
+    }
+}
+```
+> 需要注意的是:
+> 1. 假设队列中有A->B->C三个节点, 如果A获取了共享锁, 调用了doReleaseShared[A]方法, 并在方法中唤醒了A的后继节点B, B在执行的时候, doReleaseShared[A]方法还没结束, 它执行到`if (h == head)`的时候发现head头节点是B了, 所以继续自旋, 直到唤醒最后一个共享节点. 其原因就是`共享锁是可以多个线程获取, unparkSuccessor唤醒的下个节点极有可能获取共享锁并成为了新的head头节点`
+> 2. doReleaseShared()方法的目的是当前共享锁是可获取的状态时, 唤醒head节点的后继节点, 但是与独占锁不同的是： `在共享锁的唤醒过程中, 头节点发生变化后, 是会回到循环中再立即唤醒新head的后继节点的`
+> 3. if (ws == 0 && !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))只有当`新share node入队时ws才会等于0, 以及更新的share node入队通过shouldParkAfterFailedAcquire()修改了新入队的share node的ws时!compareAndSetWaitStatus(h, 0, Node.PROPAGATE)才会为true`
+> 4. 只有当前的head头节点没有易主的时候, 才会跳出doReleaseShared()方法的自旋
+>资料来源: https://segmentfault.com/a/1190000016447307
+
+- 共享锁获取流程图
+
+<img src="https://ae01.alicdn.com/kf/He1394e7af6fa4d58b2e58ff3182066a7a.jpg">
 
 #### 共享锁释放
+
+``` java
+public final boolean releaseShared(int arg) {
+    if (tryReleaseShared(arg)) {
+        // 调用doReleaseShared()释放共享锁, 唤醒符合的后继等待共享节点
+        doReleaseShared();
+        return true;
+    }
+    return false;
+}
+```
+---
+
+### CAS的简单实现
