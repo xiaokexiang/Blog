@@ -1,7 +1,6 @@
 ---
 title: Java并发编程基础
 date: 2019-07-29 13:19:41
-top: true
 tags: Java Concurrent
 toc: true
 categories:

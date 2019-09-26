@@ -1,6 +1,5 @@
 ---
 title: 浅析AQS
-top: true
 date: 2019-08-15 15:04:47
 tags: Java Concurrent
 toc: true
@@ -190,6 +189,7 @@ private Node enq(final Node node) {
 ```
 
 <!-- <img src="https://ws2.sinaimg.cn/large/006Xmmmggy1g60h1gfmf4j30nu07ewgr.jpg"> -->
+
 > addWaiter 方法中如果 tail 节点是不为 null, 则会通过 `CAS 方法将 node 节点添加到队列尾部`, 如果 tail 节点为 null ,则调用 enq 方法(`循环执行直到node插入到队列中`)将 node 节点加入队列尾部.
 
 - acquireQueued 方法中将当前线程挂起等待唤醒并返回是否被中断
@@ -282,6 +282,7 @@ private final boolean parkAndCheckInterrupt() {
 ```
 
 > 需要注意的是:
+>
 > 1. Thread.interrupted 方法调用的 currentThread().isInterrupted(true)表明: `在返回当前线程的中断状态之后, 会将线程中断状态重置为false;`
 > 2. 因为 node 的 waitStatus 是 Node.SIGNAL, 所以在 node 的前继节点 release 的时候会唤醒 node 节点
 
@@ -339,7 +340,7 @@ private void unparkSuccessor(Node node) {
 
 - 共享锁方法入口
 
-``` java
+```java
 public final void acquireShared(int arg) {
     // tryAcquireShared(arg)由具体的lock实现, 与独占锁不同的是这里通过返回的int值进行判断而不是boolean
     if (tryAcquireShared(arg) < 0)
@@ -380,18 +381,18 @@ private void doAcquireShared(int arg) {
     }
 }
 ```
+
 > 需要注意的是:
-> 1. 共享锁在构建Node时, mode为Node.SHARE. 而独占锁为Node.EXCLUSIVE
-> 2. 独占锁的tryAcquire方法返回的是boolean值. 共享锁的tryAcquireShared返回的是int值, 其中:
-   `返回值小于0，则代表当前线程获取共享锁失败`
-   `返回值大于0，则代表当前线程获取共享锁成功，并且接下来其他线程尝试获取共享锁的行为很可能成功`
-   `返回值值等于0，则代表当前线程获取共享锁成功，但是接下来其他线程尝试获取共享锁的行为会失败`
+>
+> 1. 共享锁在构建 Node 时, mode 为 Node.SHARE. 而独占锁为 Node.EXCLUSIVE
+> 2. 独占锁的 tryAcquire 方法返回的是 boolean 值. 共享锁的 tryAcquireShared 返回的是 int 值, 其中:
+>    `返回值小于0，则代表当前线程获取共享锁失败` > `返回值大于0，则代表当前线程获取共享锁成功，并且接下来其他线程尝试获取共享锁的行为很可能成功` > `返回值值等于0，则代表当前线程获取共享锁成功，但是接下来其他线程尝试获取共享锁的行为会失败`
 
 - setHeadAndPropagate(node, r)
 
 `独占锁在释放锁时会唤醒后继节点(setHead)，而共享锁在获取和释放锁的时候都会唤醒后继节点(setHeadAndPropagate)，这是最大的不同`
 
-``` java
+```java
 private void setHeadAndPropagate(Node node, int propagate) {
     // 记录原有的head用于后面对比
     Node h = head;
@@ -421,15 +422,17 @@ final boolean isShared() {
 }
 
 ```
+
 > 其中需要注意的是：
-> 1. propagate(也就是tryAcquireShared的返回值) > 0, 表示接下来其他线程获取同步状态有可能成功
+>
+> 1. propagate(也就是 tryAcquireShared 的返回值) > 0, 表示接下来其他线程获取同步状态有可能成功
 > 2. 相对独占锁释放锁唤醒后继节点, 共享锁在`获取锁和释放锁时`都要唤醒后继节点
 
 - doReleaseShared
 
-在setHeadAndPropagate()法中, `持有锁的线程`会调用doReleaseShared()方法. 而在releaseShared()中, `曾经持有锁和现在持有锁的线程`会调用doReleaseShared()方法`(因为持有共享锁的线程可以有多个)`, 但`目的都是用于唤醒head头节点的下一个节点`
+在 setHeadAndPropagate()法中, `持有锁的线程`会调用 doReleaseShared()方法. 而在 releaseShared()中, `曾经持有锁和现在持有锁的线程`会调用 doReleaseShared()方法`(因为持有共享锁的线程可以有多个)`, 但`目的都是用于唤醒head头节点的下一个节点`
 
-``` java
+```java
 private void doReleaseShared() {
     for (;;) {
         Node h = head;
@@ -458,12 +461,14 @@ private void doReleaseShared() {
     }
 }
 ```
+
 > 需要注意的是:
-> 1. 假设队列中有A->B->C三个节点, 如果A获取了共享锁, 调用了doReleaseShared[A]方法, 并在方法中唤醒了A的后继节点B, B在执行的时候, doReleaseShared[A]方法还没结束, 它执行到`if (h == head)`的时候发现head头节点是B了, 所以继续自旋, 直到唤醒最后一个共享节点. 其原因就是`共享锁是可以多个线程获取, unparkSuccessor唤醒的下个节点极有可能获取共享锁并成为了新的head头节点`
-> 2. doReleaseShared()方法的目的是当前共享锁是可获取的状态时, 唤醒head节点的后继节点, 但是与独占锁不同的是： `在共享锁的唤醒过程中, 头节点发生变化后, 是会回到循环中再立即唤醒新head的后继节点的`
+>
+> 1. 假设队列中有 A->B->C 三个节点, 如果 A 获取了共享锁, 调用了 doReleaseShared[A]方法, 并在方法中唤醒了 A 的后继节点 B, B 在执行的时候, doReleaseShared[A]方法还没结束, 它执行到`if (h == head)`的时候发现 head 头节点是 B 了, 所以继续自旋, 直到唤醒最后一个共享节点. 其原因就是`共享锁是可以多个线程获取, unparkSuccessor唤醒的下个节点极有可能获取共享锁并成为了新的head头节点`
+> 2. doReleaseShared()方法的目的是当前共享锁是可获取的状态时, 唤醒 head 节点的后继节点, 但是与独占锁不同的是： `在共享锁的唤醒过程中, 头节点发生变化后, 是会回到循环中再立即唤醒新head的后继节点的`
 > 3. if (ws == 0 && !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))只有当`新share node入队时ws才会等于0, 以及更新的share node入队通过shouldParkAfterFailedAcquire()修改了新入队的share node的ws时!compareAndSetWaitStatus(h, 0, Node.PROPAGATE)才会为true`
-> 4. 只有当前的head头节点没有易主的时候, 才会跳出doReleaseShared()方法的自旋
->资料来源: https://segmentfault.com/a/1190000016447307
+> 4. 只有当前的 head 头节点没有易主的时候, 才会跳出 doReleaseShared()方法的自旋
+>    资料来源: https://segmentfault.com/a/1190000016447307
 
 - 共享锁获取流程图
 
@@ -471,7 +476,7 @@ private void doReleaseShared() {
 
 #### 共享锁释放
 
-``` java
+```java
 public final boolean releaseShared(int arg) {
     if (tryReleaseShared(arg)) {
         // 调用doReleaseShared()释放共享锁, 唤醒符合的后继等待共享节点
@@ -481,6 +486,71 @@ public final boolean releaseShared(int arg) {
     return false;
 }
 ```
+
 ---
 
-### CAS的简单实现
+### CAS 的简单实现
+
+#### 获取 Unsafe 的实例
+
+- 使用 Unsafe 提供的方法
+
+```java
+private final Unsafe unsafe = Unsafe.getUnsafe();
+
+```
+
+- 使用反射
+  `Unsafe规定了必须由BootClassLoader加载 否则报错, 所以用反射`
+
+```java
+public class UnsafeInstance {
+    public static Unsafe reflectGetUnsafe() {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            return (Unsafe) field.get(null);
+        } catch (Exception e) {
+            throw new Error(e);
+        }
+    }
+}
+
+```
+
+#### 自定义 CAS 方法
+
+```java
+public class CustomUnsafe {
+    // state 对应的偏移量, 用于CAS的参数
+    private static final long OFFSET;
+    // Unsafe规定了必须由BootClassLoader加载 否则报错, 所以用反射
+    private final Unsafe unsafe = UnsafeInstance.reflectGetUnsafe();
+
+    static {
+        try {
+            // 初始化的时候加载state字段对应的offset偏移量
+            OFFSET = Unsafe.getUnsafe().objectFieldOffset(Node.class.getDeclaredField("state"));
+        } catch (Exception e) {
+            throw new Error(e);
+        }
+    }
+
+    // 修改state
+    public boolean compareAndSwapState(Node node, int state, int update) {
+        return unsafe.compareAndSwapInt(node, OFFSET, state, update);
+    }
+
+    // 修改Node对象
+    public boolean compareAndSwapObject(Node expect, Node update) {
+        return unsafe.compareAndSwapObject(this, OFFSET, expect, update);
+    }
+
+    // 构建Node对象
+    private class Node {
+        // 通过修改state状态来得出是否实现CAS
+        private volatile int state;
+    }
+}
+
+```

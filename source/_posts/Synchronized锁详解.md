@@ -1,12 +1,10 @@
 ---
 title: Synchronized锁详解
-top: true
 date: 2019-07-18 15:22:08
 tags: Java Concurrent
 toc: true
 categories:
   - Java Concurrent
-  - Synchronized
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 ---
 
