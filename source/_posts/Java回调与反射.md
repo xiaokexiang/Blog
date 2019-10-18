@@ -162,6 +162,10 @@ teacher tell student you answer: 3
 老师在喝完茶后, 学生想出答案并报告给老师
 ```
 
+### 代码图解
+
+<img src="https://img.vim-cn.com/cc/8bb93ddc5f7be00a064d84b822d4a6f694329b.png">
+
 ---
 
 ## Java 反射
