@@ -29,7 +29,7 @@ thumbnail: https://img.vim-cn.com/f1/baa8d4b25d955cac1a4066c02761e0dd47097d.png
   <img src="https://img.vim-cn.com/25/5e044a8e8ab78ef25ecd506e71a6106449f0df.png">
 
 > 在这个过程中李老师就是 Class A, 小明就是 Class B, 提问题就是方法 C, 思考并解决问题是方法 D, 将答案告诉老师就是回调函数 E
-> 而区分同步和异步调用的关键在于李老师是否在等待小明的回答, 如果小明思考的时候李老师在等待, 那么此时就是同步回调. 如果小明思考的时候李老师去做其他事情了, 那么此时就是异步回调.
+> 而区分同步和异步调用的关键在于李老师是否在等待小明的回答, 如果小明思考的时候李老师在等待, 那么此时就是同步回调. 如果小明思考的时候李老师去做其他事情了, 等到小明有答案了再告诉李老师, 那么此时就是异步回调.
 
 <!--more-->
 
@@ -164,8 +164,64 @@ teacher tell student you answer: 3
 
 ### 代码图解
 
-<img src="https://img.vim-cn.com/cc/8bb93ddc5f7be00a064d84b822d4a6f694329b.png">
+<img src="https://img.vim-cn.com/31/5d7aa9e69fe100fb61efdc4f1b05cd010ab892.png">
 
 ---
 
 ## Java 反射
+
+### 反射的基本概念
+
+在 oracle 的<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/index.html">官网</a>中关于 `Java Reflection`的概念解释是:
+
+> Reflection enables Java code to discover information about the fields, methods and constructors of loaded classes, and to use reflected fields, methods, and constructors to operate on their underlying counterparts, within security restrictions. The API accommodates applications that need access to either the public members of a target object (based on its runtime class) or the members declared by a given class. It also allows programs to suppress default reflective access control.
+
+简单理解: 反射机制可以在程序`运行时`通过 Class 类动态的、安全的获取类或对象的所有属性和方法的相关信息。`java.lang.Class 类是反射的基础, 它用于封装被装入到JVM中的类(包括类和接口)的信息。类在被JVM装载的时候会创建该类的Class对象(包含该类的信息)并保存在同名的.class文件中。`
+
+### 反射代码示例
+
+#### 获取 Class 对象
+
+`因为反射本质上是通过类的Class对象获取相关信息, 所以我们需要先明白如何创建类的Class对象`
+
+- 我们先定义一个普通的 class 类
+
+```java
+public class ReflectionDemo {
+  private static final String VALUE = "123";
+  private String name;
+  private String sex;
+  int age;
+
+  public String getValue() {
+    return VALUE;
+  }
+}
+```
+
+- 创建 ReflectionDemo 类(简称 R)的 Class 对象
+
+```java
+public void test1() throws ClassNotFoundException {
+
+    // 1.通过Object.getClass()获取, 因为Object是所有类的父类, getClass()需要实例化对象才能调用
+    ReflectionDemo reflection = new ReflectionDemo();
+    Class<? extends ReflectionDemo> aClass = reflection.getClass();
+
+    // 2.直接通过类名.class获取该类的Class对象
+    Class<? extends ReflectionDemo> bClass = ReflectionDemo.class;
+
+    // 3.通过java.lang.Class类的forName方法, 传入类的全路径(包名+类名)
+    Class<?> cClass = Class.forName("leejay.top.chapter21.ReflectionDemo");
+
+    // 结果都是class leejay.top.chapter21.ReflectionDemo
+    System.out.println(aClass);
+    System.out.println(bClass);
+    System.out.println(cClass);
+}
+
+```
+
+> 需要注意的是只有 getClass() 方法需要实例化对象才能够调用
+
+#### 获取类中变量信息
