@@ -291,9 +291,12 @@ Field Name: age
 ```java
 @Data
 public class ReflectionFieldDemo<T> {
-    private String name;
-    public String sex;
-    private T data;
+  public static final boolean FLAG = true;
+  private String name;
+  public String sex;
+  private T data;
+  private Integer count;
+  private int age;
 }
 ```
 
@@ -331,7 +334,105 @@ public void test3() throws NoSuchFieldException {
   System.out.println(Modifier.toString(modifiers));
 }
 
-private static volatile
+private static final
 ```
 
 #### 修改成员变量的值
+
+```java
+public void test4() throws NoSuchFieldException, IllegalAccessException {
+
+  ReflectionFieldDemo<Object> fieldDemo = new ReflectionFieldDemo<>();
+  Class<? extends ReflectionFieldDemo> clazz = fieldDemo.getClass();
+
+  // 获取public字段进行修改
+  Field flag = clazz.getDeclaredField("FLAG");
+  System.out.println("flag before: " + flag.getBoolean(fieldDemo)); // true
+  flag.setBoolean(ReflectionFieldDemo.class, Boolean.FALSE);
+  System.out.println("flag after: " + ReflectionFieldDemo.FLAG); // false
+
+  // 获取private int age 字段进行修改
+  Field age = clazz.getDeclaredField("age");
+  // 需要设置access为true才能修改
+  age.setAccessible(true);
+  System.out.println("age before: " + age.getInt(fieldDemo)); // 0
+  age.setInt(fieldDemo, 1);
+  System.out.println("age after: " + fieldDemo.getAge());// 1
+
+  // 获取private Integer count 字段进行修改
+  Field count = clazz.getDeclaredField("count");
+  // private修饰需要设置Access
+  count.setAccessible(true);
+  System.out.println("count before: " + count.getInt(reflectionDemo));
+  count.setInt(reflectionDemo, 1);
+  System.out.println("count after: " + reflectionDemo.getCount());
+
+}
+```
+
+> 需要注意的是：
+>
+> 1. 如果是 final 修饰的变量是无法修改的, 会抛出 IllegalAccessException
+> 2. 如果字段被 Integer 修饰, 那么 getInt()&setInt()都会报 IllegalAccessException, 分别用 get()&set()替代。其他包装类也是类似
+
+#### 获取类中的方法
+
+- 定义包含成员方法的类
+
+```java
+public class ReflectionMethodDemo {
+
+  public String getValue(String string) throws NumberFormatException, IllegalStateException {
+    return string;
+  }
+}
+```
+
+- 获取类中的方法信息
+
+```java
+@Test
+public void test6() throws NoSuchMethodException {
+  ReflectionMethodDemo methodDemo = new ReflectionMethodDemo();
+  Class<? extends ReflectionMethodDemo> clazz = methodDemo.getClass();
+
+  Method method = clazz.getMethod("getValue", String.class);
+  // 获取方法的修饰符
+  System.out.println("Method modifiers: " + Modifier.toString(method.getModifiers()));// public
+
+  // 获取方法的返回值类型
+  Class<?> returnType = method.getReturnType();
+  System.out.println("Method modifiers: " + returnType.getName()); // java.lang.String
+
+  // 获取方法的参数
+  Parameter[] parameters = method.getParameters();
+  for (Parameter parameter : parameters) {
+      // string java.lang.String
+      System.out.println("Method modifiers: " + parameter.getName() + " type: " + parameter.getType());
+  }
+
+  // 获取方法的异常类型
+  Class<?>[] exceptionTypes = method.getExceptionTypes();
+  for (Class<?> exceptionType : exceptionTypes) {
+      // java.lang.NumberFormatException  java.lang.IllegalStateException
+      System.out.println("Method modifiers: " + exceptionType.getName());
+  }
+}
+
+```
+
+#### Method invoke()
+
+`Method的invoke()方法适用于正常情况下无法调用的方法, 比如private修饰的方法或无法创建的对象中的方法`
+
+```java
+@Test
+public void test7() {
+  ReflectionMethodDemo methodDemo = new ReflectionMethodDemo();
+  Class<? extends ReflectionMethodDemo> clazz = methodDemo.getClass();
+  Method method = clazz.getMethod("getValue", String.class);
+  // 输出返回值
+  Object invoke = method.invoke(methodDemo, "123");
+  System.out.println("invoke result: " + invoke.toString()); // 123
+}
+```
