@@ -184,14 +184,15 @@ teacher tell student you answer: 3
 
 `因为反射本质上是通过类的Class对象获取相关信息, 所以我们需要先明白如何创建类的Class对象`
 
-- 我们先定义一个普通的 class 类
+- 我们先定义一个普通的 pojo 类
 
 ```java
+@Data
 public class ReflectionDemo {
   private static final String VALUE = "123";
   private String name;
   private String sex;
-  int age;
+  public int age;
 
   public String getValue() {
     return VALUE;
@@ -224,4 +225,113 @@ public void test1() throws ClassNotFoundException {
 
 > 需要注意的是只有 getClass() 方法需要实例化对象才能够调用
 
-#### 获取类中变量信息
+#### 获取类的成员变量名
+
+- 添加子类继承 ReflectionDemo
+
+```java
+@Data
+public class ReflectionSonDemo extends ReflectionDemo {
+
+  private static final String SON_VALUE = "456";
+
+  private String sonName;
+  private String sonSex;
+  public int sonAge;
+
+  @Override
+  public String getValue() {
+      return SON_VALUE;
+  }
+}
+```
+
+- getDeclaredFields()
+
+  `获取Class对象自身的全部字段, 不包括父类的字段`
+
+```java
+@Test
+public void test2() {
+  Class<ReflectionDemo> clazz = ReflectionDemo.class
+  Field[] declaredFields = clazz.getDeclaredFields();
+  for (Field declaredField : declaredFields) {
+      System.out.println("DeclaredField Name: " + declaredField.getName());
+  }
+}
+
+DeclaredField Name: VALUE
+DeclaredField Name: name
+DeclaredField Name: sex
+DeclaredField Name: age
+
+```
+
+- getFields()
+
+  `获取Class对象自身包括父类的全部被public修饰的字段`
+
+```java
+public void test3() {
+  Class<ReflectionSonDemo> sonClazz = ReflectionSonDemo.class;
+  Field[] fields = sonClazz.getFields();
+  for (Field field : fields) {
+    System.out.println("Field Name: " + field.getName());
+  }
+}
+
+Field Name: sonAge
+Field Name: age
+```
+
+#### 获取成员变量类型
+
+- 定义 pojo 类
+
+```java
+@Data
+public class ReflectionFieldDemo<T> {
+    private String name;
+    public String sex;
+    private T data;
+}
+```
+
+- getType()&getGenericType()
+
+  `getType()返回字段的类型, getGenericType()如果当前字段没有签名属性类型就调用getType()`
+
+```java
+Class<ReflectionFieldDemo> bClass = ReflectionFieldDemo.class;
+try {
+    Field age = bClass.getDeclaredField("sex");
+    // java.lang.String
+    System.out.println(age.getType().getName());
+    // java.lang.String
+    System.out.println(age.getGenericType().getTypeName());
+
+    Field data = clazz.getDeclaredField("data");
+    // java.lang.Object
+    System.out.println(data.getType().getName());
+    // T
+    System.out.println(data.getGenericType().getTypeName());
+} catch (NoSuchFieldException e) {
+    e.printStackTrace();
+}
+```
+
+#### 获取成员变量修饰符
+
+```java
+@Test
+public void test3() throws NoSuchFieldException {
+  Class<ReflectionFieldDemo> clazz = ReflectionFieldDemo.class;
+  Field flag = clazz.getDeclaredField("FLAG");
+  int modifiers = flag.getModifiers();
+  System.out.println(Modifier.toString(modifiers));
+}
+
+private static volatile
+```
+
+#### 修改成员变量的值
