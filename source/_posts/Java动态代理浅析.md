@@ -27,7 +27,7 @@ public interface Flyable {
     void fly();
 }
 ```
-
+<!--more-->
 其次我们编写一个 Bird 类, 模拟小鸟在空中飞的场景
 
 ```java
@@ -46,7 +46,7 @@ public class Bird implements Flyable {
 }
 ```
 
-那么第一个问题来了, 如果我们想知道小鸟在天空飞了多久(或是 Thread.sleep 的随机数是多少), 一般我们在简单测试耗时的时候一般会在执行代码前后添加计时代码, 如下所示
+那么第一个问题来了, 如果我们想知道小鸟在天空飞了多久(或是 Thread.sleep 的随机数是多少), 一般我们在简单测试耗时的时候, 会在执行代码前后添加计时代码, 如下所示
 
 ```java
 public class Bird2 implements Flyable {
@@ -125,7 +125,7 @@ public class Bird4 extends Bird2 {
 ```
 
 > 这样写没肯定是能实现需求, 但是如果还要继续添加日志, 那我们还需要继续继承, 这样会导致类无限扩展。
-> 除了无限扩张, 如果我想先打印时间, 再打印日志这种顺序交换的需求, 那么我们就需要去修改 Bird2 类, 这样灵活性就非常差。
+> 除了无限扩展, 如果我想先打印时间, 再打印日志这种顺序交换的需求, 那么我们就需要去修改 Bird2 类, 这样灵活性就非常差。
 
 我们采用`聚合`的方式, 稍微修改 Bird3 的代码, 生成 BirdTimeProxy & BirdLogProxy 类
 
@@ -204,7 +204,7 @@ public static void main(String[] args) {
 
 ### 动态代理
 
-<img src="https://user-gold-cdn.xitu.io/2018/3/2/161e5ba2923a81ba?imageslim">
+<img src="http://ww1.sinaimg.cn/large/70ef936dly1g88gqqxh1xj20yg05bq3o.jpg"/>
 按照上图所示, 如果我们先实现动态代理, 我们先需要实现动态的生成代理类, 其次编译成class类, 加载到JVM中并通过反射运行。
 
 - 利用<a href="https://github.com/square/javapoet">JavaPoe</a> 生成代理类源码
@@ -272,4 +272,54 @@ public class BirdProxy {
     }
 }
 
+```
+
+- 编译TimeProxy.java
+
+```java
+public class JavaCompiler {
+
+    public static void compiler(File javaFile) throws IOException {
+        javax.tools.JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+        StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
+        Iterable<? extends JavaFileObject> fileObjects = fileManager.getJavaFileObjects(javaFile);
+        javax.tools.JavaCompiler.CompilationTask task = javaCompiler.getTask(null, fileManager, null, null, null, fileObjects);
+        task.call();
+        fileManager.close();
+    }
+    public static void main(String[] args) throws IOException {
+        JavaCompiler.compiler(new File("C:\\Users\\administer\\Desktop" + "xxx\\yyy\zzz\\TimeProxy.java"));
+    }
+
+}
+```
+将编译好的class文件拖到IDEA中如下图所示
+<img src="http://ww1.sinaimg.cn/large/70ef936dly1g88gbfy1gxj20mt0dtq3m.jpg"/>
+
+- 加载到内存中并创建对象
+
+```java
+public static void loadFile() throws Exception {
+    URL[] urls = new URL[]{
+            new URL("file:/" + "c:/")
+    };
+    URLClassLoader classLoader = new URLClassLoader(urls);
+    Class clazz = classLoader.loadClass("leejay.top.concurrency.chapter22.TimeProxy");
+    Constructor constructor = clazz.getConstructor(Flyable.class);
+    Flyable flyable = (Flyable) constructor.newInstance(new Bird());
+    flyable.fly();
+}
+```
+> 代码无需过多关注, 我们需要关注的是动态代理的流程, 动态的生成源码, 进行编译, 加载到内存中并通过反射执行方法.
+
+- 抽象InvocationHandler接口
+
+回顾上面的TimeProxy代码, 我们可以进一步的优化代码, 首先newProxyInstance生成的代理类的实现接口是写死的, 我们可以将实现接口作为参数传入, 如下图所示
+<img title="图片来源: 10分钟看懂动态代理设计模式" src="http://ww1.sinaimg.cn/large/70ef936dly1g88hr0p2vfj20yg0fewfl.jpg"/>
+其次, 我们的newProxyInstance方法中, 写死了代理类的增强逻辑(打印执行时间), 如果不进行修改, 每次都需要重建一个代理类用来试下具体的逻辑, 显然这样是不对的, 这里我们抽象出`InvocationHandler接口`, 用于处理自定义的增强逻辑
+
+```java
+public interface InvocationHandler {
+    void invoke(Object proxy, Method method, Object[] args);
+}
 ```
