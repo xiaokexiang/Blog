@@ -436,3 +436,15 @@ public void test7() {
   System.out.println("invoke result: " + invoke.toString()); // 123
 }
 ```
+> 其实Method.invoke()最常见的使用是在动态代理的InvocationHandler接口的invoke()中, 如下图代码所示。
+
+```java
+Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), new InvocationHandler() {
+  @Override
+  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    // 这里的invoke是执行target方法
+    method.invoke(target, args);
+    return null;
+  }
+});
+```
