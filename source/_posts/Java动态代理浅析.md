@@ -493,13 +493,22 @@ public class CglibProxy implements MethodInterceptor {
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         long beginTime = System.currentTimeMillis();
-        method.invoke(target, objects);
+        /*
+         * 父类就是目标对象
+         * invokeSuper方法的作用就是获取代理类对应的FastClass
+         * FastClass: 在第一次执行MethodProxy.invoke() or invokeSuper() 方法时生成, 包括代理类和被代理类的FastClass并放在缓存中
+         * 这个类会为代理类或被代理类的方法生成一个index; 这个index作为入参, FastClass就可以直接定位要调用的方法进行* 直接调用, 免去反射调用的烦恼
+         * 所以FastClass也是Cglib比JDK更快的原因
+         */
+        Object obj = methodProxy.invokeSuper(target, objects);
         System.out.println("fly time: " + (System.currentTimeMillis() - beginTime));
-        return null;
+        return obj;
     }
 }
 
 ```
+
+>
 
 至于方法的调用则与动态代理相同
 
@@ -513,5 +522,21 @@ public static void main(String[] args) {
 ```
 
 ### 总结
+
+#### 静态代理 & 动态代理
+
+> - 静态代理只能通过手动完成代理操作, 而动态代理在运行期间动态生成代码, 比静态代理更灵活
+
+#### JDK & Cglib
+
+> - JDK 动态代理实现了`被代理对象的接口`, Cglib 代理`继承了被代理对象`
+> - 两者都在`运行期生成字节码`, JDK 动态代理直接写 Class 字节码, 而 Cglib 动态代理使用`ASM`框架写 Class 字节码, 所以`Cglib生成代理类的效率低于JDK动态代理`
+> - JDK 动态代理调用代理方法是通过`反射调用`, Cglib 代理是通过`FastClass机制`直接调用方法, Cglib 调用方法效率更高
+
+#### 代理模式优缺点
+
+> - 代理模式能将代理对象与真是被调用的目标对象分离, 在一定程度上降低了耦合性
+> - 代理模式能够起到保护对象或增强对象的作用
+> - 代理模式会导致系统中设计类增加, 同时处于客户端和目标对象之间, 容易导致请求处理速度变慢
 
 至此三种代理模式都写完了, 三种模式分别适用于不同的场景: 静态代理更简洁, 动态代理比静态代理更全面, 而 Cglib 代理能做到比动态代理无侵入, 各中的代码原理还需要以后继续细细了解, 最后再次感谢欧阳锋大佬的文章: <a href="https://juejin.im/post/5a99048a6fb9a028d5668e62">10 分钟看懂动态代理设计模式</a>以及 Soarkey 大佬的<a href="https://segmentfault.com/a/1190000011291179">Java 三种代理模式：静态代理、动态代理和 cglib 代理</a>, 完结撒花~~~
