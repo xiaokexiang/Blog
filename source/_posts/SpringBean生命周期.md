@@ -1,18 +1,18 @@
 ---
-layout: spring
 title: Spring Bean 生命周期
 date: 2019-11-17 10:55:08
 toc: true
+tags: Java
 categories:
   - Spring
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cchi3jp9j30lo096mxc.jpg
 ---
 
-## 前言
+### 前言
 
   最近在看Spring5源码解析, 想着之前去面试的时候有面试官问到Spring Bean生命周期的问题, 当时我是答得七七八八, 那么写这篇文章纯粹是自己有了新的体会, 希望通过辅以源码的方法加深自己的理解, 以便自己之后回顾Spring的时候能够快速上手.
 
-## 代码
+### 代码
 
 ``` java
 public class BeanInitAndDestroy {
@@ -92,7 +92,7 @@ class Lemon implements InitializingBean, DisposableBean {
 > 1. 上述代码主要是在AnnotationConfig 配置类中注入Bean: Lemo
 > 2. 通过AnnotationConfigApplicationContext(Spring注解源码入口)加载配置类, 从而实现Spring Bean生命周期的分析
 
-## 分析
+### 流程分析
 
 - 方法入口
   
@@ -288,7 +288,7 @@ protected void invokeInitMethods(String beanName, final Object bean, @Nullable R
 }
 ```
 
-### postConstruct & PreDestroy
+### PostConstruct
 
   - @PostConstruct和@PreDestroy注解要单独拿出来讲一下, 因为他们是自java5推出的影响Servlet生命周期的注解.
 
@@ -338,6 +338,6 @@ protected void invokeInitMethods(String beanName, final Object bean, @Nullable R
   > Bean B do something ...
   > `A 构造 -> autowire B -> B 构造 -> B postConstruct -> A postConstruct -> A.doSomething`
 
-## 总结
+### 总结
 
 <img src="http://ww1.sinaimg.cn/large/70ef936dly1g910rcb405j20kb0t175o.jpg"/>
