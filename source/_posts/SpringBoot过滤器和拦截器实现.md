@@ -4,7 +4,7 @@ date: 2018-09-11 17:12:15
 tags: Java
 toc: true
 categories:
-  - SprintBoot
+  - SpringBoot
 thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cchi3jp9j30lo096mxc.jpg
 ---
 
