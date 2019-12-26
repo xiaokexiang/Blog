@@ -1,9 +1,9 @@
 ---
 title: JVM内存分析工具
 date: 2019-11-19 20:51:55
-tags: JVM
+tags: Java
 categories:
-  - Linux
+  - Jvm
 thumbnail: https://www.logicsupply.com/company/io-hub/wp-content/uploads/2009/01/Read-only-Linux.jpg
 ---
 

@@ -1,5 +1,6 @@
-family-sans = "Microsoft YaHei", "Microsoft JhengHei", "Source Code Pro", sans-serif,  "Roboto", "Open Sans"
-family-mono = "Source Code Pro", monospace, "Microsoft YaHei"
+family-sans = 'Noto Sans SC', sans-serif
+// family-sans = "Microsoft YaHei", "Microsoft JhengHei", "Source Code Pro", sans-serif,  "Roboto", "Open Sans"
+family-mono = "Source Code Pro"
 gap = 64px
 screen-tablet = 769px
 screen-desktop = 1088px
@@ -10,7 +11,7 @@ screen-fullhd = 1472px
  *       Override CSS Framework
  * --------------------------------- */
 html
-    font-size: 15px
+    font-size: 16px
 
 body
     // background-color: #f7f7f7
@@ -18,17 +19,16 @@ body
 
 body, button, input, select, textarea
     font-family: family-sans
-    font-weight: bold
-
+    font-weight: 500
 @media screen and (min-width: screen-widescreen)
     .is-1-column .container
     .is-2-column .container
-        max-width: screen-desktop - 2 * gap
-        width: screen-desktop - 2 * gap
-@media screen and (min-width: screen-fullhd)
-    .is-2-column .container
         max-width: screen-widescreen - 2 * gap
         width: screen-widescreen - 2 * gap
+@media screen and (min-width: screen-fullhd)
+    .is-2-column .container
+        max-width: screen-fullhd - 2 * gap
+        width: screen-fullhd - 2 * gap
     .is-1-column .container
         max-width: screen-desktop - 2 * gap
         width: screen-desktop - 2 * gap
@@ -198,15 +198,16 @@ img.thumbnail
         margin-bottom: 0.5rem !important
     .content
         font-size: 1rem
-        line-height: 1.75rem
+        line-height: 1.8rem
         blockquote
             font-size: 0.95 rem
+            font-family: family-sans
             color: black
             font-weight: 500
             background-color: #eddc7f
-            border-left: 0px solid #eddc7f
-            font-family: "Source Code Pro"
+            border-left: 3px solid #0366D6
             padding: 0.75rem 1rem 0.75rem 1.5rem
+            margin: 0.75rem -0.75rem 0.75rem -0.75rem
         blockquote.pullquote
             float: right
             max-width: 50%
@@ -358,24 +359,26 @@ img.thumbnail
 .content
     h1, h2, h3, h4, h5, h6
         font-weight: bold
+        line-height: 1.25rem
     h1
-        font-size: 1.75em
+        font-size: 2em
     h2
-        font-size: 1.5em
+        font-size: 1.75em
     h3
-        font-size: 1.25em
+        font-size: 1.5em
     h4
-        font-size: 1.125em
+        font-size: 1.25em
     h5
-        font-size: 1em
+        font-size: 1.125em
     code, pre
         font-size: 1em
         font-family: family-mono
     code
         // color: hsl(348, 100%, 61%)
-        color: #0366D6
-        font-weight: bold
-        background: transparent
+        color: green
+        // font-weight: bold
+        font-family: family-sans
+        // background: transparent
         padding: 0
     blockquote
         footer
