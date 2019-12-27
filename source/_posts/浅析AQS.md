@@ -16,14 +16,13 @@ _AbstractQueuedSynchronizer(简称 AQS)是用来构建锁或者其他同步组�
 
 - 同步器是实现锁(也可以任意同步组件)的关键, 在锁的实现中聚合同步器, 利用同步器实现锁的语义.
 - 锁是`面向使用者`的, 同步器`面向的是锁的实现者`
+<!--more-->
 - 同步器的队列包括`sync`队列和`condition`条件队列
 - 同步器拥有`独占(排他)模式: 其他线程对状态的获取会被阻止`和`共享模式: 多个线程获取状态都可以成功`
 - 同步器可重写的方法
 
   <img src="https://ae01.alicdn.com/kf/H97106cdd6b0b45058ed8bc3c089613ceg.png">
   <img src="https://ae01.alicdn.com/kf/Hdb2eba8955dd43a08e8d4b89d261d8f22.png">
-
-<!--more-->
 
 - 同步器使用了的模板方法设计模式
 

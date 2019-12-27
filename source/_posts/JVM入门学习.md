@@ -5,7 +5,7 @@ date: 2019-12-26 14:46:51
 tags: Java
 categories:
   - Jvm
-thumbnail: https://img.vim-cn.com/a3/1bd74b67fa66c7f1473f31da0dcddc21c342b7.png
+thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
 ---
 
 ### Java 数据类型
@@ -24,14 +24,13 @@ thumbnail: https://img.vim-cn.com/a3/1bd74b67fa66c7f1473f31da0dcddc21c342b7.png
 - 整数在 JVM 中的表示
 
   整数在计算机中是用`补码`展示的，在 JVM 中也是如此，规则如下:
-
   `正整数的补码就是原码，负整数的原码就是反码(原码的符号位除外取反)+1`
+ <!--more-->
 
   ```java
   byte a = 10; 原码: 0000 1010 -> 反码: 0000 1010 -> 补码: 0000 1010
   byte b = -10; 原码 1000 1010 -> 反码: 1111 0101 -> 补码: 1111 0110
   ```
-
 - 浮点数在 JVM 中的表示
 
   ```java
@@ -41,11 +40,7 @@ thumbnail: https://img.vim-cn.com/a3/1bd74b67fa66c7f1473f31da0dcddc21c342b7.png
    2。 m -> (1)01000000000000000000000， 1*2^0+0*2^-1+1*^-2+0*2^-3+。。。= 1。25
    3。 -1*2^(129-127)*1。25 = -5
   ```
-
-  <!--more-->
-
-  进制及进制计算不清楚的可以看这篇文章: <a href="https://www。leejay。top/posts/Java%E8%BF%9B%E5%88%B6%E8%AF%A6%E8%A7%A3/">Java 进制详解</a>
-
+  进制及进制计算不清楚的可以看这篇文章: [Java 进制详解](https://www。leejay。top/posts/Java%E8%BF%9B%E5%88%B6%E8%AF%A6%E8%A7%A3/)
 ---
 
 ### JVM 基本结构
@@ -222,6 +217,6 @@ thumbnail: https://img.vim-cn.com/a3/1bd74b67fa66c7f1473f31da0dcddc21c342b7.png
 
 ```java
   1. -client: 使用client模式 -server: 使用server模式 默认JVM会根据计算机系统自动选择运行模式
-  2. 与client相比，server模式的启动速度较慢，因为会尝试手机更多的系统性能信息，使用更复杂的算法堆程序进行优化，但是server稳定后的执行速度远远快于client
+  2. 与client相比，server模式的启动速度较慢，因为会尝试收集更多的系统性能信息，使用更复杂的算法堆程序进行优化，但是server稳定后的执行速度远远快于client
 ```
 ---

@@ -5,7 +5,7 @@ date: 2019-10-23 14:28:05
 tags: Java
 categories:
   - Java
-thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccm5pmvsj30j60a4glz.jpg
+thumbnail: http://image.leejay.top/image/20191227/nRplcX5b4tNK.png
 ---
 
 ### 前言
@@ -15,9 +15,9 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccm5pmvsj30j60a4glz.jpg
 ### RsaUtil
 
 其实 RSA 工具类遵循的是`公钥加密&私钥解密`, 所以我们需要首先生成一对公钥&私钥, 这是加密解密的关键。
-至于 Base64 工具类, 我使用的是`org.apache.commons.codec.binary.Base64`包下的 Base64Utils 用来 encode 和
-decode
+至于 Base64 工具类, 我使用的是`org.apache.commons.codec.binary.Base64`包下的 Base64Utils 用来 encode 和decode
 
+<!--more-->
 - Base64Utils
 
 ```java
@@ -29,8 +29,6 @@ decode
  </dependency>
 
 ```
-
-<!--more-->
 
 - RsaUtil
 

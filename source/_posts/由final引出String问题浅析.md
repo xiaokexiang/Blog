@@ -15,7 +15,7 @@ thumbnail: https://www.hrwlawyers.com/assets/stock-footage-stamp-final.jpg
 #### final 修饰类
 
 `final 修饰类表明这个class类是不能被继承的, 同时这个class类的成员方法全部隐式的被指定为final方法`
-
+<!--more-->
 ```java
 public final class A {
     // echo 方法隐式的被指定为final方法
@@ -31,7 +31,6 @@ public class B extends A {
 
 ```
 
-<!--more-->
 
 #### final 修饰方法
 

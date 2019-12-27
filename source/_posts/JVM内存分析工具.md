@@ -4,7 +4,7 @@ date: 2019-11-19 20:51:55
 tags: Java
 categories:
   - Jvm
-thumbnail: https://www.logicsupply.com/company/io-hub/wp-content/uploads/2009/01/Read-only-Linux.jpg
+thumbnail: http://image.leejay.top/image/20191227/emKPmWFCLrVD.png
 ---
 
 ## 前言
@@ -23,15 +23,13 @@ thumbnail: https://www.logicsupply.com/company/io-hub/wp-content/uploads/2009/01
 # 如果有namespace,记得要指定,默认是default namespace
 $ kubectl get pods -n=${namespace}
 ```
-
+<!--more-->
 - 获取指定 pods 信息
 
 ```bash
 # pod name 通过上一条命令获取
 $ kubectl -n=${namespace} describe pod ${podname}
 ```
-
-<!--more-->
 
 - 查看 pods 日志
 

@@ -5,7 +5,7 @@ date: 2019-12-11 15:07:33
 tags: Java
 categories:
   - Java
-thumbnail: https://img.vim-cn.com/f1/baa8d4b25d955cac1a4066c02761e0dd47097d.png
+thumbnail: http://image.leejay.top/image/20191227/3FojbONgLt4m.jpg
 ---
 
 ## 进制详解
@@ -15,7 +15,7 @@ thumbnail: https://img.vim-cn.com/f1/baa8d4b25d955cac1a4066c02761e0dd47097d.png
 ### 二进制
 
 `由0 和 1组成, 计算机内部都是二进制的形式存储的。 进行加法运算的时候逢二进一, 减法运算的时候借一当二。在java中0b开头表示二进制值`
-
+<!--more-->
 - 二进制加法
 
   <img src="https://img.vim-cn.com/ce/90614dbb397f2d74e43fa6018fda052dda0e30.png" title="图片来源: http://c.biancheng.net/">
@@ -27,8 +27,6 @@ thumbnail: https://img.vim-cn.com/f1/baa8d4b25d955cac1a4066c02761e0dd47097d.png
 ### 十进制
 
 `由0~9的数字组成, 加法计算时逢十进一, 减法计算时借一当十。十进制是人类发展中自然形成的`
-
-<!--more-->
 
 ### 八进制
 
