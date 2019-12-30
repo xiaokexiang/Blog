@@ -36,35 +36,35 @@ thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
   ```java
   float -> 符号位(1bit)sflag + 指数位(8bit)e + 尾数位(23位)m -> sflag*m*2^(e-127)
   举例: 计算浮点数: 1 10000001 01000000000000000000000 的实际值
-   1。 sflag: -1;e: 129;m: e不全为0
-   2。 m -> (1)01000000000000000000000， 1*2^0+0*2^-1+1*^-2+0*2^-3+。。。= 1。25
-   3。 -1*2^(129-127)*1。25 = -5
+   1. sflag: -1;e: 129;m: e不全为0
+   2. m -> (1)01000000000000000000000， 1*2^0+0*2^-1+1*^-2+0*2^-3+...= 1。25
+   3. -1*2^(129-127)*1.25 = -5
   ```
-  进制及进制计算不清楚的可以看这篇文章: [Java 进制详解](https://www。leejay。top/posts/Java%E8%BF%9B%E5%88%B6%E8%AF%A6%E8%A7%A3/)
+  进制及进制计算不清楚的可以看这篇文章: [Java 进制详解](https://www.leejay.top/posts/Java%E8%BF%9B%E5%88%B6%E8%AF%A6%E8%A7%A3/)
 ---
 
 ### JVM 基本结构
 
-#### 1. 类加载子系统
+#### 类加载子系统
 
 `负责从文件或者网络中加载 Class 信息，并将类信息存放在方法区的内存空间中`
 
-#### 2. 直接内存
+#### 直接内存
 
 `NIO 是允许 Java 程序直接使用直接内存的，直接内存是在 Java 堆外的，直接向系统申请的内存区域，其访问内存的速度优于堆，但是申请内存的速度低于堆内存。堆内存+直接内存需要小于系统内存`
 
-#### 3. 垃圾回收系统
+#### 垃圾回收系统
 
 <b>JVM 的重要组成，可以对方法区，堆和直接内存进行回收， Java 所有对象的空间都是隐式的释放</b>
 
-#### 4. 方法区
+#### 方法区
 
 `除了类的加载信息，方法区可能还会存放运行时常量池信息，包括字符串字面量和数字常量(这部分是 Class 文件中常量池的内存映射)`
 
 &emsp;方法区是所有线程共享区域，用于保存系统的类信息(`比如类的字段，方法，常量池等`)。方法区的大小决定了系统可以保存多少个类，太多的类会导致方法区OOM，需要注意的是如果使用了大量的动态代理，会导致运行时生成大量的类也会导致OOM。
 &emsp;在1.6 &1.7 中使用-XX:PermSize=5M -XX:MaxPermSize=5M来配置方法区。而1.8之后永久区被彻底移除，取而代之的是`元数据区`，元数据区可以使用`-XX:MaxMetaspaceSize`指定，这是一块堆外的直接内存，不指定大小的话默认虚拟机会耗尽所有可用系统内存。
 
-#### 5. Java 堆
+#### Java 堆
 
 `虚拟机启动的时候建立，是 Java 程序的主要内存工作区域，几乎全部的对象实例都存放在堆中，堆内存是所有线程共享的区域，整个堆分为新生代和老年代。`
 
@@ -73,7 +73,7 @@ thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
 
 &emsp;在绝大多数情况下，对象首先在 eden 区分配，在一次新生代回收后， 如果对象还活着，则会进入 s0 或 s1，之后每经过一次新生代回收，对象如果存活，它的年龄就会加1，当对象的年龄达到一定程度之后，就会被认为是老年代对象，从而进入老年代对象。
 
-#### 6. Java 栈
+#### Java 栈
 
 `线程私有的，在线程创建的时候被创建，对应着一个栈帧， 其中包含局部变量表、操作数栈和帧数据区等`
 
@@ -128,15 +128,15 @@ thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
 
   &emsp;判断是否分配在栈上的基础就是`进行逃逸分析`(判断对象的作用域是否有可能逃出函数体，如果未逃逸，那么有可能将对象分配在栈上)，栈上分配依赖`逃逸分析`和`标量替换(用于打散对象分配在栈上)`的实现，对于大量零散的小对象，栈上分配提供了很好的对象分配策略，但是因为栈空间较小，大对象不适合使用。
 
-#### 7. 本地方法栈
+#### 本地方法栈
 
 `和 Java 栈类似，是对 native 方法的调用`</b>`
 
-#### 8. PC 寄存器
+#### PC 寄存器
 
 `也可以叫程序计数器，是线程私有的空间，JVM 会为每个线程创建 PC 寄存器。` 在任意时刻，一个线程总是在执行一个方法，这个正在执行的方法叫做当前方法。如果当前方法不是本地方法，PC 寄存器就会指向当前正在被执行的指令。如果当前方法是本地方法，那么 PC 寄存器的值就是 undefined
 
-#### 9. 执行引擎
+#### 执行引擎
 
 `最核心组件之一。负责执行虚拟机的字节码。为了提高效率会使用 JIT(Just In Time: 即时编译技术)编译成字节码后再执行`
 
@@ -190,14 +190,14 @@ thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
       但from或to中的一个永远是空闲的，所以新生代实际大小是-Xmn设置的9/10
   5. -XX:NewRatio=老年代/新生代 默认2/1
   6. -XX:+HeapDumpOnOutOfMemoryError 在内存溢出时导出整个堆的信息
-  7. -XX:HeapDumpPath 指定导出堆的存放路径 -XX:HeapDumpPath=d:/a。dump 导出到D盘下a。dump文件中
+  7. -XX:HeapDumpPath 指定导出堆的存放路径 -XX:HeapDumpPath=d:/a.dump 导出到D盘下a.dump文件中
 ```
 
 #### 方法区参数
 
 ```java
-  1. -XX:PermSize 方法区初始大小(1。6 & 1。7)
-  2. -XX:MaxPermSize 方法区最大大小(1。6 & 1。7)
+  1. -XX:PermSize 方法区初始大小(1.6 & 1.7)
+  2. -XX:MaxPermSize 方法区最大大小(1.6 & 1.7)
   3. -XX:MaxMetaspaceSize 1。8之后永久区变成元数据区，虽然元数据区大小是由直接内存管理，但是该参数也会指定最大大小
 ```
 
@@ -219,4 +219,32 @@ thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
   1. -client: 使用client模式 -server: 使用server模式 默认JVM会根据计算机系统自动选择运行模式
   2. 与client相比，server模式的启动速度较慢，因为会尝试收集更多的系统性能信息，使用更复杂的算法堆程序进行优化，但是server稳定后的执行速度远远快于client
 ```
+
+#### Java命令行启动问题
+除了日常使用的idea启动main()外，我们也会使用命令行启动main()，最近我就遇到命令行启动找不到main class的问题(jdk1.8 + springboot的项目)，以下图目录结构为例:
+
+<img src="http://image.leejay.top/image/20191230/8nXtnj4v8BBg.png"/>
+
+1. 新建Demo.java
+
+``` java
+package top.leejay.jvm.chapter4;
+
+public class Demo {
+    public static void main(String[] args) {
+        System.out.println("Hello...");
+    }
+}
+```
+2. 执行命令
+
+``` java
+// javac 命令 需要指定包的路径 & 需要带.java后缀
+D:\java\ideaProject\jvm\src\main\java> javac top/leejay/jvm/chapter4/Demo.java 
+// java 命令 需要指定包路径`(.作为分隔符)` 不需要任何后缀
+D:\java\ideaProject\jvm\src\main\java> java top.leejay.jvm.chapter4.Demo
+Hello ...
+D:\java\ideaProject\jvm\src\main\java>
+```
+> 一定需要关注你当前执行命令的所在目录，需要保证Demo.java文件在你的OS(window)上的路径是可达的: `D:\java\ideaProject\jvm\src\main\java\top\leejay\jvm\chapter4\Demo.java`。
 ---
