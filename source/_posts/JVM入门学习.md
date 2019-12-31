@@ -185,8 +185,8 @@ thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
   *      ---------------
   *      |空闲内存  |
   *      ----------
-  3. -Xmn: 设置新生代大小(一般设置为整个堆的1/3 ~ 1/4)
-  4. -XX:SurvivorRation=eden/from=eden/to   默认 eden:from:to -> 8:1:1
+  3. -Xmn: 设置新生代大小(一般设置为整个堆的1/3 ~ 1/4) 作用等于 -XX:NewSize & -XX:MaxNewSize
+  4. -XX:SurvivorRatio=eden/from=eden/to   默认 eden:from:to -> 8:1:1
       但from或to中的一个永远是空闲的，所以新生代实际大小是-Xmn设置的9/10
   5. -XX:NewRatio=老年代/新生代 默认2/1
   6. -XX:+HeapDumpOnOutOfMemoryError 在内存溢出时导出整个堆的信息
