@@ -1,5 +1,5 @@
 ---
-title: JVM入门基础
+title: JVM基础
 toc: true
 date: 2019-12-26 14:46:51
 tags: Java

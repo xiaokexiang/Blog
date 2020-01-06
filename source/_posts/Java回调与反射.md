@@ -162,7 +162,7 @@ teacher tell student you answer: 3
 
 ### 代码图解
 
-<img src="https://img.vim-cn.com/31/5d7aa9e69fe100fb61efdc4f1b05cd010ab892.png">
+<img src="http://image.leejay.top/image/20200106/YremB1iEDeX3.jpg">
 
 ---
 
