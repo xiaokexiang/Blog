@@ -10,6 +10,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
 ---
 ## pom.xml中引入Avro相关配置
 
+<!-- more -->
 ``` java
     <dependencies>
         <dependency>
@@ -52,8 +53,6 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
         </plugins>
     </build>
 ```
-
-<!-- more -->
 
 ##  自定义xxxx.avsc后缀结尾的文件
 

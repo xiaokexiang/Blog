@@ -22,7 +22,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccjm6pp3j30gl08tjrz.jpg
 	* 更高效的资源利用
 	* 更轻松的迁移和管理
 	* 使用dockerfile实现更简单的更新管理
-
+<!-- more -->
 * Docker相对虚拟机的优势：
 	* Docker容器的启动和停止可以在秒级实现
 	* Docker容器对资源的需求很少
@@ -33,7 +33,6 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccjm6pp3j30gl08tjrz.jpg
 	* 目标是为了在同一个主机上运行多个系统或应用，提高系统资源利用率。
 	* 传统虚拟化（在硬件方面实现虚拟化）和Docker（操作系统层面实现虚拟化）的结构区别：
 
-<!-- more -->
 ## Docker的核心概念
 
 * Docker镜像（Image）

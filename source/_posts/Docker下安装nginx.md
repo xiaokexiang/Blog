@@ -11,7 +11,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccjm6pp3j30gl08tjrz.jpg
 ---
 
 # docker 环境下安装 nginx
-
+<!-- more -->
 ```bash
 # 拉取最新版的nginx
 $ docker pull nginx
@@ -39,7 +39,6 @@ $ -v /opt/nginx/conf:/etc/nginx/conf \
 $ -v /opt/nginx/conf.d:/etc/nginx/conf.d \
 $ -d nginx
 
-<!-- more -->
 # nginx实现https
 $ docker run -it -p 443:443 --name nginx \
 $ -v /opt/nginx/html:/usr/share/nginx/html \

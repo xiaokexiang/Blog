@@ -5,7 +5,7 @@ tags: ElasticSearch
 toc: true
 categories:
 - ElasticSearch
-thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
+thumbnail: http://image.leejay.top/image/20200107/L6NvPojugsKV.jpg
 ---
 ## 搜索数据
 

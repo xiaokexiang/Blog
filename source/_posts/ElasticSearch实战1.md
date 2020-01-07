@@ -5,7 +5,7 @@ tags: ElasticSearch
 toc: true
 categories:
 - ElasticSearch
-thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
+thumbnail: http://image.leejay.top/image/20200107/L6NvPojugsKV.jpg
 ---
 ## curl命令解析
 
@@ -18,7 +18,7 @@ curl 'localhost:9200/_cat/indices?v' 查看所有索引
  * localhost:9200 es服务地址，默认是有http
  * server/index/type/id,如果查询全部index可以使用server/_all/type/id查询
  * pretty或pretty=true表示使得返回的结果可读性更好，默认是false，展示一行
-
+<!-- more -->
 结果：
 ``` -java
 {
@@ -36,7 +36,6 @@ curl 'localhost:9200/_cat/indices?v' 查看所有索引
 }
 ```
 
-<!-- more -->
 * 返回index，type，id，version以及查询的分片数
 * 如果某个节点宕机导致一个分片不可用，此时es会返回可用分片的查询结果，也会告知错误不可搜索的分片
 

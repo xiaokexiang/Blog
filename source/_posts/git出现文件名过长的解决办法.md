@@ -5,7 +5,7 @@ tags: Git
 toc: true
 categories:
 - Git
-thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9rAl3n9C2r518tbUjJvQ9hjCc-pQsh09Ki7bpABDJmo7z08DJ5w
+thumbnail: http://image.leejay.top/image/20200107/uI2RG7Cz3Bj3.jpg
 ---
 
 ## 在上传文件的文件夹下打开:

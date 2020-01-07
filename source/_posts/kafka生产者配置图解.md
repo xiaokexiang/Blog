@@ -9,8 +9,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
 
 ---
 ## kafka生产者配置图解
-<iframe id="embed_dom" name="embed_dom" frameborder="1" style="display:block;width:700px; height:551px;" src="https://www.processon.com/embed/5bdbfc15e4b0fc2dc1a75278">
-</iframe>
+<img src="https://www.processon.com/embed/5bdbfc15e4b0fc2dc1a75278">
 
 ## 生产者配置详解
 

@@ -1,5 +1,5 @@
 ---
-title: 安装kafka及配置详解
+title: kafka安装及配置详解
 date: 2018-05-26 11:01:48
 tags: Kafka
 toc: true
@@ -19,6 +19,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
   ``` bash 
   telnet localhost 2181 输入srvr出现zooke相关信息 
   ```
+  <!-- more -->
   * 启动kafka
   ``` bash
   ./bin/kafka-server-start.sh -daemon config/server.properties 
@@ -38,7 +39,6 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccmvpfgqj30gs08ggm2.jpg
   ./bin/kafka-console-consumer.sh —zookeeper localhost:2181 —topic lucky —from-beginning
   ```
 
-<!-- more -->
 ## broker配置详解
 * broker.id：
 每一个broker在集群中的唯一表示，要求是正数。当该服务器的IP地址发生改变时，broker.id没有变化，则不会影响consumers的消息情况

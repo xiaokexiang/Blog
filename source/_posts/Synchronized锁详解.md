@@ -20,7 +20,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 - 在代码块开始处添加 monitorenter,代码块结束和异常处添加 monitorexit
 - 任何对象都有一个 monitor 与之关联,当一个 monitor 被持有之后,对象就会变成锁定状态
 - 线程执行到 monitorenter 处,会尝试去获取该对象对应 monitor 的所有权(即对象的锁)
-
+<!-- more -->
 ## java 对象头
 
 - synchronized 所用的锁时存储在 java 对象头中
@@ -28,8 +28,6 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 - Mark Word(分 32bit 和 64bit)在不同状态锁下的变化
 
   <img border="1" src="https://i.loli.net/2019/07/17/5d2edc4133a1d93211.png">
-
-<!-- more -->
 
 ## 锁的升级与对比
 

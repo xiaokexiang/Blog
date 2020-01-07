@@ -14,7 +14,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cchi3jp9j30lo096mxc.jpg
 - Inteceptor 是属于 Spring 的框架的内容,`可以获取 IOC 容器中的 各个 bean`, 所以又称为 `Spring 的 Inteceptor`。
 - 两者都可以实现拦截登陆、权限校验等操作。Filter 只能对 reques 和 response 进行操作, 而 Inteceptor 还可以对 handler、modelAndView、Exception 进行操作。
 - Filter 基于 `Java 函数回调实现, 依赖于 Servlet 容器, 而 Inteceptor 基于 Java 反射实现, 不依赖于 Servlet 容器`。
-
+<!-- more -->
 ### Filter 代码实现
 
 ```java
@@ -45,8 +45,6 @@ public class LoginFilter implements Filter {
     }
 }
 ```
-
-<!-- more -->
 
 ### Inteceptor 代码实现
 

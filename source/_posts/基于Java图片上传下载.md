@@ -14,7 +14,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccm5pmvsj30j60a4glz.jpg
 ``` java
 File srcFile = ResourceUtils.getFile("classpath:static");
 ```
-
+<!-- more -->
 * 基于InputStream&OutputStream的文件下载
 
 ``` java
@@ -40,7 +40,6 @@ for (String fileName : Objects.requireNonNull(srcFile.list())) {
 }
 
 ```
-<!-- more -->
 ### 图片上传-FTP方式
 
 ``` java

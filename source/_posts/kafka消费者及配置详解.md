@@ -14,7 +14,7 @@ kafka消费者从属于消费群组，一个群组里面订阅的是**<font colo
 <img border="1" src="http://assets.processon.com/chart_image/5be25a1ee4b0ad314e803ffc.png" />
 * 允许多个消费者群组消费同一个topic，每个群组都会收到全部的消息，不管有没有其他群组存在。
 * 注意：在同一个消费者组中，不要让消费者的数量大于分区的数量，否则会出现有消费者无分区数据可消费。
-
+<!-- more -->
 ## 协调器和分区再均衡
 
 ### 再均衡
@@ -22,8 +22,6 @@ kafka消费者从属于消费群组，一个群组里面订阅的是**<font colo
 
 ### 协调器
 在 kafka-0.10 版本，Kafka 在服务端引入了组协调器(GroupCoordinator)，每个 Kafka Server 启动时都会创建一个 GroupCoordinator实例，**用于管理部分消费者组和该消费者组下的每个消费者的消费偏移量**。同时在客户端引入了消费者协调器(ConsumerCoordinator)，<font color="red">实例化一个消费者就会实例化一个 ConsumerCoordinator 对象</font>，ConsumerCoordinator 负责同一个消费者组下各消费者与服务端的 GroupCoordinator 进行通信。
-
-<!-- more -->
 
 ## 协调器详解
 

@@ -19,7 +19,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cchi3jp9j30lo096mxc.jpg
 * Eureka Client 是一个基于java的客户端，用于简化和Eureka Server的交互
 
 * Eureka Client通过默认30s的频率发送心跳给Eureka Server实现注册，如果在一段时间内（默认90s）没有收到心跳，Eureka Server会注销该Client实例。
-
+<!-- more -->
 * 默认情况下，Eureka Server也是Eureka Client，多个Eureka Server 实例互相之间通过复制的方法实现服务注册表中数据的同步。
 
 * Eureka Client 会缓存服务注册表中的信息，即使server宕机了，也能通过缓存的信息找到服务的提供者并完成调用。
@@ -46,7 +46,6 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4cchi3jp9j30lo096mxc.jpg
 	<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
 ```
-<!-- more -->
 * Eureka Server 配置及注解
 
 	@EnableEurekaServer

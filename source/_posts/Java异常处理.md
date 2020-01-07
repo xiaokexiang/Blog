@@ -11,7 +11,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4ccm5pmvsj30j60a4glz.jpg
 ## 异常
 ### 异常结构图
 ![20180414224710614.png](http://img.blog.csdn.net/20160331115514210)
-
+<!-- more -->
 ### 自定义异常
 * 自定义总异常
 ``` Java
@@ -36,7 +36,6 @@ public class DemoException extends CommonException {
     }
 }
 ```
-<!-- more -->
 * 自定义响应体
 ``` Java
 @Data

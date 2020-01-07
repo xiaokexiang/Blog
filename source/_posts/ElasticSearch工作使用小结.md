@@ -5,7 +5,7 @@ tags: ElasticSearch
 toc: true
 categories:
 - ElasticSearch
-thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
+thumbnail: http://image.leejay.top/image/20200107/L6NvPojugsKV.jpg
 ---
 
 ## Es的三种客户端
@@ -15,7 +15,7 @@ thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
  b.JestClient,基于http的连接,使用es的9200端口
  c.RestClient,基于http的连接,es官方推荐,使用9200端口
 ```
-
+<!-- more -->
 ## scroll查询
 
 * 第一次查询:加入_doc进行排序
@@ -38,7 +38,6 @@ _search/scroll?scroll=5m "{\"scroll_id\": " + "\"" + scroll_id + "\"" + "}"
 ```
 📌: 不需要指定index,type
 
-<!-- more -->
 ## 基于时间聚合的代码:
 
 ``` java

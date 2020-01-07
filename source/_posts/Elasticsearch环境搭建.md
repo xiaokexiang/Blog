@@ -5,21 +5,22 @@ tags: ElasticSearch
 toc: true
 categories:
   - ElasticSearch
-thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
+thumbnail: http://image.leejay.top/image/20200107/L6NvPojugsKV.jpg
 ---
 
 ## elasticsearch 环境搭建问题
 
-- 需要先安装 jdk8
-  - wget 命令下载 jdk8
+### 需要先安装 jdk8
+#### wget 命令下载 jdk8
   ```java
   wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u141-b15/336fa29ff2bb4ef291e347e091f7f4a7/jdk-8u141-linux-x64.tar.gz"
   ```
-  - 解压 tar.gz
+#### 解压 tar.gz
   ```java
   tar -zxvf jdk-8u141-linux-x64.tar.gz
   ```
-  - 修改配置
+  <!-- more -->
+#### 修改配置
   ```java
   vi /etc/profile
   输入如下内容：
@@ -31,7 +32,7 @@ thumbnail: https://miro.medium.com/max/892/1*AYP0Mg_MwJMm3Kbx8Xa8lQ.png
   source /etc/profile
   java -version检测
   ```
-- 安装 elasticsearch
+#### 安装 elasticsearch
 
 ```bash
 # 下载tar包
@@ -52,7 +53,7 @@ $ su elastic
 $ ./bin/elasticsearch
 
 ```
-<!-- more -->
+
 - es5.0 之前允许使用 root 启动，加配置即可，5.0 以后必须使用非 root 用户启动
   详见：https://blog.csdn.net/lahand/article/details/78954112
 - es 后台启动命令： nohup ./bin/elasticsearch&
