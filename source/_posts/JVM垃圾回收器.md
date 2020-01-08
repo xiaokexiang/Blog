@@ -5,7 +5,7 @@ date: 2020-01-06 13:30:37
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20200106/RjsYCSRlxKf7.jpg
+thumbnail: http://image.leejay.top/image/20200108/RcfFoRPLR7oj.jpg
 ---
 
 ## 垃圾回收器种类

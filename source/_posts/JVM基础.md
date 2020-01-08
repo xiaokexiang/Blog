@@ -5,7 +5,7 @@ date: 2019-12-26 14:46:51
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20191227/CseD1ApnqsdJ.png
+thumbnail: http://image.leejay.top/image/20200108/nWM8skrG0YSe.jpg
 ---
 
 ### Java 数据类型

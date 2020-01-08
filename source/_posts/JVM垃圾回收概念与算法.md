@@ -4,7 +4,7 @@ toc: true
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20191227/YmN6bcn0AfDw.png
+thumbnail: http://image.leejay.top/image/20200108/Eq5nGrMthDun.jpg
 ---
 ## JVM 垃圾回收
 
