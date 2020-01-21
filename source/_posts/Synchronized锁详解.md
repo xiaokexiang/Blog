@@ -27,7 +27,7 @@ thumbnail: https://tvax1.sinaimg.cn/large/005BYqpggy1g4mghnm1y2j30sg0lcaan.jpg
 - java 对象头包括 Mark Word(存储对象的 hashCode 或锁信息), Class MetaData Address(存储到对象类型数据的指针)和 Array Length(数组长度如若当前对象是数组)
 - Mark Word(分 32bit 和 64bit)在不同状态锁下的变化
 
-  <img border="1" src="https://i.loli.net/2019/07/17/5d2edc4133a1d93211.png">
+  <img src="http://image.leejay.top/image/20200121/xJRwwpG5pKdQ.png">
 
 ## 锁的升级与对比
 
