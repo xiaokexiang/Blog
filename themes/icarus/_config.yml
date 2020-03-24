@@ -62,17 +62,17 @@ search:
   type: insight
 # Comment plugin settings
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Comment
-comment:
-  # Name of the comment plugin
-  # type: changyan
-  # appid: cyuit21BJ
-  # conf: prod_de332f1127c400df907f6eb40abcc4a3
-  type: gitalk
-  owner: xiaokexiang
-  repo: gittalk
-  client_id: e4dd44f9626adc5bd98c
-  client_secret: d91cedf93f1b09e69d94592ae1f1d958f444b794
-  admin: xiaokexiang
+# comment:
+#   # Name of the comment plugin
+#   # type: changyan
+#   # appid: cyuit21BJ
+#   # conf: prod_de332f1127c400df907f6eb40abcc4a3
+#   type: gitalk
+#   owner: xiaokexiang
+#   repo: gittalk
+#   client_id: e4dd44f9626adc5bd98c
+#   client_secret: d91cedf93f1b09e69d94592ae1f1d958f444b794
+#   admin: xiaokexiang
 
 # Donation entries
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Donation/
