@@ -13,7 +13,7 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 #### 概念
 
 `在了解二叉树之前，我们需要了解什么是树？在生活中树是一种植物，而在算法中，树代表着一种数据结构，如下图所示：`
-<img src="http://image.leejay.top/image/20200506/FnNGNXa38gAv.png"/>
+<img src="http://image.leejay.top/image/20200509/eM2dSyb6pFvq.png"/>
 
 <!---more-->
 
@@ -142,7 +142,14 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
   `先访问根节点，再访问当前节点的左子树，若当前节点无左子树，则访问当前节点的右子树。`
 
   ```java
-  执行顺序：1-2-4-5-3-6-7
+  1. 先访问二叉树的根节点，找到1，输出1;
+  2. 遍历节点1的左节点，找到节点2，输出2;
+  3. 遍历节点2的左节点，找到4，且4没有左右节点，输出4;
+  4. 遍历节点2的右节点，找到5，5没有左右节点，输出5;
+  5. 至此节点2遍历完成，回到节点1，找到右节点3，输出3;
+  6. 寻找节点3的左节点6，6没有左右节点，输出6;
+  7. 寻找节点3的右节点7，7没有左右节点，输出7;
+  8. 执行顺序：1-2-4-5-3-6-7
   ```
 
 - 中序遍历
@@ -152,11 +159,11 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
   1. 先访问二叉树的根节点，找到1;
   2. 遍历节点1的左子树，找到2;
   3. 遍历节点2的左子树，找到4;
-  4. 节点4无左子树后，遍历节点4右子树也没有，至此节点2左子树遍历完成;
-  5. 遍历节点2的右子树，找到节点5，且节点5和节点4一样都，至此节点2右子树遍历完成;
-  6. 回到节点1，至此节点1的左子树遍历完成，开始遍历节点1的右子树，找到节点3;
-  7. 遍历节点3的左子树，找到节点6，其没有左右子树，因此节点3左子树遍历完成，回到节点3
-  8. 遍历节点3找到右子树节点7，其没有左右子树，因此节点1的右子树遍历完成，整棵树完成遍历;
+  4. 节点4无左子树后，遍历节点4右子树也没有，至此节点2左子树遍历完成，输出4和2;
+  5. 遍历节点2的右子树，找到节点5，且节点5和节点4一样都，至此节点2右子树遍历完成，输出5;
+  6. 回到节点1，至此节点1的左子树遍历完成，输出1，开始遍历节点1的右子树，找到节点3;
+  7. 遍历节点3的左子树，找到节点6，其没有左右子树，输出6，因此节点3左子树遍历完成，输出3;
+  8. 遍历节点3找到右子树节点7，其没有左右子树，输出7，节点1的右子树遍历完成，整棵树完成遍历;
   9. 执行顺序：4-2-5-1-6-3-7
   ```
 
@@ -170,3 +177,128 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 ---
 
 ### 二叉树 Java 代码实现
+
+#### 定义 TreeNode
+
+```java
+@Data
+public class TreeNode {
+  /**
+    * 左节点
+    */
+  TreeNode left;
+  /**
+    * 节点存储的值
+    */
+  int value;
+  /**
+    * 右节点
+    */
+  TreeNode right;
+
+  /**
+    * 用于处理值相等的情况
+    */
+  int count = 1;
+
+  public TreeNode(int value) {
+      this.left = null;
+      this.value = value;
+      this.right = null;
+  }
+}
+```
+
+#### 添加值到二叉树中
+
+```java
+  /**
+    * 使用链表存储 & 顺序存储(不符合二分法查找)
+    *
+    * @param data [15, 7, 4, 10, 8, 1, 20]
+    *             15
+    *        7         4
+    *    10    8     1     20
+    * @return rootNode
+    */
+  public TreeNode addNodes(List<Integer> data) {
+
+      if (data.isEmpty()) {
+          return null;
+      }
+      if (data.size() == 1) {
+          return new TreeNode(data.get(0));
+      }
+      // List<Integer> -> List<TreeNode>
+      List<TreeNode> nodes = data.stream().map(TreeNode::new).collect(Collectors.toList());
+      rootNode = nodes.get(0);
+      for (int i = 0; i < nodes.size() / 2; i++) {
+          // 当前节点的左子索引 = 当前节点索引 * 2 + 1
+          nodes.get(i).setLeft(nodes.get(2 * i + 1));
+          // 当前节点的右子索引 = 当前节点索引 * 2 + 2
+          if ((2 * i + 2) < nodes.size()) {
+              nodes.get(i).setRight(nodes.get(2 * i + 2));
+          }
+      }
+      return rootNode;
+  }
+
+  /**
+    * 使用链表存储 & 采用二叉树特性(二分法查找) 批量添加节点
+    *
+    * @param data [15, 7, 4, 10, 8, 1, 20]
+    *             15
+    *         7        20
+    *      4     10
+    *   1     8
+    * @return rootNode
+    */
+  public TreeNode addNodesSorted(List<Integer> data) {
+      if (data.isEmpty()) {
+          return null;
+      }
+      if (data.size() == 1) {
+          return new TreeNode(data.get(0));
+      }
+      // List<Integer> -> List<TreeNode>
+      if (null == rootNode) {
+          rootNode = new TreeNode(data.get(0));
+      }
+      // 默认current是根节点
+      data.forEach(d -> addNode(rootNode, d));
+      return rootNode;
+  }
+
+  /**
+    * 采用递归的方法实现添加节点
+    *
+    * @param current current
+    * @param value   value
+    */
+  private void addNode(TreeNode current, Integer value) {
+      // 二分法，小于当前节点值，就放在左边
+      if (value < current.getValue()) {
+          if (null != current.getLeft()) {
+              addNode(current.getLeft(), value);
+          } else {
+              current.setLeft(new TreeNode(value));
+          }
+      }
+
+      // 大于当前节点值，就放在右边
+      if (value > current.getValue()) {
+          if (null != current.getRight()) {
+              addNode(current.getRight(), value);
+          } else {
+              current.setRight(new TreeNode(value));
+          }
+      }
+      // 处理值相等的情况
+      if (value == current.getValue()) {
+          int count = current.getCount();
+          current.setCount(++count);
+      }
+  }
+```
+
+<a href="https://github.com/xiaokexiang/binary-tree">Github</a>
