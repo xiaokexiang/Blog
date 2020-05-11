@@ -5,7 +5,7 @@ date: 2020-05-07 09:35:01
 tags: Java
 categories:
   - Arithmetic
-thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
+thumbnail: https://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 ---
 
 ### 树
@@ -13,7 +13,7 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 #### 概念
 
 `在了解二叉树之前，我们需要了解什么是树？在生活中树是一种植物，而在算法中，树代表着一种数据结构，如下图所示：`
-<img src="http://image.leejay.top/image/20200509/eM2dSyb6pFvq.png"/>
+<img src="https://image.leejay.top/image/20200509/eM2dSyb6pFvq.png"/>
 
 <!---more-->
 
@@ -46,17 +46,17 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 #### 概念
 
 `二叉树是树的一种特殊形态。二叉树的特点是每个结点最多拥有两个子女（就是不存在度大于2的结点），分别称为左子女和右子女，并且二叉树的子树有左右之分，且子树次序不能颠倒。`
-<img src="http://image.leejay.top/image/20200506/TtwqosDYLHyX.png"/>
+<img src="https://image.leejay.top/image/20200506/TtwqosDYLHyX.png"/>
 
 #### 分类
 
 - 满二叉树
   `在一颗二叉树中，如果所以的分支节点都存在左子树和右子树，并且所有的叶子节点都在同一层。`
-  <img src="http://image.leejay.top/image/20200507/ayAyJAKvjwWE.png" />
+  <img src="https://image.leejay.top/image/20200507/ayAyJAKvjwWE.png" />
 
 - 完全二叉树
   `一棵二叉树中，只有最下面两层结点的度可以小于2，并且最下层的叶子节点集中在靠左的若干位置上。`
-  <img src="http://image.leejay.top/image/20200507/3w37G2j09Hd7.png" />
+  <img src="https://image.leejay.top/image/20200507/3w37G2j09Hd7.png" />
   > 满二叉树一定是完全二叉树，完全二叉树不一定是满二叉树
 
 #### 特性
@@ -119,24 +119,24 @@ thumbnail: http://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 
 `通常二叉树是二分查找树，即每个节点它的值大于或者等于在它左子树节点上的值，小于或者等于在它右子树节点上的值。如下图所示`
 
-<img src="http://image.leejay.top/image/20200507/CJX2vtcQOpCj.png"/>
+<img src="https://image.leejay.top/image/20200507/CJX2vtcQOpCj.png"/>
 
 - 顺序存储
 
 `如下图所示，无论是何种树，我们都会转换成完全二叉树并一层一层从左开始对二叉树进行编号并存储。此方法的缺点是浪费空间，因为没有的节点也要补充完全。`
 
-<img src="http://image.leejay.top/image/20200507/HVwDwYzGBwtD.png"/>
+<img src="https://image.leejay.top/image/20200507/HVwDwYzGBwtD.png"/>
 
 - 链式存储
 
 `节点除了保存值，还会保存左子和右子地址的指针。`
 
-<img src="http://image.leejay.top/image/20200507/5ncSOLgCSFTd.png">
+<img src="https://image.leejay.top/image/20200507/5ncSOLgCSFTd.png">
 
 #### 遍历算法
 
 `我们以下图的二叉树为例，解释三种算法的遍历规则。`
-<img src="http://image.leejay.top/image/20200507/0PzvUs0UW7t3.png"/>
+<img src="https://image.leejay.top/image/20200507/0PzvUs0UW7t3.png"/>
 
 - 先序遍历
   `先访问根节点，再访问当前节点的左子树，若当前节点无左子树，则访问当前节点的右子树。`

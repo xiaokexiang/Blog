@@ -5,7 +5,7 @@ date: 2019-12-26 14:46:51
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20200108/nWM8skrG0YSe.jpg
+thumbnail: https://image.leejay.top/image/20200108/nWM8skrG0YSe.jpg
 ---
 
 ### Java 数据类型
@@ -223,7 +223,7 @@ thumbnail: http://image.leejay.top/image/20200108/nWM8skrG0YSe.jpg
 #### Java命令行启动问题
 除了日常使用的idea启动main()外，我们也会使用命令行启动main()，最近我就遇到命令行启动找不到main class的问题(jdk1.8 + springboot的项目)，以下图目录结构为例:
 
-<img src="http://image.leejay.top/image/20191230/8nXtnj4v8BBg.png"/>
+<img src="https://image.leejay.top/image/20191230/8nXtnj4v8BBg.png"/>
 
 1. 新建Demo.java
 

@@ -5,7 +5,7 @@ date: 2020-01-06 13:30:37
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20200108/RcfFoRPLR7oj.jpg
+thumbnail: https://image.leejay.top/image/20200108/RcfFoRPLR7oj.jpg
 ---
 
 ## 垃圾回收器种类
@@ -65,7 +65,7 @@ thumbnail: http://image.leejay.top/image/20200108/RcfFoRPLR7oj.jpg
 
 - 回收流程
 
-<img src="http://image.leejay.top/image/20200106/U54AFrOkVbBp.png">
+<img src="https://image.leejay.top/image/20200106/U54AFrOkVbBp.png">
 > 1. CMS严格来说不是独占式的，只是在`初始标记和重新标记`的时候STW，其他时候是和程序一起执行的。
 > 2. 新生成的垃圾在CMS回收过程中是无法清除的(非STW)，所以CMS不会等内存饱和才会进行垃圾回收，而是但内存达到某一阈值便开始回收。`-XX:CMSInitiatingOccupancyFraction`指定阈值(默认是68)。意为老年代空间使用率到达68%就执行一次CMS回收。如果CMS回收过程中出现内存不足，那么CMS就会失败，`改为采用老年代串行回收器`进行垃圾回收(程序完全中断)，这种情况会导致程序停顿时间较长
 > 3. 因为`标记清除导致的内存碎片`，CMS提供两个内存压缩的参数，用于减少内存碎片的问题。
@@ -96,7 +96,7 @@ thumbnail: http://image.leejay.top/image/20200108/RcfFoRPLR7oj.jpg
 
 - 回收流程
 
-<img src="http://image.leejay.top/image/20200106/zvMyin5vwbvo.png">
+<img src="https://image.leejay.top/image/20200106/zvMyin5vwbvo.png">
 
 - 参数
 

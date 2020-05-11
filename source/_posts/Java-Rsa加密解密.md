@@ -5,7 +5,7 @@ date: 2019-10-23 14:28:05
 tags: Java
 categories:
   - Java
-thumbnail: http://image.leejay.top/image/20191227/nRplcX5b4tNK.png
+thumbnail: https://image.leejay.top/image/20200511/ekbhAImhQY3n.png?imageslim
 ---
 
 ### 前言

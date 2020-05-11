@@ -340,4 +340,4 @@ protected void invokeInitMethods(String beanName, final Object bean, @Nullable R
 
 ### 总结
 
-<img src="http://image.leejay.top/image/20200324/ENGNrBhvCUMk.png"/>
+<img src="https://image.leejay.top/image/20200324/ENGNrBhvCUMk.png"/>

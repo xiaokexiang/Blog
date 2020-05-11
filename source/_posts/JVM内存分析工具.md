@@ -4,7 +4,7 @@ date: 2019-11-19 20:51:55
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20191227/emKPmWFCLrVD.png
+thumbnail: https://image.leejay.top/image/20200511/kcYONNRQ2VRS.png?imageslim
 ---
 
 ## 前言

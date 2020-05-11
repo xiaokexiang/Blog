@@ -5,7 +5,7 @@ date: 2020-01-05 10:40:01
 tags: Java
 categories:
   - Jvm
-thumbnail: http://image.leejay.top/image/20200108/Eq5nGrMthDun.jpg
+thumbnail: https://image.leejay.top/image/20200108/Eq5nGrMthDun.jpg
 ---
 ## JVM 垃圾回收
 
@@ -46,7 +46,7 @@ thumbnail: http://image.leejay.top/image/20200108/Eq5nGrMthDun.jpg
 
 - 主要垃圾回收算法图解
 
-<img src="http://image.leejay.top/image/20191227/BXWEjuMyee3Q.png">
+<img src="https://image.leejay.top/image/20191227/BXWEjuMyee3Q.png">
 
 ---
 
@@ -59,7 +59,7 @@ thumbnail: http://image.leejay.top/image/20200108/Eq5nGrMthDun.jpg
 #### 对象回收流程
 
   &emsp;在GC对对象A进行回收的时候，会先判断是否有`引用链`从GC Root指向对象A，如果有那么不需要进行回收。如果没有那么继续进行判断：如果<font color="red">对象A复写了finalize()方法且JVM之前没有调用过对象A的finalize()方法</font>，那么JVM就会将对象A放置到一个名叫`F-Queue`的队列中，稍后由JVM启动一个低优先级的Finalizer线程去执行对象A的finalize()方法，而此时对象A的finalize()是最后一次能够拯救对象A的途径，只需要在finalize()方法中`对象A重新与引用链建立联系即可`，否则对象A将被GC清理。
-  <div style="text-align: center;" ><img border=1 src="http://image.leejay.top/image/20191227/6r25VFXqrL2q.png"/></div>
+  <div style="text-align: center;" ><img border=1 src="https://image.leejay.top/image/20191227/6r25VFXqrL2q.png"/></div>
   > 可触性包含三种状态：
   > 1. 可触及的：从根节点开始，可以到达的这个对象。
   > 2. 可复活的：对象无引用链可达，但是对象可能在finalize()中复活。

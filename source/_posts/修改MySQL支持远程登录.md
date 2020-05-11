@@ -5,7 +5,7 @@ tags: Mysql
 toc: true
 categories:
 - Mysql
-thumbnail: http://image.leejay.top/image/20200107/0p5Rsma4BOb3.jpg
+thumbnail: https://image.leejay.top/image/20200107/0p5Rsma4BOb3.jpg
 ---
 ## MySQL不能远程登录
 * 1130 is not allowed to connect 问题

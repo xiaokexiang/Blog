@@ -4,7 +4,7 @@ date: 2020-02-21 18:45:16
 tags: Java
 categories:
   - Cas
-thumbnail: http://image.leejay.top/image/20200221/4BgthH3O9zTL.jpg
+thumbnail: https://image.leejay.top/image/20200511/dqGtqbaifKt8.jpg?imageslim
 ---
 
 ## 前言
@@ -133,7 +133,7 @@ public class CasClientConfigurations {
 ### 登陆
 `其实官网的一张图就解释的非常清楚了，很形象。在此贴出该图: `
 
-<img src="http://image.leejay.top/image/20200221/KyGhVgyNo5nG.png"/>
+<img src="https://image.leejay.top/image/20200221/KyGhVgyNo5nG.png"/>
 
 ### 超时分析
 `目前存在三种控制超时时间的参数，分别是Client Session timeout，TGT timeout和ST timeout。`
@@ -165,7 +165,7 @@ cas.ticket.st.timeToKillInSeconds=30
 
 #### 不同情况超时登出流程图
 
-<img src="http://image.leejay.top/image/20200220/sdQaLO2GIUqi.png">
+<img src="https://image.leejay.top/image/20200220/sdQaLO2GIUqi.png">
 > 推荐Cas Client的session timeout <= TGT timeout
 
 ### 登出

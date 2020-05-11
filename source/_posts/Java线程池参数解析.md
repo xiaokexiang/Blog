@@ -5,7 +5,7 @@ toc: true
 tags: Java
 categories:
   - Java
-thumbnail: http://image.leejay.top/image/20200327/wyNA37eRaKgk.jpg
+thumbnail: https://image.leejay.top/image/20200327/wyNA37eRaKgk.jpg
 ---
 
 ## 前言

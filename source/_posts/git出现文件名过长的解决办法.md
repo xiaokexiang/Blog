@@ -5,7 +5,7 @@ tags: Git
 toc: true
 categories:
 - Git
-thumbnail: http://image.leejay.top/image/20200107/uI2RG7Cz3Bj3.jpg
+thumbnail: https://image.leejay.top/image/20200107/uI2RG7Cz3Bj3.jpg
 ---
 
 ## 在上传文件的文件夹下打开:

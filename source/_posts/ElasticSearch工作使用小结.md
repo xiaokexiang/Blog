@@ -5,7 +5,7 @@ tags: ElasticSearch
 toc: true
 categories:
 - ElasticSearch
-thumbnail: http://image.leejay.top/image/20200107/L6NvPojugsKV.jpg
+thumbnail: https://image.leejay.top/image/20200511/0vS4gvoGHTCO.jpg?imageslim
 ---
 
 ## Es的三种客户端

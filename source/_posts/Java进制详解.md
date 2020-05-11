@@ -5,7 +5,7 @@ date: 2019-12-11 15:07:33
 tags: Java
 categories:
   - Java
-thumbnail: http://image.leejay.top/image/20191227/3FojbONgLt4m.jpg
+thumbnail: https://image.leejay.top/image/20191227/3FojbONgLt4m.jpg
 ---
 
 ## 进制详解

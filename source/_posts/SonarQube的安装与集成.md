@@ -5,7 +5,7 @@ tags: SonarQube
 toc: true
 categories:
 - SonarQube
-thumbnail: http://image.leejay.top/image/20200107/DdkX8jJ0bqTO.jpg
+thumbnail: https://image.leejay.top/image/20200107/DdkX8jJ0bqTO.jpg
 ---
 
 ## 需要安装的软件:
