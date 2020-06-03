@@ -12,10 +12,7 @@ thumbnail: https://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 
 #### 概念
 
-`在了解二叉树之前，我们需要了解什么是树？在生活中树是一种植物，而在算法中，树代表着一种数据结构，如下图所示：`
-<img src="https://image.leejay.top/image/20200509/eM2dSyb6pFvq.png"/>
-
-<!---more-->
+`在了解二叉树之前，我们需要了解什么是树？在生活中树是一种植物，而在算法中，树代表着一种数据结构。`
 
 #### 特征
 
@@ -23,7 +20,7 @@ thumbnail: https://image.leejay.top/image/20200507/Vcl8tJBozrPD.jpg
 
 - 有且`只有一个称为根的节点`(根节点没有父节点)。
 - 有若干个不相交的子树，这些子树本身也是一颗树。
-
+<!---more-->
 #### 名词
 
 树中包含一些特殊的名词，这些名词代表不同的含义：

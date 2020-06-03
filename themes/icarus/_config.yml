@@ -76,15 +76,15 @@ search:
 
 # Donation entries
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Donation/
-donate:
-  - # Donation entry name
-    type: alipay
-    # Qrcode image URL
-    qrcode: "/images/alipay.png"
-  - # Donation entry name
-    type: wechat
-    # Qrcode image URL
-    qrcode: "/images/wechatpay.png"
+# donate:
+#   - # Donation entry name
+#     type: alipay
+#     # Qrcode image URL
+#     qrcode: "/images/alipay.png"
+#   - # Donation entry name
+#     type: wechat
+#     # Qrcode image URL
+#     qrcode: "/images/wechatpay.png"
   # -
   #     # Donation entry name
   #     type: paypal
@@ -109,12 +109,12 @@ sidebar:
   left:
     # Whether the left sidebar is sticky when page scrolls
     # https://ppoffice.github.io/hexo-theme-icarus/Configuration/Theme/make-a-sidebar-sticky-when-page-scrolls/
-    sticky: false
+    sticky: true
   # right sidebar settings
   right:
     # Whether the right sidebar is sticky when page scrolls
     # https://ppoffice.github.io/hexo-theme-icarus/Configuration/Theme/make-a-sidebar-sticky-when-page-scrolls/
-    sticky: false
+    sticky: true
 # Sidebar widget settings
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Widgets/
 widgets:
@@ -123,7 +123,7 @@ widgets:
     # Where should the widget be placed, left or right
     position: left
     # Author name to be shown in the profile widget
-    author: 北城柳絮雨南城丶
+    author: xiaokexiang
     # Title of the author to be shown in the profile widget
     author_title:
     # Author's current location to be shown in the profile widget
@@ -133,7 +133,7 @@ widgets:
     # Email address for the Gravatar to be shown in the profile widget
     gravatar:
     # Whether to show avatar image rounded or square
-    avatar_rounded: false
+    avatar_rounded: true
     # Path or URL for the follow button
     follow_link: "https://github.com/xiaokexiang"
     # Links to be shown on the bottom of the profile widget
@@ -157,9 +157,9 @@ widgets:
     type: toc
     # Where should the widget be placed, left or right
     position: left
-  # -
-  #     type: music
-  #     position: left
+  -
+      type: music
+      position: left
   # -
   #     # Widget name
   #     type: links
