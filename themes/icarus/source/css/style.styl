@@ -1,4 +1,19 @@
-family-sans = 'Times New Roman' 
+@font-face {
+    font-family: 'Open-Sans-Bold';
+    font-weight: 300;
+    src: url('../fonts/OpenSans-Bold.ttf') format(truetype);
+}
+@font-face {
+    font-family: 'Open-Sans-Regular';
+    font-weight: 300;
+    src: url('../fonts/OpenSans-Regular.ttf') format(truetype);
+}
+@font-face {
+    font-family: 'alibaba';
+    font-weight: 300;
+    src: url('../fonts/AlibabaSans-Regular.otf');
+}
+family-sans = 'alibaba'
 // family-sans = 'Noto Sans SC', sans-serif
 // family-sans = "Microsoft YaHei", "Microsoft JhengHei", "Source Code Pro", sans-serif,  "Roboto", "Open Sans"
 family-mono = "Source Code Pro"
@@ -20,7 +35,7 @@ body
 
 body, button, input, select, textarea
     font-family: family-sans
-    font-weight: 500
+    font-weight: 600
 @media screen and (min-width: screen-widescreen)
     .is-1-column .container
     .is-2-column .container
@@ -194,6 +209,9 @@ img.thumbnail
             top: calc(0.3rem + 9px)
 
 .article
+    .title
+        font-size: 2.5em !important
+        font-weight: 600
     .article-meta
         margin-bottom: 0.5rem !important
     .content
@@ -357,10 +375,10 @@ img.thumbnail
  * --------------------------------- */
 .content
     h1, h2, h3, h4, h5, h6
-        font-weight: bold
+        // font-weight: bold
         // line-height: 1.25rem
     h1
-        font-size: 2.2em
+        font-size: 2.25em
     h2
         font-size: 2em
     h3
@@ -369,13 +387,14 @@ img.thumbnail
         font-size: 1.5em
     h5
         font-size: 1.25em
-    code, pre
+    pre
         font-size: 1.1em
         font-family: family-mono
     code
-        color: hsl(348, 100%, 61%)
-        font-weight: bold
-        font-family: LiHei Pro Medium
+        color: #ff5200d9
+        font-size: 1rem
+        font-weight: 600
+        font-family: family-sans
         background: transparent
     blockquote
         footer
@@ -424,7 +443,7 @@ figure.highlight
 
         span
             font-weight: 500
-            font-family: family-mono
+            font-family: family-sans
 
         a
             float: right
@@ -432,9 +451,8 @@ figure.highlight
 
     .gutter
         text-align: right
-
+    .title
     .tag,
-    .title,
     .number,
     .section
         display: inherit
@@ -505,4 +523,7 @@ figure.highlight
     margin-top: -5px
 // 文中图片的阴影 
 img
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .5), 0 2px 3px rgba(0, 0, 0, .5)
+    // box-shadow: 1px 2px 2px 1px #888888
+    box-shadow: 1px 2px 2px 1px rgba(0,0,0,0.3)
+hr
+    background-color: #d6d1d18a
