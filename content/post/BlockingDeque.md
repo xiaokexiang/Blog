@@ -15,8 +15,8 @@ hideReadMore: true
 
 ```java
 public interface Deque<E> extends Queue<E> {
-	// 添加到队首
-	void addFirst(E e);
+    // 添加到队首
+    void addFirst(E e);
     // 添加到队尾
     void addLast(E e);
     // 获取队首
