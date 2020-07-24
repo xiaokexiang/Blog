@@ -1,5 +1,14 @@
-# HexoBlog
-*Blog Design By Hexo, Theme power by Icarus*
+### Design By Hugo
 
-* 三栏变两栏问题:
-https://github.com/ppoffice/hexo-theme-icarus/issues/379
+- Frame: <a href="https://github.com/gohugoio/hugo">**Hugo**</a>
+
+- Theme: <a href="https://github.com/panr/hugo-theme-hello-friend">**hugo-theme-hello-friend**</a>
+
+- Code style: <a href="https://github.com/PrismJS/prism">**prism.js**</a>
+
+### Command
+
+```bash
+hugo server --theme=${theme name} -D
+```
+

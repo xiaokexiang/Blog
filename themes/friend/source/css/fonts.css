@@ -1,0 +1,22 @@
+/* roboto-mono-regular - latin */
+
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    /* src: url('../fonts/roboto-mono-v6-latin-regular.woff') format('woff'); */
+    src: local(Robot Mono), url('../fonts/roboto-mono-v6-latin-regular.woff') format('woff'), url("https://fonts.font.im/css?family=Roboto+Mono") format('woff2');
+    /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+    font-family: "wenquan";
+    src: url("../fonts/文泉驿点阵正黑.woff") format("woff");
+    /* chrome、firefox */
+    /* url("../fonts/文泉驿点阵正黑.ttf") format("truetype"); */
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+    /* iOS 4.1- */
+    font-style: normal;
+    font-weight: normal;
+}
