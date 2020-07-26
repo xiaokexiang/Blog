@@ -3,20 +3,23 @@
 @font-face {
     font-family: 'Roboto Mono';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     font-display: swap;
-    /* src: url('../fonts/roboto-mono-v6-latin-regular.woff') format('woff'); */
-    src: local(Robot Mono), url('../fonts/roboto-mono-v6-latin-regular.woff') format('woff'), url("https://fonts.font.im/css?family=Roboto+Mono") format('woff2');
-    /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+    src: local(Robot Mono), url('../fonts/roboto-mono-v6-latin-regular.woff') format('woff');
 }
 
 @font-face {
-    font-family: "wenquan";
-    src: url("../fonts/文泉驿点阵正黑.woff") format("woff");
-    /* chrome、firefox */
-    /* url("../fonts/文泉驿点阵正黑.ttf") format("truetype"); */
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
-    /* iOS 4.1- */
+    font-family: 'Roboto Slab';
     font-style: normal;
-    font-weight: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local(Robot Slab), url('../fonts/RobotoSlab-VariableFont_wght.ttf') format('ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local(Robot), url('../fonts/Roboto-Medium.ttf') format('ttf');
 }

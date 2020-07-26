@@ -182,7 +182,7 @@ blockquote {
   color: #8c8c8c;
   font-size: 0.9em;
   font-style: normal;
-  font-family: "Roboto Mono";
+  font-family: inherit;
   padding: 24px 10px 12px;
   margin: 24px 10px 36px;
   line-height: 1.8;
