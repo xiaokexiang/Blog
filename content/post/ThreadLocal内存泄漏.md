@@ -21,7 +21,7 @@ public class ThreadLocal<T> {
 	static class ThreadLocalMap {
         
         // 需要注意的是这里的Entry key是ThreadLocal的弱引用
-        // 弱引用的特点是在下次GC的时候会被清理
+        // 弱引用的特点是当对象没有被外部强引用引用时，下次GC弱引用对象会被清理
         static class Entry extends WeakReference<ThreadLocal<?>> {
             // value 与 ThreadLocal关联
             Object value;
@@ -56,3 +56,7 @@ public class ThreadLocal<T> {
 我们可以看出内存泄漏的触发条件比较苛刻的，但确实会发生，其实`只要线程Thread的生命周期结束，那么Thread的ThreadLocalMap也不会存在强引用，那么ThreadLocalMap中的value最终也会被回收。`，所以在使用ThreadLocal时，除了需要密切关注`Thread和ThreadLocal的生命周期`，还需要在每次使用完之后调用`remove`方法，这样做还有一个问题就是：
 
 > 如果你使用的是线程池，那么会出现`线程复用`的情况，如果`不及时清理remove()会导致下次使用的值不符合预期`。
+
+> 在使用ThreadLocal时更推荐将其修饰为`private static`，这么做有两个好处：
+> 1. `避免每个线程都创建一个ThreadLocal对象`，即使不会导致代码错误，但是会导致内存的浪费（创建多个作用等同的相同对象）
+> 2. 若我们将ThreadLocal对象修饰为类的静态变量，那么只要这个类不被回收，这个类就会持有ThreadLocal的强引用。
