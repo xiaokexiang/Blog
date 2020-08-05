@@ -13,7 +13,7 @@ body {
   padding: 0;
   font-size: 1.1rem;
   line-height: 1.6;
-  font-family: "Microsoft Yahei","Roboto Mono";
+  font-family: "Fira Code", "consolas", "Microsoft JhengHei", "Microsoft Yahei";
   font-weight: 600;
   background-color: var(--background);
   color: var(--color);
@@ -145,7 +145,7 @@ code {
   font-weight: normal;
   padding: 2px 4px;
   border-radius: 2px;
-  font-family: 'Roboto Mono';
+  font-family: 'Fira Code', 'consolas','Roboto Mono';
   font-size: 1rem;
   color: #ef0505;
   background-color: #f8f8f8;

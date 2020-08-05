@@ -19,7 +19,7 @@
         }
     }
     &-title {
-        font-size: 2.625rem;
+        font-size: 2.4rem;
         margin: 0 0 20px;
         /* 处理title过长 */
         text-overflow: ellipsis;
