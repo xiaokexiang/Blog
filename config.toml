@@ -1,4 +1,4 @@
-baseurl = "https://xiaokexiang.github.io"
+baseurl = "https://leejay.top"
 languageCode = "zh-Hans"
 theme = "friend"
 paginate = 5
@@ -14,8 +14,8 @@ paginate = 5
   showReadingTime = false
 [languages]
   [languages.en]
-    title = "黄昏现白骨"
-    subtitle = "Just a normal blog"
+    title = "Aurora"
+    subtitle = "🎈🎈🎈"
     keywords = ""
     copyright = "苏ICP备18050258号-1"
     menuMore = "更多"
@@ -29,8 +29,8 @@ paginate = 5
     dateFormatList = "2006-01-02"
 
     [languages.en.params.logo]
-      logoText = "黄昏现白骨"
-      logoHomeLink = "https://xiaokexiang.github.io"
+      logoText = "Aurora"
+      logoHomeLink = "https://leejay.top"
     # or
     #
     # path = "/img/your-example-logo.svg"
