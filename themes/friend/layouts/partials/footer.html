@@ -14,24 +14,4 @@
 
 <script src="{{ "assets/main.js" | absURL }}"></script>
 <script src="{{ "assets/prism.js" | absURL }}"></script>
-<script type="text/javascript"
-src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    showProcessingMessages: false, //关闭js加载过程信息
-    messageStyle: "none", //不显示信息
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code', 'a', 'annotation', 'annotation-xml'],
-      ignoreClass: 'crayon-.*' // 'crayon-' 开头的类，属于Wordpress代码高亮库，这部分不需要处理，否则会导致显示不正确,这部分是正则式，多条之间用'|'分割    
-    },
-    'HTML-CSS': {
-        showMathMenu: false //禁用右键菜单
-    }
-  });
-</script>
 {{- partial "extended_footer.html" . }}

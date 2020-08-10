@@ -4,8 +4,10 @@
 <meta name="keywords" content="{{ with .Params.Keywords }}{{ delimit . ", " }}{{ else }}{{ $.Site.Params.Keywords }}{{ end }}"/>
 <meta name="robots" content="noodp"/>
 <meta name="google-site-verification" content="e1ELBPEvOV5kwQNtzaLcNt-3iZy83eiNhSZkHhQPecs" />
+<meta name="baidu-site-verification" content="aNoX6MUEHW" />
 <link rel="canonical" href="{{ .Permalink }}" />
-
+<!-- mathjax -->
+{{ partial "mathjax.html" . }}
 <!-- head custom -->
 {{- partial "prepended_head.html" . }}
 
@@ -13,7 +15,7 @@
 <link rel="stylesheet" href="{{ "assets/style.css" | absURL }}">
 
 <!-- Custom CSS to override theme properties (/static/style.css) -->
-<link rel="stylesheet" href="{{ "style.css" | absURL }}">
+<!-- <link rel="stylesheet" href="{{ "style.css" | absURL }}"> -->
 <!-- Icons -->
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ "img/apple-touch-icon-144-precomposed.png" | absURL }}">
 <link rel="shortcut icon" href="{{ "img/favicon.png" | absURL }}">
