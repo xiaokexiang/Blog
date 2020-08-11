@@ -1,4 +1,4 @@
-baseurl = "https://www.leejay.top"
+baseurl = "https://leejay.top"
 languageCode = "zh-Hans"
 theme = "friend"
 paginate = 5
@@ -30,7 +30,7 @@ paginate = 5
 
     [languages.en.params.logo]
       logoText = "Aurora"
-      logoHomeLink = "https://www.leejay.top"
+      logoHomeLink = "https://leejay.top"
     # or
     #
     # path = "/img/your-example-logo.svg"
