@@ -1,5 +1,5 @@
 ---
-title: "BlockingDeque"
+title: "BlockingDeque双端阻塞队列源码浅析"
 date: 2020-07-06T19:20:56+08:00
 description: "基于ReentrantLock、Condition实现的`双端阻塞队列`，支持在队首和队尾获取/添加数据。"
 tags: ["BlockingDeque "]

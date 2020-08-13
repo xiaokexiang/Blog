@@ -1,5 +1,5 @@
 ---
-title: "StampedLock"
+title: "StampedLock读写锁源码浅析"
 date: 2020-07-01T10:32:01+08:00
 description: "为了实现更快的读写锁模式而诞生的框架，基于`乐观锁`、`自旋+CAS`、`类似AQS`的逻辑实现"
 tags: ["StampedLock "]

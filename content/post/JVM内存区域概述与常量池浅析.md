@@ -1,0 +1,336 @@
+---
+title: "JVM内存区域概述与常量池浅析"
+date: 2020-08-13T13:21:20+08:00
+description: "基于JDK8的JVM内存区域概述、JVM中对象的创建及常量池相关概念浅析"
+tags: ["JVM ","常量池"]
+categories: [
+  "JVM"
+]
+hideReadMore: true
+---
+### JVM内存区域概述
+
+#### 虚拟机栈
+
+虚拟机栈描述的是Java方法执行的`线程内存模型:`每个方法被执行时，JVM会同步创建一个`栈帧`，用于存储`局部变量表、操作数栈、动态链接、方法出口`等信息，虚拟机栈区域是`线程私有`的，它的生命周期与线程相同。
+
+> 局部变量表：存放编译期可知的数据类型：`8种基本数据类型和对象引用类型`。这些数据类型在栈中用`slot`来表示，除了`long & double`占用`2个slot`，其余的都为1个。
+>
+> 虚拟机栈包含用于`执行native方法`的本地方法栈。它们都会抛出`OOM和StackOverFlow`异常。
+
+#### 虚拟机堆
+
+这是一块`线程共享`的内存区域，几乎全部的`对象实例、数组`都在堆上分配（小对象可以在`栈上分配`）。
+
+> 从内存回收角度看， 堆被逻辑的分为：`年轻代（包括eden、from、to三个区域）、老年代`。
+>
+> 从内存分配角度看，堆被分为`多个线程私有的内存分配缓冲区（TLAB）`。
+
+##### TLAB
+
+Thread Local Allocation Buffer（本地线程缓冲区），原有的虚拟机给对象分配内存时，采用是`CAS + 失败重试`的方式。而`TLAB`是：
+
+1. 通预先给每个线程在堆中分配一小块区域。
+2. 哪个线程创建对象，就在哪个线程的TLAB中分配内存。
+3. 如果这个线程的`TLAB`空间不够分配时，就通过`同步锁定`给这个线程分配新的`TLAB`。
+4. `-XX:+/-UseTLAB`来开启和关闭TLAB。
+
+#### 元数据区
+
+`JDK1.8`起，方法区改名为`元数据区（MetaSpace）`，是`线程共享`的区域，是堆的一个`逻辑部分`，用于存储`JVM加载的类型信息、常量、静态变量及即时编译后的方法代码`等数据。会抛出`OOM`异常。
+
+#### 常量池分类
+
+- Class文件中的常量池
+
+主要存放`字面量 & 符号引用`。前者主要是`文本字符串、八种基本数据类型、final修饰的常量`等，后者包含：`类和接口的全限定名、字段的名称和描述符、方法的名称和描述符`。在类被加载后会存放到`运行时常量池`中。
+
+- 运行时常量池
+
+属于`元数据区`中的一部分，类在被JVM加载后，类的版本、字段、方法和常量池等都会进入该区域。JVM会为`每个加载的class维护一个运行时常量池`，同时其中存储的是`引用`，实际对象还在`堆中`。日常我们所称的常量池就是运行时常量池。
+
+- 全局字符串常量池
+
+`JDK7后位于堆中`，运行时存在的用于记录`interned string`的全局表`StringTabel`。其中存放的是`String实例的引用`，实际的`String对象`仍存在于堆。
+
+> `String.intern()`：如果`字符串常量池`已存在该字符串引用，那么就返回已存在的字符串的引用。若没有就将引用保存到`字符串常量池`并返回引用。
+
+#### 字符常量的执行流程
+
+- 首先`编译期`会将字面量、符号引用等放入Class文件的常量池中。
+
+- 在JVM`类加载`的过程中，除了字面量，类的字段、方法等信息都会加载到当前类`运行时常量池`。此时运行时常量池中存放的是`CONSTANT-UnresolvedString`，表明尚未`resolve`，只有在解析后存放的是`CONSTANT_String`，内容是实际的`String对象的引用`，和`字符串常量池的引用`一致。
+
+- 因为JVM类加载过程中的`解析(resolve)阶段`是可以懒执行的，只有当执行`ldc指令`时，通过存放在`运行时常量池`的索引去`字符串常量池`查找是否存在对应的String实例，如果存在就直接返回该引用，不存在就先在`堆中创建对应的String对象`，并将引用记录在`字符串常量池`中，再返回该引用。
+
+  > `ldc指令`：将`int、float或String类型的常量值从常量池推送至栈顶`。
+  >
+  > 资料来源：https://www.zhihu.com/question/55994121/answer/408891707
+
+---
+
+### 程序计数器
+
+`当前线程`所执行的字节码的行号指示器。分支、循环、异常处理都是依赖计数器实现，该区域是`线程私有`的。
+
+### 直接内存
+
+直接内存并不是JVM运行时数据区的一部分。常见于`NIO`类使用：通过`Native方法分配堆外内存`，在Java堆中持有该`内存区域的引用`实现操作，相比之前`在Java堆和Native堆之间来回复制`的方式，提升了效率。 
+
+---
+
+### JVM中的对象
+
+#### 对象的创建
+
+![](https://image.leejay.top/image/20200806/5Yyjn8VqQBwt.png?imageslim)
+
+> 1. 在`Class类的常量池`中寻找该类的`符号引用`，并通过该符号引用判断类是否被加载。
+> 2. 如果类没有被加载，那么JVM就会执行相应的类加载过程。
+> 3. 给对象分配内存空间共有两种方式：`指针碰撞 & 空闲列表`。
+> 4. 在对象分配内存的线程安全问题，默认是通过`CAS + 失败重试`实现，也可以选择`TLAB`。
+> 5. 初始化内存空间为零值，并对`Mark Word`进行必要设置（根据是否启动偏向锁设置信息）。
+> 6. 最终调用对象的构造函数进行初始化。
+
+#### 对象的构成
+
+对象在堆中的布局分为三个部分：`对象头、实例数据和对齐填充`。而对象头中又包含：`对象自身的运行时数据(Mark Word)、对象指向它类型元数据的指针以及数组长度(如果对象是数组)`。
+
+##### 对象头
+
+- Mark Word
+
+  用于记录存储对象自身运行时的数据。比如`HashCode、锁状态标识`等。
+
+![](https://image.leejay.top/image/20200806/bf8MF7GVoqRP.png?imageslim)
+
+- 类型指针
+
+  `对象头中指向该对象类型元数据(元数据区)的指针`，通过类型指针，JVM可以判断当前对象是`哪个类的实例`。
+
+  > 并不是所有的虚拟机都会在对象头中保留类型指针。此问题查看[对象的引用](#对象的引用)
+
+- 数组长度
+
+  如果当前对象是数组，那么在对象头中还有一部分用于`存储数组长度的数据`。
+
+##### 实例数据
+
+即保存代码中定义的`各种类型的字段内容（包括父类继承）`，其存储顺序除了受到代码中定义的影响，还由JVM参数`-XX:FiedlsAllocationStyle`决定。
+
+##### 对齐填充
+
+对齐填充并不是`必然存在`的，因为`HotSpot`要求`对象的大小必须是8的整数倍`，对象头已经是8的整数倍，如果实例数据不是8的整数倍，那么就需要使用对齐填充来补全。
+
+#### 对象的引用
+
+对象的创建是为了能够使用该对象，我们通过`栈上的reference数据`来操作堆上的具体对象。但对象的访问方式由虚拟机自行决定，目前主流的有两种：`句柄 & 指针`。
+
+![](https://image.leejay.top/image/20200811/doWGxxuV17Ne.png?imageslim)
+
+> 1. 句柄：就是在堆中额外划分一块内存作为句柄池，栈中的`reference`存放的就是句柄池地址。句柄池中包含`对象实例数据 & 类型数据的内存地址`。
+> 2. 直接指针：栈中`reference`存放的是堆中的对象地址，对象头中又包含`对象类型数据指针`。
+> 3. 句柄的优点在于GC回收移动对象时，只需要修改`句柄池中的实例数据指针`。而指针的优点在于`访问更快`，减少一次查找。
+
+---
+
+### 模拟各区域OOM
+
+#### 堆
+
+```java
+/**
+  * -Xmx10m 模拟堆OOM
+  */
+public static void main(String[] args) {
+    List<Object> list = new ArrayList<>();
+    while (true) {
+        list.add(new Object());
+    }
+}
+```
+
+#### 栈
+
+- stackOverFlow
+
+```java
+/**
+  * -Xss1m
+  */
+public static void main(String[] args) {
+    Stack stack = new Stack();
+    // stackOverFlow
+    stack.stackOverFlow();
+}
+
+void stackOverFlow() {
+    stackOverFlow();
+}
+```
+
+- OOM
+
+```java
+/**
+  * -Xss1m
+  */
+public static void main(String[] args) {
+    Stack stack = new Stack();
+    // oom
+    stack.oom();
+}
+void oom() {
+    while (true) {
+        new Thread(() -> {
+            while (true) {
+
+            }
+        }).start();
+    }
+}
+```
+
+> 相比OOM，stackOverFlow更容易发生。
+
+#### 元数据区
+
+- 字符串常量池OOM
+
+```java
+/**
+  * 1.7前 -XX:MaxPermSize=10m
+  * 1.7后 -Xmx10m
+  */
+public static void main(String[] args) {
+    List<String> list = new ArrayList<>();
+    int i = 0;
+    while (true) {
+        list.add(("hello" + i++).intern());
+    }
+}
+```
+
+> 需要注意在JDK7及以上版本中不会抛出之前的`PemGen space`异常，因为字符串常量池被移到了`堆中`，如果我们限制堆的大小，会抛出`Java heap space`异常。
+
+- 元数据OOM
+
+```java
+/**
+  * -XX:MaxMetaspaceSize=10m
+  */
+public static void main(String[] args) {
+    while (true) {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(Object.class);
+        enhancer.setUseCache(false);
+        enhancer.setCallback((MethodInterceptor) (o, method, objects, methodProxy) 
+                             -> methodProxy.invoke(o, objects));
+        enhancer.create();
+    }
+}
+```
+
+> 因为元数据区存放类型的相关信息：类名、方法描述等，通过大量创建cglib代理类实现`Metaspace OOM`。
+
+#### 直接内存
+
+```java
+/**
+  * -XX：MaxDirectMemorySize=10m
+  */
+public static void main(String[] args) throws IllegalAccessException {
+    // 反射获取unsafe类
+    Field unsafeField = Unsafe.class.getDeclaredFields()[0];
+    unsafeField.setAccessible(true);
+    Unsafe unsafe = (Unsafe)unsafeField.get(null);
+    while (true) {
+        // 分配直接内存
+        unsafe.allocateMemory(1024 * 1024);
+    }
+}
+```
+
+> 直接内存由：`-XX：MaxDirectMemorySize`指定，如果不指定则和`-Xmx`一致。
+
+---
+
+### 常量池实战
+
+查看汇编指令
+
+```bash
+javac -encoding utf-8 StringTest.java
+javap -v StringTest.class
+```
+
+- 字符串拼接（编译器优化）
+
+```java
+public class StringTest {
+    public static void main(String[] args) {
+        String s1 = "hello";
+        String s2 = "he" + "llo"; // 编译器会自动转成 ldc "hello"指令
+        // s1 == s2?
+    }
+}
+```
+
+> 因为编译器的优化，`s2会被编译成"ldc hello"(汇编指令可见)`，s1 和 s2 都指向`字符串常量池`中`"hello"`的引用，所以`s1 == s2`成立。
+>
+> ![](https://image.leejay.top/image/20200813/OB0vpDkBzHoV.png?imageslim)
+
+- 字符串拼接（编译器不优化）
+
+```java
+public class StringTest {
+    public static void main(String[] args) {
+		String s1 = new String("he") + new String("llo"); // 编译器不会优化
+        s1.intern();
+        String s2 = "hello"
+        // s1 == s2?
+    }
+}
+```
+
+> 1. 编译器不会优化`s1`，堆中会创建`"he"、"llo"`对象，并将两个对象的引用放入`字符串常量池`。继而通过`+ (底层StringBuilder)`创建`"hello"`对象，但不会放入`字符串常量池`。
+> 2. 此时`字符串常量池`无`"hello"`的引用，`s1.intern()`会将堆中`"hello"`对象的引用放入`字符串常量池`并返回引用。
+> 3. `s2 = "hello"`，执行`ldc`指令，发现`字符串常量池`已存在`"hello"`的引用，返回引用（`即s1引用`）给s2，所以`s1 == s2`成立。
+> 4. 下图汇编指令中，需要注意观察，在`s1.intern()`之前，并没有`ldc "hello"`，进一步说明在此之前`字符串常量池`只存在`"he"、"llo"`两个对象的引用。
+>
+> ![](https://image.leejay.top/image/20200813/n30lMesr7Kjx.png?imageslim)
+
+- new String("")问题
+
+```java
+public class StringTest {
+    public static void main(String[] args) {
+		String s1 = new String("hello");
+        String s2 = "hello";
+        // s1 == s2?
+    }
+}
+```
+
+> 基于`ldc`指令，若`字符串常量池不存在该字符串就会在堆中创建字符串实例，并将引用保存在字符串常量池中`。
+>
+> 此时`s1 = new String("hello")`共创建两个对象：一个由`显示的new`创建，一个由`JVM`创建。s1指向堆中的`"hello"`对象，而s2指向的是`字符串常量池`中持有的实例。所以`s1 == s2`不成立。
+>
+> ![](https://image.leejay.top/image/20200813/f6u1Mzjxfpm7.png?imageslim)
+
+- intern()
+
+```java
+public class StringTest {
+    public static void main(String[] args) {
+		String s1 = new String("hello");
+        s1 = s1.intern();
+        String s2 = "hello";
+        // s1 == s2?
+    }
+}
+```
+
+> `String.intern()`方法会返回`该字符串在字符串常量池中的引用`，`s2 = "hello"`也会先去`字符串常量池`查看是否存在该字符串的引用，有就返回引用。最终`s1 & s2`都指向`字符串常量池中的hello引用`。所以`s1 == s2`成立。
+>
+> ![](https://image.leejay.top/image/20200813/HQTMAz6X4cCl.png?imageslim)

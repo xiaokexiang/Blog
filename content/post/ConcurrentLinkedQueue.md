@@ -1,5 +1,5 @@
 ---
-title: "ConcurrentLinkedQueue"
+title: "ConcurrentLinkedQueue源码浅析"
 date: 2020-07-11T14:53:34+08:00
 description: "`ConcurrentLinkedQueue`是使用`自旋和CAS`来实现的非阻塞的有序队列，是LinkedList的线程安全变体。"
 tags: ["ConcurrentLinkedQueue "]

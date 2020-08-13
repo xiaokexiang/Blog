@@ -1,5 +1,5 @@
 ---
-title: "volatile"
+title: "volatile关键字浅析"
 date: 2020-06-08T11:13:38+08:00
 description: "Java中volatile关键字的原理与作用。"
 tags: ["volatile ","内存可见性"]

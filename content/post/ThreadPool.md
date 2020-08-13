@@ -1,5 +1,5 @@
 ---
-title: "ThreadPool"
+title: "ThreadPool源码解析"
 date: 2020-07-17T17:01:26+08:00
 description: "`ThreadPool`可以避免单个线程创建带来的系统资源的消耗，并且能够实现线程的复用，有效节省系统资源。"
 tags: ["ThreadPool "]

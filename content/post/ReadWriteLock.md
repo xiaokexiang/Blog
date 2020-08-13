@@ -1,5 +1,5 @@
 ---
-title: "ReadWriteLock"
+title: "ReadWriteLock源码解析"
 date: 2020-06-24T09:15:29+08:00
 description: "具备`独占锁和共享锁`两者特性的读写锁，适用于读操作多于写操作的场景。"
 tags: ["ReentrantReadWriteLock ","AQS"]

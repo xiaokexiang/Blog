@@ -1,5 +1,5 @@
 ---
-title: "CopyOnWriteArrayList"
+title: "CopyOnWriteArrayList源码解析"
 date: 2020-07-08T11:50:04+08:00
 description: "`CopyOnWriteArrayList`是ArrayList的线程安全变体，是通过`生成新的副本`来实现线程安全。"
 tags: ["CopyOnWriteArrayList "]

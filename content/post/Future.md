@@ -1,5 +1,5 @@
 ---
-title: "Future"
+title: "Future源码解析"
 date: 2020-07-19T17:11:13+08:00
 description: "因为原有的线程执行`无法获取到返回结果`，所以为了弥补线程无返回值的问题，才诞生了Future类。"
 tags: ["Future ","FutureTask"]

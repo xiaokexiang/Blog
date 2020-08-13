@@ -1,5 +1,5 @@
 ---
-title: "MESA模型"
+title: "MESA模型结构分析"
 date: 2020-06-06T22:45:30+08:00
 description: "Java中`管理临界区资源`的管理策略。"
 tags: ["MESA ","线程通信"]

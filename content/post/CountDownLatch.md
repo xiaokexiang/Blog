@@ -1,5 +1,5 @@
 ---
-title: "CountDownLatch"
+title: "CountDownLatch源码解析"
 date: 2020-06-27T18:44:37+08:00
 description: "CountDownLatch适用于一个或一组线程任务需要等到条件满足之后才能继续执行的场景。"
 tags: ["CountDownLatch ","AQS"]

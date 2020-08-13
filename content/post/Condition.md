@@ -1,5 +1,5 @@
 ---
-title: "Condition"
+title: "Condition源码解析"
 date: 2020-06-18T20:01:58+08:00
 description: "Condition接口提供了类似Object.wait/notify的监视器方法，与Lock(基于AQS的锁)配合可以实现`等待/通知`模式。"
 tags: ["Condition ","AQS"]

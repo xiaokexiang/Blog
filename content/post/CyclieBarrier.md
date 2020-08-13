@@ -1,5 +1,5 @@
 ---
-title: "CyclieBarrier"
+title: "CyclieBarrier源码解析"
 date: 2020-06-29T13:27:36+08:00
 description: "基于`CountDownLatch`的特性：`计数器为0时，即使调用await，该线程也不会等待其他线程执行完毕而被阻塞。CyclicBarrier`的出现是为了解决复杂场景`CountDownLatch`使用的劣势。"
 tags: ["CyclicBarrier ","AQS"]

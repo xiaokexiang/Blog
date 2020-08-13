@@ -1,5 +1,5 @@
 ---
-title: "BlockingQueue"
+title: "BlockingQueue单向阻塞队列源码解析"
 date: 2020-07-04T20:38:54+08:00
 description: "基于ReentrantLock、Condition实现的阻塞队列，是线程池实现的重要组成部分。"
 tags: ["BlockingQueue "]
