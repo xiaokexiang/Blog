@@ -154,7 +154,7 @@ public class Phantom {
 4. 但JVM不一定会等待`finalize`执行结束，因为如果`finalize`方法卡顿，会导致队列中后续的对象处于等待，甚至导致`整个内存回收系统的崩溃`。
 5. 若该对象的finalize方法不能`将对象与引用链建立连接`，该对象会被垃圾回收器清理。
 
-![](https://image.leejay.top/image/20200814/DSyHGvRfTYvE.png?imageslim)
+![](https://image.leejay.top/image/20200814/1LKD8vwaOJzB.png?imageslim)
 
 ```java
 public class ReachabilityAnalysis {
