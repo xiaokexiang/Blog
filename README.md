@@ -14,34 +14,33 @@ hugo server --theme=${theme name} -D
 
 ### workflow
 ```yaml
-name: github pages
+name: Deploy Hugo # 随意填写
 
 on:
   push:
     branches:
-      - main # your branch
+      - master # hugo blog 所在分支
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+      - uses: actions/checkout@v1
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.74.2'
-          # extended: true
+          hugo-version: latest
 
-      - name: Build
-        run: hugo --minify
+      - name: Build 
+        run: hugo
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          personal_token: ${{ secrets.personal_token }} # personal_token 这里新建一个 https://github.com/settings/tokens
+          EXTERNAL_REPOSITORY: xiaokexiang/xiaokexiang.github.io # 你的github pages的名字
+          PUBLISH_BRANCH: master  # 推送到当前 github pages的分支名字
+          PUBLISH_DIR: ./public  # hugo 生成到 public 作为跟目录
+          commit_message: ${{ github.event.head_commit.message }}
 ```
