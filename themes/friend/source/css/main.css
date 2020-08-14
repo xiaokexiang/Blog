@@ -13,7 +13,7 @@ body {
   padding: 0;
   font-size: 1.1rem;
   line-height: 1.6;
-  font-family: 'Fira Code','Microsoft JhengHei', 'Microsoft Yahei';
+  font-family: 'Noto Sans SC','Fira Code','Microsoft JhengHei';
   font-weight: 600;
   background-color: var(--background);
   color: var(--color);
@@ -145,7 +145,7 @@ code {
   font-weight: bold;
   padding: 2px 4px;
   border-radius: 2px;
-  font-family: 'Fira Code', 'consolas', 'Microsoft JhengHei', 'Microsoft Yahei';
+  font-family: 'Fira Code','Noto Sans SC','Microsoft JhengHei';
   font-size: 1.1rem;
   color: #ef0505;
   background-color: #f8f8f8;

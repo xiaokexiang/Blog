@@ -12,7 +12,7 @@ code[class*="language-"],
 pre[class*="language-"] {
     color: #f8f8f2;
     background: none;
-    font-family: 'Fira Code', 'consolas', 'Microsoft JhengHei', 'Microsoft Yahei';
+    font-family: 'Fira Code', 'Noto Sans SC', 'Microsoft JhengHei', 'Microsoft Yahei';
     font-weight: normal;
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
     font-size: .93em;
