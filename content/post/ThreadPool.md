@@ -35,7 +35,7 @@ hideReadMore: true
 #### 构造
 
 ```java
-// 阻塞队列，具体实现由构造函数巨顶
+// 阻塞队列，具体实现由构造函数决定
 private final BlockingQueue<Runnable> workQueue;
 private volatile int corePoolSize;
 private volatile int maximumPoolSize;
@@ -190,8 +190,7 @@ private void decrementWorkerCount() {
 >
 > `TERMINATED`：`terminated()`执行完毕，至此线程池才真正关闭。
 >
-> ![线程迁移状态](https://image.leejay.top/image/20200714/VvPgLR2A4lCT.png?imageslim)
-
+> ![线程迁移状态](https://image.leejay.top/image/20200714/C5qLgqKHxr5W.png?imageslim)
 ---
 
 ### 线程池的关闭
