@@ -459,7 +459,7 @@ private List<Runnable> drainQueue() {
 ```java
 @Slf4j
 public class ThreadPoolExecutorTest {
-    private static final ExecutorService POOL = 		ThreadPoolSingleton.getInstance();
+    private static final ExecutorService POOL = ThreadPoolSingleton.getInstance();
 
     public static void main(String[] args) {
         POOL.execute(() -> {
@@ -742,10 +742,9 @@ private void addWorkerFailed(Worker w) {
 >
 > 2. `没有firstTask任务`的协助线程：
 >
-> ​     ① 线程池`处于SHUTDOWN期间，协助快速处理阻塞队列任务`的线程。
+>       ① 线程池`处于SHUTDOWN期间，协助快速处理阻塞队列任务`的线程。
 >
-> ​     ② 线程池中`没有固定线程(即corePoolSize=0)`，但此时有任务需要执行的情况。
-
+>       ② 线程池中`没有固定线程(即corePoolSize=0)`，但此时有任务需要执行的情况。
 ---
 
 ### 线程池执行任务
@@ -1019,9 +1018,9 @@ private void processWorkerExit(Worker w, boolean completedAbruptly) {
 > W/C： wait time/compute time  Cpu运行类型分为I/O密集型(W)和计算密集型(C)    
 > ```
 >
-> > 假设：CPU使用率是100%，那么公式可以变成：`NThreads = NCpus * (1 + W/C)`
-> >
-> > 1. 如果是`I/O密集型(数据库交互、文件上传下载、网络数据传输等)`，W越大，那么 W/C > 1， NThreads >= 2 * NCpus。
-> > 2. 如果是`计算密集型(复杂算法之类的)`，W 接近于0，NThreads >= NCpus，推荐NCpus+1，这样即使`当计算密集型线程偶尔由于缺失故障或者其他原因线程暂停，这个额外的线程也能确保CPU时钟周期不被浪费`， 至于多一个cpu上下文切换是否值得，具体项目具体测试。
-> >
-> > 推荐：` I/O密集型： NThread = 2NCpu。 计算密集型 NThread = NCpus + 1`。
+> 假设：CPU使用率是100%，那么公式可以变成：`NThreads = NCpus * (1 + W/C)`
+>
+> 1. 如果是`I/O密集型(数据库交互、文件上传下载、网络数据传输等)`，W越大，那么 W/C > 1， NThreads >= 2 * NCpus。
+> 2. 如果是`计算密集型(复杂算法之类的)`，W 接近于0，NThreads >= NCpus，推荐NCpus+1，这样即使`当计算密集型线程偶尔由于缺失故障或者其他原因线程暂停，这个额外的线程也能确保CPU时钟周期不被浪费`， 至于多一个cpu上下文切换是否值得，具体项目具体测试。
+>
+> 推荐：` I/O密集型： NThread = 2NCpu。 计算密集型 NThread = NCpus + 1`。
