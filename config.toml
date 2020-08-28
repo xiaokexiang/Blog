@@ -45,4 +45,8 @@ paginate = 5
         identifier = "categories"
         name = "Categories"
         url = "/categories"
-     
+# 内嵌html配置       
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
