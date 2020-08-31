@@ -1,7 +1,7 @@
 ---
 title: "JVM内存区域概述"
 date: 2020-08-13T13:21:20+08:00
-description: "基于JDK8的JVM内存区域概述、JVM中对象的创建及常量池相关概念浅析"
+description: "基于JDK8的`JVM内存区域概述`、JVM中`对象的创建`及`常量池`相关概念浅析"
 tags: ["JVM ","常量池"]
 categories: [
   "JVM"

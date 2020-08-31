@@ -1,7 +1,7 @@
 baseurl = "https://leejay.top"
 languageCode = "zh-Hans"
 theme = "friend"
-paginate = 5
+paginate = 8
 
 [params]
   # dir name of your blog content (default is `content/posts`)
@@ -50,3 +50,7 @@ paginate = 5
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"

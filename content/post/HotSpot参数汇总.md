@@ -1,7 +1,7 @@
 ---
 title: "HotSpot参数汇总"
 date: 2020-08-28T16:36:54+08:00
-description: "JVM中日常调优参数，收集器选择及相关配套参数"
+description: "JVM中日常`调优参数`，收集器选择及相关配套参数"
 tags: ["JVM ","Collectors"]
 categories: [
   "JVM"
@@ -40,7 +40,7 @@ hideReadMore: true
 | -XX:-ResizeTLAB                    | 禁止TLAB自动调整大小和浪费比例                   |
 | -XX:PretenureSizeThreshold=5242880 | 大于5m对象直接进入老年代，只对Serial、ParNew有用 |
 | -XX:MaxTenuringThreshold=15        | 晋升到老年代的年龄大小                           |
-| -XX:TargetSurvivorRation=50        | 用于`动态对象年龄`判断的s0的使用率参数，默认50   |
+| -XX:TargetSurvivorRatio=50        | 用于`动态对象年龄`判断的s0的使用率参数，默认50   |
 
 ---
 
@@ -49,9 +49,9 @@ hideReadMore: true
 | 参数                                | 新生代            | 老年代       |
 | ----------------------------------- | ----------------- | ------------ |
 | -XX:+UseSerialGC                    | Serial            | Serial Old   |
-| `-XX:+UseParallelGC`(JDK8默认)      | Parallel Scavenge | Parallel Old |
-| -XX:+UseParNewGC(JDK8过期)          | ParNew            | Serial Old   |
-| `-XX:+UseConcMarkSweepGC`(JDK9过期) | ParNew            | CMS          |
+| `-XX:+UseParallelGC`      | Parallel Scavenge | Parallel Old |
+| -XX:+UseParNewGC          | ParNew            | Serial Old   |
+| `-XX:+UseConcMarkSweepGC` | ParNew            | CMS          |
 | `-XX:UseG1GC`                       | G1                | G1           |
 
 ---
