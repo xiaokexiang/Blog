@@ -3,6 +3,7 @@ title: "ReadWriteLock源码解析"
 date: 2020-06-24T09:15:29+08:00
 description: "具备`独占锁和共享锁`两者特性的读写锁，适用于读操作多于写操作的场景。"
 tags: ["ReentrantReadWriteLock ","AQS"]
+weight: 6
 categories: [
   "Concurrent"
 ]
@@ -89,7 +90,7 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
 
 #### ThreadLocalHoldCounter
 
-除了需要记录锁被拿取的总次数，还需要记录每个线程分别拿走多少，所以我们使用[ThreadLocal](#7. ThreadLocal内存泄漏问题)，将记录的工作交给线程自己。
+除了需要记录锁被拿取的总次数，还需要记录每个线程分别拿走多少，所以我们使用`ThreadLocal`，将记录的工作交给线程自己。
 
 ```java
 abstract static class Sync extends AbstractQueuedSynchronizer {
@@ -385,7 +386,7 @@ final boolean tryWriteLock() {
   >    --rh.count;
   >    ```
   >
-  >    > 首先我们需要明确，在`读锁释放过程中，它只是清空了线程的貌私有HC，并没有处理cHC`。
+  >    > 首先我们需要明确，在`读锁释放过程中，它只是清空了线程的私有HC，并没有处理cHC`。
   >    >
   >    > 我们假设线程A（非第一个获取读锁的线程）获取了读锁，释放读锁后再一次获取读锁这个流程来分析：
   >    >

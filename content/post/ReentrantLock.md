@@ -3,6 +3,7 @@ title: "ReentrantLock源码解析"
 date: 2020-06-15T15:53:46+08:00
 description: "AbstractQueueSynchronizer是一种同步框架，而ReentrantLock是基于它实现的`可重入独占锁`，具有公平/非公平两种实现。"
 tags: ["ReentrantLock ","AQS"]
+weight: 8
 categories: [
   "Concurrent"
 ]

@@ -3,6 +3,7 @@ title: "HotSpot垃圾回收算法"
 date: 2020-08-14T16:33:06+08:00
 description: "如何判断`对象是否存活`的，对象的`回收流程`及垃圾回收器采用的算法。"
 tags: ["JVM ","reference"]
+weight: 6
 categories: [
   "JVM"
 ]

@@ -3,6 +3,7 @@ title: "Semaphore共享锁源码解析"
 date: 2020-06-20T16:09:38+08:00
 description: "Semaphore是基于AQS的`可重入共享锁`，具有公平和非公平模式。"
 tags: ["Semaphore ","AQS"]
+weight: 12
 categories: [
   "Concurrent"
 ]
