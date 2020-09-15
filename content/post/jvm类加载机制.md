@@ -3,6 +3,7 @@ title: "Jvm类加载机制"
 date: 2020-09-09T17:51:05+08:00
 description: "Java虚拟机的`类加载机制`、`类加载器`与自定义类加载器简单实现。"
 tags: ["JVM ","类加载"]
+weight: 25
 categories: [
   "JVM"
 ]
