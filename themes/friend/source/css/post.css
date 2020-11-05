@@ -5,6 +5,7 @@
     text-align: left;
     padding: 20px;
     margin: 20px auto;
+    word-break: break-all;
     @media (--tablet) {
         max-width: 660px;
     }
