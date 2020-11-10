@@ -2,6 +2,7 @@
 title: "SpringMVC使用注意"
 date: 2020-11-10T11:04:59+08:00
 description: "SpringMVC中的拦截器、事件使用的相关注意事项"
+weight: 1
 tags: ["SpringMVC ", "SpringBoot "]
 categories: [
   "Spring"
