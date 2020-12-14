@@ -239,6 +239,8 @@ th,
 td {
   border: 1px dashed var(--accent);
   padding: 10px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 th {
