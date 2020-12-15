@@ -1,18 +1,16 @@
 /* toc style */
 
 .toc {
-    position: fixed;
-    top: 50%;
-    right: 3%;
-    width: 20%;
+    position: absolute;
+    top: 1%;
+    right: -45%;
+    width: 40%;
     height: 450px;
     transform: translateY(-50%);
     /* background-color: #f6f6f6; */
     border: 1px solid hsla(0,0%,100%,.1);
     border-radius: 5px;
     padding-bottom: 1rem;
-    /* white-space: nowrap; */
-    /* text-overflow: ellipsis; */
     overflow-y: auto;
     overflow-x: hidden;
     color: var(--accent);
@@ -22,7 +20,7 @@
 .toc .page-header {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    margin-left: 1.5rem;
+    margin-left: 1rem;
 }
 
 .toc .li {

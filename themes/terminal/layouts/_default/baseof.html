@@ -13,11 +13,6 @@
 
   {{ partial "header.html" . }}
 
-  <!-- toc -->
-  {{ if ( .Site.Params.toc | default true ) }}
-      {{ partial "toc.html" . }}
-  {{ end }}
-  
   <div class="content">
     {{ block "main" . }}
     {{ end }}

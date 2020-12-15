@@ -11,6 +11,7 @@ const handleMenuClasses = () => {
   menu && menu.classList.toggle("hidden", isMobile());
   menuMore && menuMore.classList.toggle("hidden", !isMobile());
 };
+let scorll_event = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
 
 // Common
 
@@ -28,6 +29,12 @@ document.body.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", handleMenuClasses);
+
+// toc top
+window.addEventListener("scroll", () => {
+  const size = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+  document.getElementById("toc_id").style.top = 200 + size + 'px';
+});
 
 // Mobile menu
 

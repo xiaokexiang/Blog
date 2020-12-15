@@ -24,6 +24,7 @@
   text-align: left;
   margin: 20px auto;
   padding: 20px 0;
+  position: relative;
 
   @media (--tablet) {
     max-width: 660px;

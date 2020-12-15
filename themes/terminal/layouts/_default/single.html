@@ -1,5 +1,9 @@
 {{ define "main" }}
 <div class="post">
+    <!-- toc -->
+    {{ if ( .Site.Params.toc | default true ) }}
+      {{ partial "toc.html" . }}
+    {{ end }}
   <h1 class="post-title">
     <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h1>
   <div class="post-meta">
