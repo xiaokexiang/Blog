@@ -33,7 +33,10 @@ window.addEventListener("resize", handleMenuClasses);
 // toc top
 window.addEventListener("scroll", () => {
   const size = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-  document.getElementById("toc_id").style.top = 200 + size + 'px';
+  const toc = document.getElementById("toc_id")
+  if (toc !== null) {
+    document.getElementById("toc_id").style.top = 200 + size + 'px';
+  }
 });
 
 // Mobile menu
