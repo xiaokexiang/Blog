@@ -1074,4 +1074,4 @@ public static void execDelay() {
 // pool-1-thread-1 Start: scheduleWithFixedDelay: Thu Apr 08 14:12:35 CST 2021
 // pool-1-thread-1 End  : scheduleWithFixedDelay: Thu Apr 08 14:12:36 CST 2021
 ```
-> 下个线程必须等待上个线程执行完毕后`线程执行时长 + Delay时长`才会开始执行下个任务。
+> 下个线程必须与上个线程相差`线程执行时长 + Delay时长`，才会开始执行下个任务。
