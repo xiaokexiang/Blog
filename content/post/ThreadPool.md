@@ -1025,3 +1025,53 @@ private void processWorkerExit(Worker w, boolean completedAbruptly) {
 > 2. 如果是`计算密集型(复杂算法之类的)`，W 接近于0，NThreads >= NCpus，推荐NCpus+1，这样即使`当计算密集型线程偶尔由于缺失故障或者其他原因线程暂停，这个额外的线程也能确保CPU时钟周期不被浪费`， 至于多一个cpu上下文切换是否值得，具体项目具体测试。
 >
 > 推荐：` I/O密集型： NThread = 2NCpu。 计算密集型 NThread = NCpus + 1`。
+
+- Scheduled线程池中`scheduleAtFixedRate`和`scheduleWithFixedDelay`的区别
+
+```java
+public static void execRate() {
+    ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+    executorService.scheduleAtFixedRate(() -> {
+        try {
+            System.out.println(Thread.currentThread().getName() + " Start: scheduleAtFixedRate:  " + new Date());
+            Thread.sleep(1_000); // 任务执行需要1s
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(Thread.currentThread().getName() + " End  : scheduleAtFixedRate:    " + new Date());
+    }, 2L, 3L, TimeUnit.SECONDS); // 间隔3s
+}
+// pool-1-thread-1 Start: scheduleAtFixedRate:    Thu Apr 08 14:06:32 CST 2021
+// pool-1-thread-1 End  : scheduleAtFixedRate:    Thu Apr 08 14:06:33 CST 2021
+// pool-1-thread-1 Start: scheduleAtFixedRate:    Thu Apr 08 14:06:35 CST 2021 35-32=3
+// pool-1-thread-1 End  : scheduleAtFixedRate:    Thu Apr 08 14:06:36 CST 2021
+// pool-1-thread-1 Start: scheduleAtFixedRate:    Thu Apr 08 14:06:38 CST 2021 38-35=3
+// pool-1-thread-1 End  : scheduleAtFixedRate:    Thu Apr 08 14:06:39 CST 2021
+
+```
+> 1. 如果线程执行任务的时间小于period设置的时间，那么即使上个线程任务执行完毕，下个线程也会等到`与上个线程相差period时间`后才会执行下个任务。
+> 2. 如果线程执行任务的时间大于period设置的时间，那么线程任务执行完毕就会立即开始执行下个任务，因为时差已经达到了period。
+
+
+```java
+public static void execDelay() {
+    ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
+    executorService.scheduleWithFixedDelay(() -> {
+        try {
+            System.out.println("Start: scheduleWithFixedDelay: " + new Date());
+            Thread.sleep(1_000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("End  : scheduleWithFixedDelay: " + new Date());
+    }, 2L, 2L, TimeUnit.SECONDS);
+}
+
+// pool-1-thread-1 Start: scheduleWithFixedDelay: Thu Apr 08 14:12:29 CST 2021
+// pool-1-thread-1 End  : scheduleWithFixedDelay: Thu Apr 08 14:12:30 CST 2021
+// pool-1-thread-1 Start: scheduleWithFixedDelay: Thu Apr 08 14:12:32 CST 2021
+// pool-1-thread-1 End  : scheduleWithFixedDelay: Thu Apr 08 14:12:33 CST 2021
+// pool-1-thread-1 Start: scheduleWithFixedDelay: Thu Apr 08 14:12:35 CST 2021
+// pool-1-thread-1 End  : scheduleWithFixedDelay: Thu Apr 08 14:12:36 CST 2021
+```
+> 下个线程必须等待上个线程执行完毕后`线程执行时长 + Delay时长`才会开始执行下个任务。
