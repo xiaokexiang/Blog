@@ -1,0 +1,56 @@
+baseurl = "https://leejay.top"
+languageCode = "zh-Hans"
+theme = "friend"
+paginate = 8
+
+[params]
+  # dir name of your blog content (default is `content/posts`)
+  contentTypeName = "post"
+  # "light" or "dark"
+  defaultTheme = "light"
+  # if you set this to 0, only submenu trigger will be visible
+  showMenuItems = 2
+  # Enable to show reading time in minutes for posts
+  showReadingTime = false
+[languages]
+  [languages.en]
+    title = "Aurora"
+    subtitle = "🎈🎈🎈"
+    keywords = ""
+    copyright = "苏ICP备18050258号"
+    menuMore = "更多"
+    writtenBy = "Written by"
+    readMore = "阅读更多"
+    readOtherPosts = "其他文章"
+    newerPosts = "上一页"
+    olderPosts = "下一页"
+    minuteReadingTime = "阅读时间"
+    dateFormatSingle = "2006-01-02"
+    dateFormatList = "2006-01-02"
+
+    [languages.en.params.logo]
+      logoText = "Aurora"
+      logoHomeLink = "https://leejay.top"
+    # or
+    #
+    # path = "/img/your-example-logo.svg"
+    # alt = "Your example logo alt text"
+
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        identifier = "tags"
+        name = "Tags"
+        url = "/tags"
+      [[languages.en.menu.main]]
+        identifier = "categories"
+        name = "Categories"
+        url = "/categories"
+# 内嵌html配置       
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"

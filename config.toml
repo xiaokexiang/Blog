@@ -1,0 +1,51 @@
+baseurl = "https://leejay.top/"
+languageCode = "en-us"
+theme = "terminal"
+paginate = 8
+
+[params]
+  contentTypeName = "post"
+  themeColor = "orange"
+  showMenuItems = 2
+  fullWidthTheme = false
+  centerTheme = true
+  favicon="/img/favicon.png"
+[languages]
+  [languages.en]
+    title = "Keep Improving"
+    subtitle = "🎈🎈🎈"
+    keywords = ""
+    copyright = "苏ICP备18050258号"
+    menuMore = "更多"
+    writtenBy = "Written by"
+    readMore = "阅读更多"
+    readOtherPosts = "其他文章"
+    NewerPosts = "上一页"
+    OlderPosts = "下一页"
+    minuteReadingTime = "阅读时间"
+    dateFormatSingle = "2006-01-02"
+    dateFormatList = "2006-01-02"
+
+    [languages.en.params.logo]
+      logoText = "无边落木萧萧下，不尽长江滚滚来"
+      logoHomeLink = "https://leejay.top"
+      # logoHomeLink = "/"
+
+    # [languages.en.menu]
+    #   [[languages.en.menu.main]]
+    #     identifier = "tags"
+    #     name = "Tags"
+    #     url = "/tags"
+    #   [[languages.en.menu.main]]
+    #     identifier = "categories"
+    #     name = "Categories"
+    #     url = "/categories"
+# 内嵌html配置       
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"
