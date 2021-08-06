@@ -387,4 +387,26 @@ SELECT A.*, B.* FROM A RIGHT JOIN B ON A.id = B.id WHERE A.age > 10;
 
 ## Mysql基于成本的优化
 
+### 成本的定义
+
+- I/O成本：数据从磁盘加载到内存中,基于InnoDB存储引擎，页是交互的基本单位，成本常数为1.0。
+- CPU成本：读取以及检测记录是否满足对应的搜索条件，对结果集进行排序.成本常数为0.2。
+
+### 单表查询的成本
+
+#### 基于成本的优化步骤
+
+![](https://image.leejay.top/FjnYzl9paMRg3ikoAe8c1KitfQgO)
+
+#### 基于索引统计数据的成本计算
+
+![](https://image.leejay.top/Fr9WBjq_vmiWXxIa7y5xoXqSEQay)
+
+### 多表连接的成本
+
+![](https://image.leejay.top/FoM8ItkUI26AxAhNrgCF0GKj7bYh)
+
+> 多表连接的成本计算`依托于单表查询的成本计算`，且`多表连接的顺序不同导致不同的成本（n!种顺序，n>1）`。
+
+---
 
