@@ -300,7 +300,7 @@ SELECT * FROM single_table WHERE key1 = 'abc' AND key2 > 1000;
 SELECT * FROM single_table WHERE key1 = 'a' AND key3 = 'b';
 ```
 
-1. 主键列可以是范围匹配。因为二级索引的列相同时会按照主键的顺序进行排序，有序的主键有助于提升取交集速度。
+2. 主键列可以是范围匹配。因为二级索引的列相同时会按照主键的顺序进行排序，有序的主键有助于提升取交集速度。
 
 ```mysql
 # 可能会用到聚簇索引和二级索引合并，因为key1作为二级索引叶子节点中是包含主键的，可以直接二级索引查询后再
@@ -409,4 +409,17 @@ SELECT A.*, B.* FROM A RIGHT JOIN B ON A.id = B.id WHERE A.age > 10;
 > 多表连接的成本计算`依托于单表查询的成本计算`，且`多表连接的顺序不同导致不同的成本（n!种顺序，n>1）`。
 
 ---
+## Mysql基于规则的优化
+### 条件化简
+![](https://image.leejay.top/FrMLiZwyvlTu1ehOMCowMU7H5cOE)
 
+### 外连接消除
+外连查询中的被驱动表的 IS NOT NULL等同于两表内联查询。
+```mysql
+SELECT S1.*, S2.* FROM S1 LEFT JOIN S2 ON S1.id = S2.id WHERE S2 IS NOT NULL;
+转换为
+SELECT S1.*, S2.* FROM S1,S2 WHERE S1.id = S2.id
+```
+
+### 子查询优化 
+![](https://image.leejay.top/Fqla9zqISkoC9etH3NDWb0KAZMdP)
