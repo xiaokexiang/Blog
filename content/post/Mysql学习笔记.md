@@ -586,3 +586,159 @@ SHOW WARNINGS;
 
 ---
 
+## 事务
+
+### 事务的属性
+
+![](https://image.leejay.top/FgHSE1SE423hCiFbkPdrEs5Ehuhp)
+
+### 事务的基本命令
+
+```mysql
+BEGIN;
+START TRANSACTION [READ ONLY|READ WRITE|WITH CONSISTENT SNAPSHOT];
+ROLLBACK;
+# 手动提交
+COMMIT;
+# 查看自动提交是否开启
+SHOW VARIABLES LIKE 'AUTOCOMMIT';
+# 开启自动提交
+SET AUTOCOMMIT = 'ON';
+# 保存点savepoint
+SAVEPOINT [save name];
+# 回滚到保存点
+ROLLBACK TO SAVEPOINT [save name];
+# 删除保存点
+RELEASE SAVEPOINT [save name];
+```
+
+### redo log（保证持久性）
+
+`InnoDB`存储引擎是以页为单位来管理存储空间的，每次都把磁盘的数据读到内存中`Buffer Pool`后才能使用，又因为事务需要具备`持久性`，如果我们只在内存的`Buffer Pool`中修改了页面，假设在事务提交后突然发生了某个故障，导致内存中的数据都失效了，那么这个已经提交了的事务对数据库中所做的更改也就跟着丢失了。所以引入了`redo log`，又称为`redo 日志`。
+
+>  将第0号表空间的100号页面的偏移量为1000处的值更新为`2`
+
+在事务提交时，把上述内容刷新到磁盘中，即使之后系统崩溃了，重启之后只要按照上述内容所记录的步骤重新更新一下数据页，那么该事务对数据库中所做的修改又可以被恢复出来，也就意味着满足`持久性`的要求。上述内容被称为`redo 日志`。`redo 日志`具有如下优点：
+
+- `redo`日志占用的空间非常小
+- `redo`日志是顺序写入磁盘的
+
+![](https://image.leejay.top/FgBvSFXW44giQZrgiJpW9_87kuiT)
+
+### undo log（保证原子性）
+
+在事务的使用过程中因为服务异常或手动调用`ROLLBACK`命令时，需要将数据改回原状以保证原子性。而这边为了`回滚`而记录的信息叫做`undo 日志`。
+
+### 事务的隔离级别
+
+| 事务隔离级别                          | 脏读 | 不可重复度 | 幻读 |
+| :------------------------------------ | :--- | :--------- | :--- |
+| Read Uncommited（读未提交）           | ×    | ×          | ×    |
+| Read Committed（读已提交 Oracle默认） | √    | ×          | ×    |
+| Repeatable Read（可重复读 MySQL默认） | √    | √          | ×    |
+| Serializable（序列化）                | √    | √          | √    |
+
+```mysql
+# 查看事务隔离级别
+# mysql5.7.20前
+SHOW VARIABLES LIKE '%tx_isolation%'
+SELECT @@tx_isolation;
+# mysql8
+SELECT @@transaction_isolation;
+
+# 设置事务隔离级别
+SET [SESSION|GLOBAL] TRANSACTION ISOLATION LEVEL [READ UNCOMMITTED|READ COMMITTED|REPEATABLE READ|SERIALIZABLE]
+```
+
+---
+
+## MVCC
+
+MVCC（多版本并发控制）指的就是在使用READ COMMITTD、REPEATABLE READ这两种隔离级别的事务在执行普通的SELECT操作时访问记录的版本链的过程。使不同的事务读写、写读并发执行，提升系统性能。
+
+> 事务利用`MVCC`进行的读取操作称之为`一致性读`。所有普通的`SELECT`语句（`plain SELECT`）在`READ COMMITTED`、`REPEATABLE READ`隔离级别下都算是`一致性读`。
+
+### 版本链
+
+Innodb的行格式中包含两个隐藏列，分别是`trx_id`和`roll_pointer`，如果没有主键或唯一索引也会创建隐藏列`row_id`。
+
+- trx_id
+
+每次一个事务对某条聚簇索引记录进行改动时，都会把该事务的`事务id`赋值给`trx_id`隐藏列。
+
+> 只有在事务对表中的记录做改动时（增删改）才会为这个事务分配一个唯一的`事务id`。整个系统中分配的`事务id`值是一个递增的数字。先被分配`id`的事务得到的是较小的`事务id`，后被分配`id`的事务得到的是较大的`事务id`。
+
+- roll_pointer
+
+每次对某条聚簇索引记录进行改动时，都会把旧的版本写入到`undo日志`中，然后这个隐藏列就相当于一个`指针`，可以通过它来找到该记录修改前的信息。
+
+> `undo日志`被存放到了类型为`FIL_PAGE_UNDO_LOG`的页面中。
+
+![](https://image.leejay.top/FiQ_8fz_DRgQ7xNk766_RSjjxWko)
+
+对记录每次更新后，都会将旧值放到一条`undo日志`中，就算是该记录的一个旧版本，随着更新次数的增多，所有的版本都会被`roll_pointer`属性连接成一个链表，我们把这个链表称之为`版本链`，版本链的头节点就是当前记录最新的值。另外，每个版本中还包含生成该版本时对应的`事务id`。
+
+### ReadView
+
+#### 概念
+
+- `m_ids`：表示在生成`ReadView`时当前系统中活跃的读写事务的`事务id`列表。
+
+- `min_trx_id`：表示在生成`ReadView`时当前系统中活跃的读写事务中最小的`事务id`，也是`m_ids`中的最小值。
+
+- `max_trx_id`：表示生成`ReadView`时系统中应该分配给下一个事务的`id`值。
+
+  > 注意max_trx_id并不是m_ids中的最大值，事务id是递增分配的。比方说现在有id为1，2，3这三个事务，之后id为3的事务提交了。那么一个新的读事务在生成ReadView时，m_ids就包括1和2，min_trx_id的值就是1，max_trx_id的值就是4。
+
+- `creator_trx_id`：表示生成该`ReadView`的事务的`事务id`。
+
+  > 只有在对表中的记录做改动时（执行INSERT、DELETE、UPDATE这些语句时）才会为事务分配事务id，否则在一个只读事务中的事务id值都默认为0。
+
+#### 规则
+
+| 规则                                           | 结果                                                         |
+| :--------------------------------------------- | :----------------------------------------------------------- |
+| **trx_id = creator_trx_id**                    | 着当前事务在访问它自己修改过的记录，所以该版本可以被当前事务访问。 |
+| **trx_id < min_trx_id**                        | 当前事务在生成ReadView之前已提交(即不活跃)，所以可以访问     |
+| **trx_id >= max_trx_id**                       | 当前事务在生成ReadView后才开启，所以不能访问                 |
+| **trx_id >= min_trx_id & trx_id < max_trx_id** | 如果当前事务id在m_ids中，说明该事务仍活跃，则不能被访问，不在m_ids中则可以访问 |
+
+> 依次和版本链中（包含页面中的那条数据）的数据依次进行比对，找到符合的数据就返回并退出比对。
+
+#### 生成时间
+
+- READ COMMITTED（`每次SELECT前都生成一个ReadView`）
+
+- REPEATABLE READ（`在第一次SELECT的时候生成一个ReadView`）
+
+---
+
+## 锁
+
+### 表级
+
+![](https://image.leejay.top/FiXjk26bZZfdbX2y-1NedMILfMlT)
+
+```mysql
+# 创建表级读写锁
+LOCK TABLES T1 READ, T2 WRITE;
+# 解锁
+UNLOCK TABLES;
+# 手动查看当前被锁的表并KILL
+SHOW OPEN TABLES where In_use > 0
+SHOW PROCESSLIST
+KILL ${ID}
+```
+
+### 行级
+
+![](https://image.leejay.top/Fh1Nn1_6SmYIXXxb0_J91WJ7e77D)
+
+```mysql
+# 共享锁
+SELECT * FROM T1 LOCK IN SHARE MODE;
+# 独占锁
+SELECT * FROM T1 FOR UPDATE;
+```
+
+
