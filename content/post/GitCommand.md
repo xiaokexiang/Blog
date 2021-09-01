@@ -29,6 +29,10 @@ git branch ${branch_name}
 git checkout ${branch_name}
 # 创建并切换到这个分支
 git checkout -b ${branch_name}
+# 将source分支指向目标分支或目标版本
+git branch -f <source_branch_name> <dest_branch_name|version num>
+# 删除指定分支
+git branch [-D|-d] <branch_name>
 ```
 
 ### 合并
@@ -114,6 +118,8 @@ git checkout .
 ```shell
 # 将本地分支记录回退一个版本实现撤销
 git reset HEAD~1
+# 将本地仓库的提交恢复到指定的版本号，--hard表示改动不保留，--soft表示改动保留（默认）
+git reset [--hard|--soft] <version num>
 ```
 
 #### git revert
@@ -224,4 +230,13 @@ git remote set-url origin ${new_url}
 
 # 修改当前分支名称
 git branch -M ${new_branch_name}
+
+# 根据tag拉取代码
+git clone -b <tag name> <url>
+
+# 推送tag到远端
+git push origin <tag name>
+
+# 删除远端tag标签
+git push origin :<tag name>
 ```
