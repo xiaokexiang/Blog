@@ -27,7 +27,7 @@ paginate = 8
     dateFormatList = "2006-01-02"
 
     [languages.en.params.logo]
-      logoText = "无边落木萧萧下，不尽长江滚滚来"
+      logoText = "HelloWorld"
       logoHomeLink = "https://leejay.top"
       # logoHomeLink = "/"
 
