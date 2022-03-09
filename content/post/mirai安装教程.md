@@ -104,8 +104,6 @@ adapterSettings:
 
 ```python
 async def read_message():
-    # 先校验cookie,而不是抢购时再校验
-    login.scan_login()
     async with websockets.connect(
             'ws://{0}/message?verifyKey={1}&qq={2}'.format(host, verify_key, str(login_qq))) as websocket:
         log.info('mirai websocket 服务连接成功！')
