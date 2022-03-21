@@ -1,7 +1,6 @@
 ---
 title: "Kubernetes概念入门"
 date: 2021-04-09T11:07:57+08:00
-weight: 1
 description: "Kubernetes是用于自动部署，扩展和管理容器化应用程序的开源系统。"
 tags: ["Kubernetes "]
 categories: [

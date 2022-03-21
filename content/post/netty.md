@@ -2,7 +2,6 @@
 title: "Netty框架入门"
 date: 2020-12-14T17:58:49+08:00
 description: "网络编程框架: Netty结构、组件知识点入门。"
-weight: 1
 tags: ["Netty ", "NetWork"]
 categories: [
   "Netty"

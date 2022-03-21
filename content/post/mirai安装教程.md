@@ -1,7 +1,6 @@
 ---
 title: "Mirai安装教程"
 date: 2022-03-07T10:21:01+08:00
-weight: 3
 tags: ["mirai"]
 categories: [
   "mirai"

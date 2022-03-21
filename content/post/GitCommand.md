@@ -2,7 +2,6 @@
 title: "Git Command"
 date: 2021-08-25T16:39:56+08:00
 description: "基于https://learngitbranching.js.org的Git学习笔记"
-weight: 1
 tags: ["git"]
 categories: [
   "git"

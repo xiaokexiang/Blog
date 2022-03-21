@@ -1,7 +1,6 @@
 ---
 title: "Redis（一）基本数据结构"
 date: 2021-01-28T11:10:39+08:00
-weight: 1
 tags: ["Redis"]
 categories: [
   "Redis"

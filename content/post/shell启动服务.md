@@ -2,7 +2,6 @@
 title: "Shell启动服务"
 date: 2020-12-29T18:29:04+08:00
 description: "shell脚本通过jar方式启动java服务"
-weight: 3
 tags: ["shell","linux"]
 categories: [
   "Shell"

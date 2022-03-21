@@ -1,7 +1,6 @@
 ---
 title: "Redis（二）持久化与复制"
 date: 2021-02-23T11:27:01+08:00
-weight: 1
 tags: ["Redis"]
 categories: [
   "Redis"

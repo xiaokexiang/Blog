@@ -2,7 +2,6 @@
 title: "HotSpot垃圾收集器"
 date: 2020-08-20T16:34:32+08:00
 description: "JVM中`常见的垃圾收集器`，以及对象在堆中的`分配流程`。"
-weight: 10
 tags: ["JVM ","Collectors"]
 categories: [
   "JVM"

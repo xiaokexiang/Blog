@@ -2,7 +2,6 @@
 title: "Mysql学习笔记"
 date: 2021-07-23T09:51:37+08:00
 description: "基于掘金小册《Mysql是怎样运行》的读书笔记。"
-weight: 1
 tags: ["Mysql"]
 categories: [
   "Mysql"
