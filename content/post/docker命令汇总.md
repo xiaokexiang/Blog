@@ -102,3 +102,46 @@ docker run -it --name nginx \
 ```
 
 > nginx的配置文件可以通过`nginx -t`来进行校验。
+
+
+
+## Dockerfile的指令对比
+
+### ADD & COPY
+
+`两者都可以将宿主机的文件到容器内，ADD具备自动解压的功能，而COPY只是复制功能。`
+
+```dockerfile
+FROM busybox
+ADD hello.tar /
+COPY hello.tar /
+```
+
+> - 使用ADD命令，镜像build后，在/目录下就会存在解压后的文件（`不会存在压缩包！`）
+> - 使用COPY命令，镜像build后，在/目录下会存在压缩包。
+
+### CMD & ENTRYPOINT
+
+`两者都用于指定容器启动程序及参数，当存在ENTRYPOINT时，CMD的内容会作为参数传递给ENTRYPOINT。`需要注意的是：我们执行`docker run busybox echo hello`指令中的`echo hello`就是CMD命令（默认覆盖Dockerfile中的CMD命令），只是它没有写在了Dockerfile中，而是显示的传入。
+
+```dockerfile
+FROM busybox
+CMD ["ls", "-l"]
+# ENTRYPOINT ["ls", "-l"]
+```
+
+> - 镜像build后，若执行docker run image -h,那么会提示错误信息。而将CMD换成ENTRYPOINT则不会。
+
+### ENV & ARG
+
+`两者都用于设置环境变量，区别在于ENV无论是镜像构建时还是容器运行时，都可以使用。ARG只是用于构建镜像时使用，容器运行时不会出现。`
+
+```dockerfile
+FROM busybox
+ENV NAME="helloworld"
+WORKDIR /
+RUN touch $NAME # 构建镜像时使用变量
+CMD ["sh", "-c", "echo $NAME && ls"]
+```
+
+> - 如果此处不使用`sh -c`执行命令，那么并不会正确显示ENV变量。
