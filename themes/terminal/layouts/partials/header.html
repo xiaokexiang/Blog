@@ -10,4 +10,9 @@
   {{ if len $.Site.Menus }}
     {{ partial "menu.html" . }}
   {{ end }}
+  {{ if (.Params.mermaid) }}
+  <!-- MermaidJS support -->
+  <script async src="https://cdn.bootcdn.net/ajax/libs/mermaid/9.1.1/mermaid.min.js"></script>
+  {{ end }}
+  {{ partial "mathjax.html" . }}
 </header>
