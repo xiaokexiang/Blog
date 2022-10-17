@@ -2,7 +2,7 @@
   <div class="footer__inner">
     {{ if $.Site.Copyright }}
       <div class="copyright copyright--user">
-        <span>{{ $.Site.Copyright | safeHTML }}</span>
+        <span><a rel="nofollow" href="https://beian.miit.gov.cn/" target="_blank">{{ $.Site.Copyright | safeHTML }}</a></span>
     {{ else }}
       <div class="copyright">
         <span>© {{ now.Year }} Powered by <a href="http://gohugo.io">Hugo</a></span>
