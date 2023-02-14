@@ -6,6 +6,7 @@ categories: [
   "Docker",
   "Linux"
 ]
+slug: docker
 ---
 
 ## Docker cp

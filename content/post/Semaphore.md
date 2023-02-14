@@ -7,6 +7,7 @@ categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_semaphore
 ---
 ### acquire
 

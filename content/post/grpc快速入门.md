@@ -7,6 +7,7 @@ categories: [
   "grpc"
 ]
 hideReadMore: true
+slug: grpc
 ---
 
 ## Grpc快速入门

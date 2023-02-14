@@ -1,11 +1,12 @@
 ---
-title: "Spring Security框架入门与源码解析"
+title: "Spring Security基础入门"
 date: 2021-03-19T17:47:21+08:00
 description: "Spring Security作为Java Web的安全框架，用于实现安全控制。"
 tags: ["Spring Security"]
 categories: [
   "Java"
 ]
+slug: spring_security_in_action
 ---
 
 ## Spring Security入门

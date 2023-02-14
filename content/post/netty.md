@@ -6,6 +6,7 @@ tags: ["Netty ", "NetWork"]
 categories: [
   "Netty"
 ]
+slug: netty
 ---
 
 ## Netty

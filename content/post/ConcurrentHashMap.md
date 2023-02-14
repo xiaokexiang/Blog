@@ -8,6 +8,7 @@ categories: [
   "Collection"
 ]
 hideReadMore: true
+slug: concurrent_hash_map
 ---
 
 ### ConcurrentHashMap

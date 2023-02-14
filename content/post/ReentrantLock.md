@@ -3,11 +3,11 @@ title: "ReentrantLock源码解析"
 date: 2020-06-15T15:53:46+08:00
 description: "AbstractQueueSynchronizer是一种同步框架，而ReentrantLock是基于它实现的`可重入独占锁`，具有公平/非公平两种实现。"
 tags: ["ReentrantLock ","AQS"]
-weight: 11
 categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_reentrant_lock
 ---
 Lock与Synchronized都是`可重入锁`，否则会发生死锁。Lock锁核心在于`AbstractQueueSynchronizer`，又名`队列同步器(简称AQS)`。如果需要实现自定义锁，除了需要实现Lock接口外，还需要内部类继承Sync类。
 

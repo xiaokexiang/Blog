@@ -8,6 +8,7 @@ categories: [
   "Future"
 ]
 hideReadMore: true
+slug: concurrent_future
 ---
 
 ### Future

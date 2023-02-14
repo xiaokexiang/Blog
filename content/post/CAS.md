@@ -6,6 +6,7 @@ tags: ["CAS ","原子性"]
 categories: [
   "Concurrent"
 ]
+slug: concurrent_cas
 hideReadMore: true
 ---
 

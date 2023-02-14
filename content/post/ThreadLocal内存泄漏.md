@@ -2,12 +2,12 @@
 title: "ThreadLocal内存泄漏分析"
 date: 2020-06-04T14:49:04+08:00
 description: "ThreadLocal的内存泄露问题。"
-weight: 20
 tags: ["ThreadLocal ", "内存泄漏"]
 categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_thread_local
 ---
 
 ### ThreadLocal概述

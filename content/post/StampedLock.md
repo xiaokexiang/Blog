@@ -7,6 +7,7 @@ categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_stamped_lock
 ---
 
 `JDK1.8`新增的并发工具，回顾之前的`ReentrentReadWriteLock`，它是悲观锁的实现：`只要有线程获取了读锁，获取写锁的线程就需要等待，但有可能导致写锁无限等待（其中使用了apparentlyFirstQueuedIsExclusive方法一定概率降低了写锁无限等待的问题）`。

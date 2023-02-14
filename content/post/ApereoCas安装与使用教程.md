@@ -3,8 +3,9 @@ title: "ApereoCas安装与使用教程"
 date: 2021-11-22T15:30:48+08:00
 tags: ["CAS ","SSO "]
 categories: [
-  "新瓶装旧酒 "
+  "SSO "
 ]
+slug: aperao_cas
 ---
 ## 前言
 `正值疫情期间，一直在家办公，年前年后一直在忙基于Apereo Cas的单点登陆相关的需求，目前已经完成了大半的工作，特此记录下Apereo Cas的安装与使用教程。`

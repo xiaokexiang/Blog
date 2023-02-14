@@ -5,6 +5,7 @@ tags: ["linux "]
 categories: [
   "linux"
 ]
+slug: linux_cron
 ---
 
 ### crontab命令

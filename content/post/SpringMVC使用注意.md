@@ -7,6 +7,7 @@ categories: [
   "Spring"
 ]
 hideReadMore: true
+slug: spring_mvc
 ---
 
 ### SpringMVC相关问题

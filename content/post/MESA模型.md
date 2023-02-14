@@ -7,6 +7,7 @@ categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_mesa
 ---
 
 在解释MESA模型之前，我们需要了解什么是`管程：又称为监视器，它是描述并实现对共享变量的管理与操作，使其在多线程下能正确执行的一个管理策略。可以理解成临界区资源的管理策略。`MESA模型是管程的一种实现策略，Java使用的就是该策略。

@@ -8,6 +8,7 @@ categories: [
   "Collection"
 ]
 hideReadMore: true
+slug: concurrent_copy_on_write_arraylist
 ---
 
 ### CopyOnWriteArrayList

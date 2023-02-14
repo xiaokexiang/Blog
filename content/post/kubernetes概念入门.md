@@ -6,6 +6,7 @@ tags: ["Kubernetes "]
 categories: [
   "Kubernetes "
 ]
+slug: kubernetes
 ---
 
 ## 容器与虚拟机的区别

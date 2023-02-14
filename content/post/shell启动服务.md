@@ -6,6 +6,7 @@ tags: ["shell","linux"]
 categories: [
   "Shell"
 ]
+slug: linux_shell
 ---
 
 ```shell

@@ -7,6 +7,7 @@ categories: [
   "Spring AOP "
 ]
 hideReadMore: true
+slug: enable_aspectj_auto_proxy
 ---
 
 > 最近在阅读Spring AOP的源码(基于Spring 5.2.8.RELEASE)中，发现`@EnableAspectJAutoProxy`注解中的`proxyTargetClass`参数并不如注释（`是否创建基于子类的CGLIB代理`）中说所的哪样生效。无论我设置成true/false都会使用CGLIB代理。

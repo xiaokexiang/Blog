@@ -7,6 +7,7 @@ categories: [
   "tinyproxy"
 ]
 hideReadMore: true
+slug: tiny_proxy
 ---
 
 > <a href="http://tinyproxy.github.io/">Tinyproxy</a>是一个轻量级的HTTP / HTTPS代理守护进程，快速且小巧。

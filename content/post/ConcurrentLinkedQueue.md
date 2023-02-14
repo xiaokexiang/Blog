@@ -8,6 +8,7 @@ categories: [
   "Collection"
 ]
 hideReadMore: true
+slug: concurrent_linked_queue
 ---
 ### ConcurrentLinkedQueue
 

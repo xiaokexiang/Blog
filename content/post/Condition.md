@@ -7,6 +7,7 @@ categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_condition
 ---
 Condition是一个接口，其实现在Lock内，需要配合Lock锁使用。其内部构建了一个单向队列，操作时不需要使用CAS来保证同步。
 

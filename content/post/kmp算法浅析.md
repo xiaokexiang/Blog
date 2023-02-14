@@ -9,6 +9,7 @@ categories: [
 weight: 10
 mermaid: true 
 hideReadMore: true
+slug: algorithm_kmp
 ---
 
 

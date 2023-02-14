@@ -6,6 +6,7 @@ tags: ["kubernetes "]
 categories: [
   "kubernetes"
 ]
+slug: kube_eventer
 ---
 
 ### 前言

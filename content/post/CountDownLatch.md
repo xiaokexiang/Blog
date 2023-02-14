@@ -7,6 +7,7 @@ categories: [
   "Concurrent"
 ]
 hideReadMore: true
+slug: concurrent_count_down_latch
 ---
 
 ### CountDownLatch

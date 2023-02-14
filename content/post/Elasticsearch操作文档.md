@@ -6,7 +6,7 @@ description: "Elasticsearch是一个`分布式`，`RESTful`风格的搜索和数
 categories: [
   "elasticsearch"
 ]
-weight: 12
+slug: elasticsearch
 mermaid: true 
 hideReadMore: true
 ---
@@ -738,7 +738,7 @@ POST /product/_search
 ```
 
 > 1. 聚合类型：value_count（数量汇总）、avg（平均值）、sum（求和）、max（最大值）、min（最小值）、cardinality（基数）。
-> 2. <a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/cardinality.html">cardinality</a>作用等同于SQL中的count(distinct)，但是它是一个近似算法，ES提供了`precision_threshold`来设置阈值，默认是100，`字段基数如果在阈值一下，几乎100%是准确的，高于阈值会为了节省内存而牺牲精度`。
+> 2. <a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/cardinality.html">cardinality</a>作用等同于SQL中的count(distinct)，但是它是一个近似算法，ES提供了`precision_threshold`来设置阈值，默认是100，`字段基数如果在阈值以下，几乎100%是准确的，高于阈值会为了节省内存而牺牲精度`。
 
 #### 多值聚合
 

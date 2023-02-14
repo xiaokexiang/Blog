@@ -7,6 +7,7 @@ categories: [
   "Java"
 ]
 hideReadMore: true
+slug: decimal
 ---
 
 ### 进制详解

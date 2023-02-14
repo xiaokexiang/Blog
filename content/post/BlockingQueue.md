@@ -8,6 +8,7 @@ categories: [
   "Queue"
 ]
 hideReadMore: true
+slug: concurrent_blocking_queue
 ---
 
 ### BlockingQueue

@@ -6,6 +6,7 @@ tags: ["git"]
 categories: [
   "git"
 ]
+slug: git_command
 ---
 
 ## 本地仓库的操作

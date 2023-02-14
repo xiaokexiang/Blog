@@ -5,6 +5,7 @@ tags: ["mirai"]
 categories: [
   "mirai"
 ]
+slug: mirai
 ---
 
 ## Mirai

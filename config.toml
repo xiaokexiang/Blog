@@ -1,8 +1,7 @@
 baseurl = "https://leejay.top/"
 languageCode = "en-us"
 theme = "terminal"
-paginate = 8
-
+paginate = 10
 [params]
   contentTypeName = "post"
   themeColor = "orange"
@@ -49,3 +48,5 @@ paginate = 8
   changefreq = "monthly"
   priority = 0.5
   filename = "sitemap.xml"
+[permalinks]
+  posts = '/:slug'
