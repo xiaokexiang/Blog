@@ -741,4 +741,22 @@ SELECT * FROM T1 LOCK IN SHARE MODE;
 SELECT * FROM T1 FOR UPDATE;
 ```
 
+## Mysql压测
 
+```mysql
+mysqlslap \
+-u${user_name} \
+-h${host_name} \
+-P${port} \
+--create-schema=${database} \
+--no-drop \
+--number-of-queries=${per_client_queries} \
+--concurrency=${client_size}
+--query=${custom_query}
+-p
+```
+
+> 1. 如果使用`--create-schema`自定义压测数据库（不使用默认库为mysqlslap），那么`--no-drop`参数必不可少！！！防止测完数据库被删除！！
+> 2. `--concurrency`表示同时连接的客户端数量，`--number-of-queries`表示`总的查询次数=客户端数量 * 每个客户端查询次数`。
+> 3. ![image-20230221111747231](https://image.leejay.top/typora/image-20230221111747231.png)
+> 4. 返回的结果分别表示：平均请求时间、最小的请求时间、最大的请求时间、客户端数量、客户端平均请求数。
