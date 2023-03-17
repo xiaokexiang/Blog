@@ -193,3 +193,17 @@ docker run -d \
 -v /root/v2raya:/etc/v2raya \
 mzz2017/v2raya
 ```
+
+### samba
+```bash
+# 挂载本机的/root/mount目录到容器的/mount目录
+# 设置访问的账户名密码: username & password 和共享目录:share
+docker run -it --name samba \
+-p 139:139 -p 445:445 \
+-v /root/mount:/mount  \
+-d dperson/samba \
+-w "WORKGROUP" \
+-u "username;password" \
+-s "share;/mount/;yes;no;no;all;none"
+# 在window上通过\\ip\share访问并输入用户名密码即可
+```
