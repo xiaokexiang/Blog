@@ -52,7 +52,44 @@ deb http://ports.ubuntu.com/ubuntu-ports/ jammy-security main restricted univers
 deb-src http://ports.ubuntu.com/ubuntu-ports/ jammy-security main restricted universe multiverse
 ```
 
+### 固定ip
 
+```yaml
+-- vim /etc/netplan/01-network-manager-all.yaml
+-- Let NetworkManager manage all devices on this system
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    eth0:
+      addresses:
+        - 192.168.10.100/24
+      nameservers:
+        addresses: [114.114.114.114, 8.8.8.8]
+      routes:
+        - to: default
+          via: 192.168.10.1
+  wifis:
+    wlan0:
+      dhcp4: true
+      optional: true
+      addresses:
+        - 192.168.10.99/24
+      nameservers:
+        addresses: [114.114.114.114, 8.8.8.8]
+      access-points:
+        "wifi名称":
+          password: "wifi密码"
+```
+
+### 必备包
+
+```bash
+# 安装macvlan必备，否则会出现failed to create the macvlan port: operation not supported.
+apt install linux-modules-extra-raspi
+# 安装raspi-config图形界面
+apt install raspi-config
+```
 
 ## 树莓派软件安装
 
@@ -198,12 +235,22 @@ mzz2017/v2raya
 ```bash
 # 挂载本机的/root/mount目录到容器的/mount目录
 # 设置访问的账户名密码: username & password 和共享目录:share
+# 在window上通过\\ip\share访问并输入用户名密码即可
 docker run -it --name samba \
 -p 139:139 -p 445:445 \
 -v /root/mount:/mount  \
 -d dperson/samba \
 -w "WORKGROUP" \
 -u "username;password" \
--s "share;/mount/;yes;no;no;all;none"
-# 在window上通过\\ip\share访问并输入用户名密码即可
+-s "share;/mount/;yes;no;no;all;admin"
+# [name;path;browse;readonly;guest;users;admins;writelist;comment]
+# [name] is how it's called for clients
+# [path] path to share
+# [browsable] default:'yes' or 'no'
+# [readonly] default:'yes' or 'no'
+# [guest] allowed default:'yes' or 'no'
+# [users] allowed default:'all' or list of allowed users
+# [admins] allowed default:'none' or list of admin users
+# [writelist] list of users that can write to a RO share
+# [comment] description of share
 ```
