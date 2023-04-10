@@ -150,6 +150,17 @@ systemctl list-units "frpc@*"
 systemctl enable {服务名称}
 ```
 
+### frpc-docker
+
+```bash
+docker run \
+-d --restart=always \
+--name=frpc-web \
+--pull=always \
+registry.cn-hongkong.aliyuncs.com/natfrp/frpc \
+-f 账户密钥:隧道id --remote_control 远程密码
+```
+
 ### TFOLED
 
 ```bash
@@ -171,6 +182,20 @@ systemctl daemon-reload
 systemctl start tfoled.service
 # 开机启动
 systemctl enable tfoled.service
+```
+
+### TFOLED-docker
+
+```bash
+docker run -itd --name tfoled \
+   --privileged \
+   --restart=always \
+   --name tfoled
+   --net=host \
+   -v ${mount_path}:/data \ # 将需要统计的磁盘挂在到/data目录
+   -e upper=40  \ # 风扇启动的温度，不填默认45
+   -e lower=38 \ # 风扇停止的温度，不填默认42
+   -d xiaokexiang/alpine-tfoled
 ```
 
 ### docker
