@@ -279,3 +279,24 @@ docker run -it --name samba \
 # [writelist] list of users that can write to a RO share
 # [comment] description of share
 ```
+
+### icloud-backup
+```bash
+docker run -it \
+--name icloud-backup \
+--hostname icloudpd_boredazfcuk \
+--network bridge \
+--restart=always \
+--env auth_china=True \
+--env apple_id="${your_icloud}" \
+--env authentication_type=2FA \
+--env folder_structure={:%Y/%m} \
+--env auto_delete=True \
+--env synchronisation_interval=43200 \
+--env icloud_china=True \
+--env TZ=Asia/Shanghai \
+--env download_path=/home/root/iCloud \
+-v /mnt/usb2-1/iCloud/config:/config \
+-v /mnt/usb2-1/iCloud/download:/home/root/iCloud \
+pjoc/docker-icloudpd:master
+```
