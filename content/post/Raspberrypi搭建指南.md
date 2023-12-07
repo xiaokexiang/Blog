@@ -300,3 +300,4 @@ docker run -it \
 -v /mnt/usb2-1/iCloud/download:/home/root/iCloud \
 pjoc/docker-icloudpd:master
 ```
+> 启动成功后，进入容器执行`sync-icloud.sh`脚本，用来手动登陆icloud，登陆成功后重启容器即可。
