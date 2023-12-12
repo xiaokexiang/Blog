@@ -131,7 +131,7 @@ CMD ["ls", "-l"]
 # ENTRYPOINT ["ls", "-l"]
 ```
 
-> - 镜像build后，若执行docker run image -h,那么会提示错误信息。而将CMD换成ENTRYPOINT则不会。
+> - 镜像build后，若执行docker run image -h,那么会提示错误信息（因为覆盖了ls -l 命令，执行的是-h）。而将CMD换成ENTRYPOINT则不会（会拼接，执行`ls -l -h`）。
 
 ### ENV & ARG
 
@@ -146,3 +146,19 @@ CMD ["sh", "-c", "echo $NAME && ls"]
 ```
 
 > - 如果此处不使用`sh -c`执行命令，那么并不会正确显示ENV变量。
+> - 如果在一行中执行多个命令，需要使用`-c`显示指定。
+
+### tini
+tini（Tiny Init的缩写）是一个轻量级的初始化系统，用于解决在容器环境中启动进程时可能遇到的一些问题。它设计用于替代传统的init系统，如systemd或sysvinit，以提供更好的容器进程管理。
+> - 一般来说，docker容器启动时，容器内第一个启动的进程会被分配为PID1，通常PID1的进程被视为init进程，init进程负责启动和管理其他系统进程。
+> - 当java进程成为PID1时，会出现JVM无法正确处理SIGTERM信号来优雅的终止进程。`jstack <pid>`命令也无法处理，因为无法处理`SIGQUIT`信号。
+> - tini被设计为更好地处理信号，并能够确保它们正确地传递给Java进程，以便在容器停止时进行优雅的关闭。
+
+```dockerfile
+FROM busybox
+RUN wget -O /sbin/tini https://github.com/krallin/tini/releases/download/v0.19.0/tini-static-amd64
+RUN chmod +x /sbin/tini
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["sleep", "infinity"]
+```
+> top查看pid，tini进程的pid为1
