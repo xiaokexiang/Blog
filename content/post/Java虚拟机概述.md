@@ -7,7 +7,7 @@ tags: ["Jvm "]
 categories: [
   "Jvm"
 ]
-weight: 10
+weight: 15
 ---
 
 ## 1. 类加载流程
