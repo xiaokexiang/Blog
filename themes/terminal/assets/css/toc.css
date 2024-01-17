@@ -1,0 +1,68 @@
+/* toc style */
+
+.toc {
+    position: absolute;
+    top: 260px;
+    right: -40%;
+    width: 35%;
+    height: 500px;
+    transform: translateY(-50%);
+    /* background-color: #f6f6f6; */
+    border: 1px solid hsla(0,0%,100%,.1);
+    border-radius: 5px;
+    padding-bottom: 1rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: var(--accent);
+    padding-right: 10px;
+}
+
+.toc .page-header {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+.toc .li {
+    padding-right: 10px;
+}
+
+.toc-nav ul {
+    /* overflow: hidden; */
+    white-space: nowrap;
+    display: block;
+    line-height: 1rem;
+    margin-left: 1rem;
+}
+
+/* ignore h1 header */
+
+.toc-nav ul ul ul {
+    margin-left: 1rem;
+}
+
+.toc-nav .nav-link {
+    display: block;
+    overflow: hidden;
+    color: var(--accent);
+    padding-right: 10px; 
+    padding-bottom: 2px;
+}
+
+.toc-nav li.active .nav-link {
+    background-color: #f6f6f6;
+    color: var(--accent);
+    border-left: solid 2px var(--accent);
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 1300px) and (min-width: 0px){
+    main {
+        max-width: 100%;
+    }
+    .toc {
+        display: none;
+    }
+}
+
