@@ -1,4 +1,4 @@
-baseurl = "https://leejay.top/"
+baseurl = "https://blog.leejay.top/"
 languageCode = "en-us"
 theme = "terminal"
 paginate = 10
@@ -27,7 +27,7 @@ paginate = 10
 
     [languages.en.params.logo]
       logoText = "HelloWorld"
-      logoHomeLink = "https://leejay.top"
+      logoHomeLink = "https://blog.leejay.top/"
       # logoHomeLink = "/"
 
     # [languages.en.menu]
