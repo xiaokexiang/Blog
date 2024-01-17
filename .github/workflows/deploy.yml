@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master # hugo blog 所在分支
+      - stable-20240103
 
 jobs:
   build-deploy:
